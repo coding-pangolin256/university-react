@@ -1,6 +1,6 @@
 import * as rest from './rest';
 
-let url = "/results";
+let url = "/presents";
 
 export let findAll = queryParams => rest.get(url, queryParams);
 
@@ -8,9 +8,7 @@ export let findById = id => rest.get(url + "/" + id);
 
 export let createItem = student => rest.post(url, student);
 
-export let findByHomework = homework => rest.post("/result", homework);
-
-export let downFile = filename => rest.post("/downview", filename);
+export let downFile = filename => rest.post("/download", filename);
 
 export let deleteFile = filename => rest.post("/deletefile", filename);
 

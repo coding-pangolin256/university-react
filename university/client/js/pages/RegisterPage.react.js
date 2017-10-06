@@ -31,8 +31,8 @@ class RegisterPage extends Component {
   }
 
 	// Register a user
-	_register(pos, stdid, fullname, username, password) {
-		this.dispatch(register(pos, stdid, fullname, username, password));
+	_register(pos, stdid, email, name, password) {
+		this.dispatch(register(pos, stdid, email, name, password));
 	}
 }
 

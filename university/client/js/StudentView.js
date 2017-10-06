@@ -16,7 +16,7 @@ export default React.createClass({
                                 <img src={student.pic || "assets/images/avatar2.jpg"} alt="portrait"/>
                             </span>
                     </div> */}
-                    <div className="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium">
+                    {/* <div className="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium">
                         <dl className="page-header--rec-home__detail-item">
                             <dt>
                                 <p className="slds-text-heading--label slds-truncate" title="Field 1">Address</p>
@@ -39,7 +39,7 @@ export default React.createClass({
                                 </p>
                             </dd>
                         </dl>
-                    </div>
+                    </div> */}
                 </div>
                 <StudentEnrollmentCard student={student} onNew={this.newCourseHandler}/>
             </div>

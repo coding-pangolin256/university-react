@@ -19,7 +19,6 @@ export default React.createClass({
     viewAllHandler(event) {
         this.getCourses(this.props.teacher.id);
         event.preventDefault();
-        alert('v');
     },
 
     getCourses(teacherId, queryParams) {
@@ -73,7 +72,6 @@ export default React.createClass({
                         <div header="Period" field="period_name" sortable={true}/>
                         <div header="Code" field="code" sortable={true} onLink={this.courseLinkHandler}/>
                         <div header="Name" field="name" sortable={true} onLink={this.courseLinkHandler}/>
-                        <div header="Credits" field="credits" sortable={true} textAlign="right"/>
                     </DataGrid>
                 </section>
 

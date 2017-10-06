@@ -35,15 +35,26 @@ import { browserHistory } from 'react-router';
  * @param  {string} username The username of the user to be logged in
  * @param  {string} password The password of the user to be logged in
  */
-export function login(username, password) {
+export function login(pos, stdid, email, password) {
   return (dispatch) => {
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
     // If no username or password was specified, throw a field-missing error
-    if (anyElementsEmpty({ username, password })) {
-      dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
-      dispatch(sendingRequest(false));
-      return;
+    if(pos == "teacher")
+    {
+      if (anyElementsEmpty({ email, password })) {
+        dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+        dispatch(sendingRequest(false));
+        return;
+      }  
+    }
+    if(pos == "student")
+    {
+      if (anyElementsEmpty({ stdid, password })) {
+        dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+        dispatch(sendingRequest(false));
+        return;
+      }  
     }
     // Generate salt for password encryption
     //const salt = genSalt(username);
@@ -55,7 +66,7 @@ export function login(username, password) {
     //     return;
     //   }
       // Use auth.js to fake a request
-      auth.login(username, password, (success, err) => {
+      auth.login(pos, pos == "teacher"? email:stdid, password, (success, err) => {
         // When the request is finished, hide the loading indicator
         dispatch(sendingRequest(false));
         dispatch(setAuthState(success));
@@ -65,7 +76,9 @@ export function login(username, password) {
           forwardTo('#/'+localStorage.pos+'/'+localStorage.token);
           window.location.reload();
           dispatch(changeForm({
-            username: "",
+            stdid: "",
+            email: "",
+            name: "",
             password: ""
           }));
         } else {
@@ -109,15 +122,26 @@ export function logout() {
  * @param  {string} username The username of the new user
  * @param  {string} password The password of the new user
  */
-export function register(pos, stdid, fullname, username, password) {
+export function register(pos, stdid, email, name, password) {
   return (dispatch) => {
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
     // If no username or password was specified, throw a field-missing error
-    if (anyElementsEmpty({ stdid, fullname, username, password })) {
-      dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
-      dispatch(sendingRequest(false));
-      return;
+    if(pos == "teacher")
+    {
+      if (anyElementsEmpty({ name, email, password })) {
+        dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+        dispatch(sendingRequest(false));
+        return;
+      }  
+    }
+    if(pos == "student")
+    {
+      if (anyElementsEmpty({ name, stdid, password })) {
+        dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+        dispatch(sendingRequest(false));
+        return;
+      }  
     }
     // Generate salt for password encryption
     //const salt = genSalt(username);
@@ -129,8 +153,7 @@ export function register(pos, stdid, fullname, username, password) {
       //   return;
       // }
       // Use auth.js to fake a request
-      console.log('register');
-      auth.register(pos, stdid, fullname, username, password, (success, err) => {
+      auth.register(pos, stdid, email, name, password, (success, err) => {
         // When the request is finished, hide the loading indicator
         
         dispatch(sendingRequest(false));
@@ -140,11 +163,12 @@ export function register(pos, stdid, fullname, username, password) {
           forwardTo('#/'+localStorage.pos+'/'+localStorage.token);
           window.location.reload();
           dispatch(changeForm({
-            username: "",
+            stdid: "",
+            email: "",
+            name: "",
             password: ""
           }));
         } else {
-
           switch (err.type) {
             case 'username-exists':
               dispatch(setErrorMessage(errorMessages.USERNAME_TAKEN));

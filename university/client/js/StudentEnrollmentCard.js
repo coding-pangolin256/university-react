@@ -117,7 +117,6 @@ export default React.createClass({
                         <div header="Period" field="period_name"/>
                         {/* <div header="Teacher" field="teacher_name" onLink={this.teacherLinkHandler}/> */}
                         <div header="Teacher" field="teacher_name"/>
-                        <div header="Credits" field="credits" textAlign="right"/>
                     </DataGrid>
                 </section>
                 {this.state.period === "current" ?

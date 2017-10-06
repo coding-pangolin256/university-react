@@ -17,15 +17,15 @@ let findAll = (req, res, next) => {
 let findByTeacher = (req, res, next) => {
     let teacherId = req.params.id;
     let sql = `
-        SELECT c.id, c.code, c.name, teacher_id, t.full_name as teacher_name,
-            c.period_id, p.name as period_name, credits,
+        SELECT c.id, c.code, c.name, teacher_id, t.name as teacher_name,
+            c.period_id, p.name as period_name,
             count(e.student_id) as student_count
         FROM homework as c
         INNER JOIN teacher as t ON c.teacher_id=t.id
         INNER JOIN period as p ON c.period_id=p.id
         LEFT OUTER JOIN enrollment as e ON c.id=e.homework_id
         WHERE teacher_id = ?
-        GROUP BY c.id, t.full_name p.name
+        GROUP BY c.id, t.name p.name
         ORDER BY period_id DESC, code`;
     db.query(sql, [parseInt(teacherId)])
         .then(homeworks =>  res.json(homeworks))
@@ -38,7 +38,7 @@ let findByHomework = (req, res, next) => {
     let path_field = homework.id + '_hw';
     let score_field = homework.id + '_score';
     let sql = `
-        SELECT r.id, r.std_id, ${path_field}, ${score_field}, s.full_name as student_name
+        SELECT r.id, r.std_id, ${path_field}, ${score_field}, s.name as student_name
         FROM ${table_name} as r
         LEFT JOIN student as s ON r.std_id = s.id
         ORDER BY r.id`;
@@ -80,8 +80,8 @@ let createItem = (req, res, next) => {
 
 let updateItem = (req, res, next) => {
     let homework = req.body;
-    let sql = `UPDATE homework SET code=?, name=?, period_id=?, teacher_id=?, credits=? WHERE id=?`;
-    db.query(sql, [homework.code, homework.name, homework.period_id, homework.teacher_id, homework.credits, homework.id])
+    let sql = `UPDATE homework SET code=?, name=?, period_id=?, teacher_id=? WHERE id=?`;
+    db.query(sql, [homework.code, homework.name, homework.period_id, homework.teacher_id, homework.id])
         .then(() => res.send({result: 'ok'}))
         .catch(next);
 };

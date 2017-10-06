@@ -18,7 +18,7 @@ export default React.createClass({
     render() {
         return (
             <DataGrid data={this.props.students}>
-                <div header="Name" field="full_name" onLink={this.linkHandler}/>
+                <div header="Name" field="name" onLink={this.linkHandler}/>
                 <div header="Address" field="address"/>
                 <div header="City" field="city"/>
                 <div header="State" field="state"/>

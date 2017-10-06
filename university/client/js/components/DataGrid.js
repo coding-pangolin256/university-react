@@ -1,9 +1,11 @@
 import React from 'react';
 import moment from 'moment';
 
-import {ButtonIcon} from "./Icons";
+import {ButtonIcon, InputIcon} from "./Icons";
 import Dropdown from "./Dropdown";
 import {DropdownItem} from "./Dropdown";
+
+import filesize from 'filesize';
 
 export let ActionButton = React.createClass({
 
@@ -74,19 +76,33 @@ let Column = React.createClass({
             value = parseFloat(value).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
         } else if (this.props.format === "date") {
             value = moment(value).format("YYYY/MM/DD");
+        } else if (this.props.format === "datetime") {
+            value = moment(value).format("YYYY/MM/DD hh:MM:ss");
+        } else if (this.props.format === "size") {
+            value = filesize(value);
         }
 
         if (this.props.onLink && !this.props.ignoreLinks) {
-            value = <a href="#" onClick={this.linkHandler}>{value}</a>
+            if(this.props.action == "Details")
+            {
+                value = <button className="slds-button slds-button--icon-border-filled" onClick={this.linkHandler}>
+                        <ButtonIcon name="add"/>
+                    </button>
+            }
+            else if(this.props.action == "Delete")
+            {
+                value = <button className="slds-button slds-button--icon-border-filled" onClick={this.linkHandler}>
+                        <ButtonIcon name="dash"/>
+                    </button>
+            }
+            else
+                value = <a href="#" onClick={this.linkHandler}>{value}</a>
         }
 
         return (
             <td data-label={this.props.label} style={{textAlign: this.props.textAlign}}>
                 <span className="slds-truncate">
                     {value}
-                    <button className="slds-button slds-button--icon-border-filled">
-                                <ButtonIcon name="minus"/>
-                    </button>
                 </span>
             </td>
         );
@@ -113,6 +129,7 @@ let Row = React.createClass({
             if (column.props && column.props.field) {
                 columns.push(<Column label={column.props.header}
                                      data={this.props.data}
+                                     action={column.props.action}
                                      field={column.props.field}
                                      textAlign={column.props.textAlign} format={column.props.format}
                                      ignoreLinks={this.props.ignoreLinks}
@@ -188,6 +205,7 @@ export default React.createClass({
                                                     selected={item===this.state.selectedItem}
                                                     columns={this.props.children}
                                                     actions={this.props.actions}
+                                                    action={this.props.action}
                                                     ignoreLinks={this.props.ignoreLinks}
                                                     onAction={this.props.onAction}
                                                     onClick={this.rowClickHandler}/>);

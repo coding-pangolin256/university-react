@@ -12,43 +12,58 @@ var auth = {
    * @param  {string}   password The password of the user
    * @param  {Function} callback Called after a user was logged in on the remote server
    */
-  login(username, password, callback) {
+  login(pos, name, password, callback) {
     // If there is a token in the localStorage, the user already is
     // authenticated
-
     if (this.loggedIn()) {
       callback(true);
       return;
     }
     // Post a fake request (see below)
-    StudentService.findByData({ 'user_id': username, 'pwd': password }).then(response => {
-      // If the user was authenticated successfully, save a random token to the
-      // localStorage
-      
-      if (response != null) {
-        localStorage.token = response.id;
-        localStorage.pos = "student";
-        callback(true);
-      } else {
-        // If there was a problem authenticating the user, show an error on the
-        // form
-        TeacherService.findByData({ 'user_id': username, 'pwd': password }).then(response => {
-          // If the user was authenticated successfully, save a random token to the
-          // localStorage
-          
-          if (response != null) {
-            localStorage.token = response.id;
-            localStorage.pos = "teacher";
-            callback(true);
-          } else {
-            var err={
-              type:'input-isnot-correct'
-            };
-            callback(false, err);
+
+    if(pos == "student")
+    {
+      StudentService.findByData({ 'id': name, 'pwd': password }).then(response => {
+        // If the user was authenticated successfully, save a random token to the
+        // localStorage
+        if (response != null) {
+          localStorage.token = response.id;
+          localStorage.permission = 0;
+          localStorage.pos = "student";
+          callback(true);
+        } else {
+          // If there was a problem authenticating the user, show an error on the
+          // form
+          var err={
+            type:'input-wrong'
+          };
+          callback(false, err);
+        }
+      });
+    }
+    else
+    {
+      TeacherService.findByData({ 'email': name, 'pwd': password }).then(response => {
+        // If the user was authenticated successfully, save a random token to the
+        // localStorage
+        if (response != null && response.allowed) {
+          localStorage.token = response.id;
+          localStorage.pos = "teacher";
+          localStorage.permission = response.allowed;
+          callback(true);
+        } else {
+          var err={
+            type:'input-wrong'
+          };
+          if(!response.allowed)
+          {
+            err.type = 'permission-not-allowed';
           }
-        });
-      }
-    });
+          console.log(err.type);
+          callback(false, err);
+        }
+      });
+    }
   },
   /**
    * Logs the current user out
@@ -71,46 +86,48 @@ var auth = {
    * @param  {string}   password The password of the user
    * @param  {Function} callback Called after a user was registered on the remote server
    */
-  register(pos, stdid, fullname, username, password, callback) {
+  register(pos, stdid, email, name, password, callback) {
     // Post a fake request
     if(pos == "teacher")
     {
       var data = {
-        'full_name': fullname,
-        'user_id': username,
+        'name': name,
+        'email': email,
         'pwd': password
       }
       
       TeacherService.createItem(data).then(response => {
         // If the user was successfully registered, log them in
-        if (response.insertId != false) {
-          console.log('log');
-          this.login(username, password, callback);
+        if (response.affectedRows != false) {
+          this.login(pos, email, password, callback);
         } else {
-          console.log('err');
-          // If there was a problem registering, show the error
-          callback(false, response.error);
+            var err = {
+              type: 'username-exists'
+            }
+            // If there was a problem registering, show the error
+            callback(false, err);
         }
       });
     }
     else {
       var data = {
-        'std_id': stdid,
-        'full_name': fullname,
-        'user_id': username,
+        'id': stdid,
+        'name': name,
         'pwd': password
       }
       
       StudentService.createItem(data).then(response => {
         // If the user was successfully registered, log them in
         
-        if (response.insertId != false) {
-          console.log('log');
-          this.login(username, password, callback);
+        if (response.affectedRows != false) {
+          this.login(pos, stdid, password, callback);
         } else {
-          console.log('err');
           // If there was a problem registering, show the error
-          callback(false, response.error);
+          var err = {
+            type: 'username-exists'
+            }
+          // If there was a problem registering, show the error
+          callback(false, err);
         }
       });
     }

@@ -39,14 +39,12 @@ export default React.createClass({
         return (
             <div>
                 <RecordHeader type="Student" icon="lead"
-                              title={this.state.student.full_name}
+                              title={this.state.student.name}
                               onEdit={localStorage.pos=="student"?this.editHandler:null}
                               onDelete={localStorage.pos=="student"?this.deleteHandler:null}
                               onClone={localStorage.pos=="student"?this.cloneHandler:null}>
-                    <HeaderField label="Date of Birth" value={this.state.student.dob} format={this.formatDOB}/>
-                    <HeaderField label="Mobile Phone" value={this.state.student.mobile_phone}/>
-                    <HeaderField label="Home Phone" value={this.state.student.phone}/>
-                    <HeaderField label="Email" value={this.state.student.email}/>
+                    {/* <HeaderField label="Date of Birth" value={this.state.student.dob} format={this.formatDOB}/> */}
+                    <HeaderField label="Student ID" value={this.state.student.id}/>
                 </RecordHeader>
 
                 {React.cloneElement(this.props.children, {student: this.state.student})}

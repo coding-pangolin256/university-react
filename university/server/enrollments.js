@@ -11,8 +11,8 @@ let findByStudent = (req, res, next) => {
     if (periodId) params.push(periodId);
 
     let sql = `
-        SELECT e.id, e.student_id, e.course_id, c.code, c.name as course_name, c.credits,
-            c.teacher_id, t.full_name as teacher_name,
+        SELECT e.id, e.student_id, e.course_id, c.code, c.name as course_name,
+            c.teacher_id, t.name as teacher_name,
             c.period_id, p.name as period_name
         FROM enrollment as e
         INNER JOIN course AS c ON e.course_id=c.id
@@ -32,11 +32,11 @@ let findByCourse = (req, res, next) => {
     let courseId = req.params.id;
 
     let sql = `
-        SELECT e.id, student_id, full_name, phone, mobile_phone
+        SELECT e.id, s.id as student_id, name
         FROM enrollment as e
         INNER JOIN student AS s ON e.student_id=s.id
         WHERE course_id=?
-        ORDER BY full_name`;
+        ORDER BY name`;
 
     db.query(sql, [courseId])
         .then(result => res.json(result))

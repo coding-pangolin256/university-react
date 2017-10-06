@@ -20,7 +20,7 @@ let findByHomework = (req, res, next) => {
     let path_field = homework.id + '_hw';
     let score_field = homework.id + '_score';
     let sql = `
-        SELECT r.std_id as id, ${path_field} as path, ${score_field} as score, s.full_name as student_name
+        SELECT r.std_id as id, ${path_field} as path, ${score_field} as score, s.name as student_name
         FROM ${table_name} as r
         LEFT JOIN student as s ON r.std_id = s.id
         WHERE ${path_field} IS NOT NULL
@@ -71,9 +71,12 @@ let createItem = (req, res, next) => {
 };
 
 let updateItem = (req, res, next) => {
-    let homework = req.body;
-    let sql = `UPDATE homework SET code=?, name=?, period_id=?, teacher_id=?, credits=? WHERE id=?`;
-    db.query(sql, [homework.code, homework.name, homework.period_id, homework.teacher_id, homework.credits, homework.id])
+    let result = req.body;
+    let table_name = result.course_code + result.course_id;
+    let path_field = result.homework_id + '_hw';
+    let score_field = result.homework_id + '_score';
+    let sql = `UPDATE ${table_name} SET ${score_field}=? WHERE std_id=?`;
+    db.query(sql, [result.score, result.id])
         .then(() => res.send({result: 'ok'}))
         .catch(next);
 };

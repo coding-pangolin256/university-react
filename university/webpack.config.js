@@ -41,8 +41,8 @@ module.exports = {
             clearMessages: true
           })
         ];
-      },
-      target: "web", // Make web variables accessible to webpack, e.g. window
+    },
+    target: "web", // Make web variables accessible to webpack, e.g. window
     stats: {
         colors: true
     },

@@ -106,7 +106,7 @@ const Routesz = (store) => {
           <Route path=":homeworkId" component={HomeworkView}/>
           <Route path=":homeworkId/edit" component={HomeworkFormWrapper}/>
       </Route>
-      {/* <Route path="teachers" component={TeacherHome}/> */}
+      <Route path="teachers" component={TeacherHome}/>
       <Route path="teacher" component={TeacherRecord}>
           <Route path=":teacherId" component={TeacherView}/>
           <Route path=":teacherId/edit" component={TeacherFormWrapper}/>

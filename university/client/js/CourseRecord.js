@@ -44,7 +44,6 @@ export default React.createClass({
                               onDelete={localStorage.pos=="teacher"?this.deleteHandler:null}>
                     <HeaderField label="Code" value={this.state.course.code}/>
                     <HeaderField label="Period" value={this.state.course.period_name}/>
-                    <HeaderField label="Credits" value={this.state.course.credits}/>
                 </RecordHeader>
 
                 {React.cloneElement(this.props.children, {course: this.state.course})}

@@ -7,7 +7,7 @@ import {RecordHeader, HeaderField} from './components/PageHeader';
 export default React.createClass({
 
     getInitialState() {
-        return {teacher:{}};
+        return {teacher:{},teachers: []};
     },
 
     componentDidMount() {
@@ -30,22 +30,16 @@ export default React.createClass({
         window.location.hash = "#teacher/" + this.state.teacher.id + "/edit";
     },
 
-    newCourse() {
-        
-    },
-
     render() {
         return (
             <div>
                 <RecordHeader type="Teacher"
                               icon="user"
-                              title={'Professor ' + this.state.teacher.full_name }
+                              title={'Professor ' + this.state.teacher.name }
                               onEdit={this.editHandler}
                               onDelete={this.deleteHandler}
-                              onClone={this.cloneHandler}
-                              onNewCourse={this.newCourse}>
-                    <HeaderField label="Mobile Phone" value={this.state.teacher.mobile_phone}/>
-                    <HeaderField label="Home Phone" value={this.state.teacher.phone}/>
+                              onClone={this.cloneHandler}>
+                    <HeaderField label="Name" value={this.state.teacher.name}/>
                     <HeaderField label="Email" value={this.state.teacher.email}/>
                 </RecordHeader>
 

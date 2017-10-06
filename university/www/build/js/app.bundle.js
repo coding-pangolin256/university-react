@@ -78,79 +78,79 @@
 	
 	var _CourseHome2 = _interopRequireDefault(_CourseHome);
 	
-	var _CourseRecord = __webpack_require__(487);
+	var _CourseRecord = __webpack_require__(488);
 	
 	var _CourseRecord2 = _interopRequireDefault(_CourseRecord);
 	
-	var _CourseView = __webpack_require__(488);
+	var _CourseView = __webpack_require__(489);
 	
 	var _CourseView2 = _interopRequireDefault(_CourseView);
 	
-	var _CourseFormWrapper = __webpack_require__(495);
+	var _CourseFormWrapper = __webpack_require__(496);
 	
 	var _CourseFormWrapper2 = _interopRequireDefault(_CourseFormWrapper);
 	
-	var _HomeworkRecord = __webpack_require__(496);
+	var _HomeworkRecord = __webpack_require__(497);
 	
 	var _HomeworkRecord2 = _interopRequireDefault(_HomeworkRecord);
 	
-	var _HomeworkView = __webpack_require__(497);
+	var _HomeworkView = __webpack_require__(498);
 	
 	var _HomeworkView2 = _interopRequireDefault(_HomeworkView);
 	
-	var _HomeworkFormWrapper = __webpack_require__(536);
+	var _HomeworkFormWrapper = __webpack_require__(539);
 	
 	var _HomeworkFormWrapper2 = _interopRequireDefault(_HomeworkFormWrapper);
 	
-	var _StudentHome = __webpack_require__(537);
+	var _StudentHome = __webpack_require__(540);
 	
 	var _StudentHome2 = _interopRequireDefault(_StudentHome);
 	
-	var _StudentRecord = __webpack_require__(545);
+	var _StudentRecord = __webpack_require__(548);
 	
 	var _StudentRecord2 = _interopRequireDefault(_StudentRecord);
 	
-	var _StudentView = __webpack_require__(546);
+	var _StudentView = __webpack_require__(549);
 	
 	var _StudentView2 = _interopRequireDefault(_StudentView);
 	
-	var _StudentFormWrapper = __webpack_require__(549);
+	var _StudentFormWrapper = __webpack_require__(552);
 	
 	var _StudentFormWrapper2 = _interopRequireDefault(_StudentFormWrapper);
 	
-	var _TeacherHome = __webpack_require__(550);
+	var _TeacherHome = __webpack_require__(553);
 	
 	var _TeacherHome2 = _interopRequireDefault(_TeacherHome);
 	
-	var _TeacherRecord = __webpack_require__(554);
+	var _TeacherRecord = __webpack_require__(557);
 	
 	var _TeacherRecord2 = _interopRequireDefault(_TeacherRecord);
 	
-	var _TeacherView = __webpack_require__(555);
+	var _TeacherView = __webpack_require__(558);
 	
 	var _TeacherView2 = _interopRequireDefault(_TeacherView);
 	
-	var _TeacherFormWrapper = __webpack_require__(557);
+	var _TeacherFormWrapper = __webpack_require__(563);
 	
 	var _TeacherFormWrapper2 = _interopRequireDefault(_TeacherFormWrapper);
 	
-	var _HomePage = __webpack_require__(558);
+	var _HomePage = __webpack_require__(564);
 	
 	var _HomePage2 = _interopRequireDefault(_HomePage);
 	
-	var _LoginPage = __webpack_require__(564);
+	var _LoginPage = __webpack_require__(570);
 	
 	var _LoginPage2 = _interopRequireDefault(_LoginPage);
 	
-	var _RegisterPage = __webpack_require__(567);
+	var _RegisterPage = __webpack_require__(573);
 	
 	var _RegisterPage2 = _interopRequireDefault(_RegisterPage);
 	
-	var _NotFound = __webpack_require__(569);
+	var _NotFound = __webpack_require__(575);
 	
 	var _NotFound2 = _interopRequireDefault(_NotFound);
 	
-	var _App = __webpack_require__(570);
+	var _App = __webpack_require__(576);
 	
 	var _App2 = _interopRequireDefault(_App);
 	
@@ -241,6 +241,7 @@
 	        _react2.default.createElement(_reactRouter.Route, { path: ':homeworkId', component: _HomeworkView2.default }),
 	        _react2.default.createElement(_reactRouter.Route, { path: ':homeworkId/edit', component: _HomeworkFormWrapper2.default })
 	      ),
+	      _react2.default.createElement(_reactRouter.Route, { path: 'teachers', component: _TeacherHome2.default }),
 	      _react2.default.createElement(
 	        _reactRouter.Route,
 	        { path: 'teacher', component: _TeacherRecord2.default },
@@ -29018,43 +29019,54 @@
 	   * @param  {string}   password The password of the user
 	   * @param  {Function} callback Called after a user was logged in on the remote server
 	   */
-	  login: function login(username, password, callback) {
+	  login: function login(pos, name, password, callback) {
 	    // If there is a token in the localStorage, the user already is
 	    // authenticated
-	
 	    if (this.loggedIn()) {
 	      callback(true);
 	      return;
 	    }
 	    // Post a fake request (see below)
-	    StudentService.findByData({ 'user_id': username, 'pwd': password }).then(function (response) {
-	      // If the user was authenticated successfully, save a random token to the
-	      // localStorage
 	
-	      if (response != null) {
-	        localStorage.token = response.id;
-	        localStorage.pos = "student";
-	        callback(true);
-	      } else {
-	        // If there was a problem authenticating the user, show an error on the
-	        // form
-	        TeacherService.findByData({ 'user_id': username, 'pwd': password }).then(function (response) {
-	          // If the user was authenticated successfully, save a random token to the
-	          // localStorage
-	
-	          if (response != null) {
-	            localStorage.token = response.id;
-	            localStorage.pos = "teacher";
-	            callback(true);
-	          } else {
-	            var err = {
-	              type: 'input-isnot-correct'
-	            };
-	            callback(false, err);
+	    if (pos == "student") {
+	      StudentService.findByData({ 'id': name, 'pwd': password }).then(function (response) {
+	        // If the user was authenticated successfully, save a random token to the
+	        // localStorage
+	        if (response != null) {
+	          localStorage.token = response.id;
+	          localStorage.permission = 0;
+	          localStorage.pos = "student";
+	          callback(true);
+	        } else {
+	          // If there was a problem authenticating the user, show an error on the
+	          // form
+	          var err = {
+	            type: 'input-wrong'
+	          };
+	          callback(false, err);
+	        }
+	      });
+	    } else {
+	      TeacherService.findByData({ 'email': name, 'pwd': password }).then(function (response) {
+	        // If the user was authenticated successfully, save a random token to the
+	        // localStorage
+	        if (response != null && response.allowed) {
+	          localStorage.token = response.id;
+	          localStorage.pos = "teacher";
+	          localStorage.permission = response.allowed;
+	          callback(true);
+	        } else {
+	          var err = {
+	            type: 'input-wrong'
+	          };
+	          if (!response.allowed) {
+	            err.type = 'permission-not-allowed';
 	          }
-	        });
-	      }
-	    });
+	          console.log(err.type);
+	          callback(false, err);
+	        }
+	      });
+	    }
 	  },
 	
 	  /**
@@ -29080,46 +29092,46 @@
 	   * @param  {string}   password The password of the user
 	   * @param  {Function} callback Called after a user was registered on the remote server
 	   */
-	  register: function register(pos, stdid, fullname, username, password, callback) {
+	  register: function register(pos, stdid, email, name, password, callback) {
 	    var _this = this;
 	
 	    // Post a fake request
 	    if (pos == "teacher") {
 	      var data = {
-	        'full_name': fullname,
-	        'user_id': username,
+	        'name': name,
+	        'email': email,
 	        'pwd': password
 	      };
 	
 	      TeacherService.createItem(data).then(function (response) {
 	        // If the user was successfully registered, log them in
-	        if (response.insertId != false) {
-	          console.log('log');
-	          _this.login(username, password, callback);
+	        if (response.affectedRows != false) {
+	          _this.login(pos, email, password, callback);
 	        } else {
-	          console.log('err');
-	          // If there was a problem registering, show the error
-	          callback(false, response.error);
+	          var err = {
+	            type: 'username-exists'
+	            // If there was a problem registering, show the error
+	          };callback(false, err);
 	        }
 	      });
 	    } else {
 	      var data = {
-	        'std_id': stdid,
-	        'full_name': fullname,
-	        'user_id': username,
+	        'id': stdid,
+	        'name': name,
 	        'pwd': password
 	      };
 	
 	      StudentService.createItem(data).then(function (response) {
 	        // If the user was successfully registered, log them in
 	
-	        if (response.insertId != false) {
-	          console.log('log');
-	          _this.login(username, password, callback);
+	        if (response.affectedRows != false) {
+	          _this.login(pos, stdid, password, callback);
 	        } else {
-	          console.log('err');
 	          // If there was a problem registering, show the error
-	          callback(false, response.error);
+	          var err = {
+	            type: 'username-exists'
+	            // If there was a problem registering, show the error
+	          };callback(false, err);
 	        }
 	      });
 	    }
@@ -39289,7 +39301,7 @@
 	                    document.dispatchEvent(new Event('stopWaiting'));
 	                }
 	                if (xhr.status > 199 && xhr.status < 300) {
-	                    resolve(xhr.responseText ? JSON.parse(xhr.responseText) : undefined);
+	                    if (xhr.getResponseHeader("Content-Type").startsWith("application/json")) resolve(xhr.responseText ? JSON.parse(xhr.responseText) : undefined);else resolve(xhr.responseText ? xhr.responseText : undefined);
 	                } else {
 	                    reject(xhr.responseText);
 	                }
@@ -39960,7 +39972,17 @@
 	                            _react2.default.createElement(_Icons.Icon, { name: 'home', theme: null }),
 	                            'Home'
 	                        )
-	                    )
+	                    ),
+	                    localStorage.permission == 2 ? _react2.default.createElement(
+	                        'li',
+	                        { className: 'slds-list__item slds-m-right--xx-large' },
+	                        _react2.default.createElement(
+	                            'a',
+	                            { href: '#teachers' },
+	                            _react2.default.createElement(_Icons.Icon, { name: 'user', theme: null }),
+	                            'Teachers'
+	                        )
+	                    ) : ""
 	                )
 	            ),
 	            this.props.children
@@ -40541,7 +40563,7 @@
 	
 	var _CourseList2 = _interopRequireDefault(_CourseList);
 	
-	var _CourseFormWindow = __webpack_require__(484);
+	var _CourseFormWindow = __webpack_require__(485);
 	
 	var _CourseFormWindow2 = _interopRequireDefault(_CourseFormWindow);
 	
@@ -40883,9 +40905,7 @@
 	            icon: "account"
 	        };
 	    },
-	    followHandler: function followHandler() {
-	        alert("Not implemented in this demo app");
-	    },
+	    followHandler: function followHandler() {},
 	    render: function render() {
 	        return _react2.default.createElement(
 	            'div',
@@ -56907,7 +56927,6 @@
 	            _react2.default.createElement('div', { header: 'Code', field: 'code', onLink: this.courseLinkHandler }),
 	            _react2.default.createElement('div', { header: 'Name', field: 'name', onLink: this.courseLinkHandler }),
 	            _react2.default.createElement('div', { header: 'Teacher', field: 'teacher_name', onLink: this.teacherLinkHandler }),
-	            _react2.default.createElement('div', { header: 'Credits', field: 'credits', textAlign: 'right' }),
 	            _react2.default.createElement('div', { header: '#Enrolled', field: 'student_count', textAlign: 'right' })
 	        );
 	    }
@@ -56937,6 +56956,10 @@
 	var _Dropdown = __webpack_require__(358);
 	
 	var _Dropdown2 = _interopRequireDefault(_Dropdown);
+	
+	var _filesize = __webpack_require__(484);
+	
+	var _filesize2 = _interopRequireDefault(_filesize);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -57017,10 +57040,26 @@
 	            value = parseFloat(value).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 	        } else if (this.props.format === "date") {
 	            value = (0, _moment2.default)(value).format("YYYY/MM/DD");
+	        } else if (this.props.format === "datetime") {
+	            value = (0, _moment2.default)(value).format("YYYY/MM/DD hh:MM:ss");
+	        } else if (this.props.format === "size") {
+	            value = (0, _filesize2.default)(value);
 	        }
 	
 	        if (this.props.onLink && !this.props.ignoreLinks) {
-	            value = _react2.default.createElement(
+	            if (this.props.action == "Details") {
+	                value = _react2.default.createElement(
+	                    'button',
+	                    { className: 'slds-button slds-button--icon-border-filled', onClick: this.linkHandler },
+	                    _react2.default.createElement(_Icons.ButtonIcon, { name: 'add' })
+	                );
+	            } else if (this.props.action == "Delete") {
+	                value = _react2.default.createElement(
+	                    'button',
+	                    { className: 'slds-button slds-button--icon-border-filled', onClick: this.linkHandler },
+	                    _react2.default.createElement(_Icons.ButtonIcon, { name: 'dash' })
+	                );
+	            } else value = _react2.default.createElement(
 	                'a',
 	                { href: '#', onClick: this.linkHandler },
 	                value
@@ -57033,12 +57072,7 @@
 	            _react2.default.createElement(
 	                'span',
 	                { className: 'slds-truncate' },
-	                value,
-	                _react2.default.createElement(
-	                    'button',
-	                    { className: 'slds-button slds-button--icon-border-filled' },
-	                    _react2.default.createElement(_Icons.ButtonIcon, { name: 'minus' })
-	                )
+	                value
 	            )
 	        );
 	    }
@@ -57061,6 +57095,7 @@
 	            if (column.props && column.props.field) {
 	                columns.push(_react2.default.createElement(Column, { label: column.props.header,
 	                    data: this.props.data,
+	                    action: column.props.action,
 	                    field: column.props.field,
 	                    textAlign: column.props.textAlign, format: column.props.format,
 	                    ignoreLinks: this.props.ignoreLinks,
@@ -57136,6 +57171,7 @@
 	                    selected: item === _this.state.selectedItem,
 	                    columns: _this.props.children,
 	                    actions: _this.props.actions,
+	                    action: _this.props.action,
 	                    ignoreLinks: _this.props.ignoreLinks,
 	                    onAction: _this.props.onAction,
 	                    onClick: _this.rowClickHandler });
@@ -57167,6 +57203,180 @@
 /* 484 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
+	
+	/**
+	 * filesize
+	 *
+	 * @copyright 2017 Jason Mulligan <jason.mulligan@avoidwork.com>
+	 * @license BSD-3-Clause
+	 * @version 3.5.10
+	 */
+	(function (global) {
+		var b = /^(b|B)$/,
+		    symbol = {
+			iec: {
+				bits: ["b", "Kib", "Mib", "Gib", "Tib", "Pib", "Eib", "Zib", "Yib"],
+				bytes: ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"]
+			},
+			jedec: {
+				bits: ["b", "Kb", "Mb", "Gb", "Tb", "Pb", "Eb", "Zb", "Yb"],
+				bytes: ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+			}
+		},
+		    fullform = {
+			iec: ["", "kibi", "mebi", "gibi", "tebi", "pebi", "exbi", "zebi", "yobi"],
+			jedec: ["", "kilo", "mega", "giga", "tera", "peta", "exa", "zetta", "yotta"]
+		};
+	
+		/**
+	  * filesize
+	  *
+	  * @method filesize
+	  * @param  {Mixed}   arg        String, Int or Float to transform
+	  * @param  {Object}  descriptor [Optional] Flags
+	  * @return {String}             Readable file size String
+	  */
+		function filesize(arg) {
+			var descriptor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	
+			var result = [],
+			    val = 0,
+			    e = void 0,
+			    base = void 0,
+			    bits = void 0,
+			    ceil = void 0,
+			    full = void 0,
+			    fullforms = void 0,
+			    neg = void 0,
+			    num = void 0,
+			    output = void 0,
+			    round = void 0,
+			    unix = void 0,
+			    spacer = void 0,
+			    standard = void 0,
+			    symbols = void 0;
+	
+			if (isNaN(arg)) {
+				throw new Error("Invalid arguments");
+			}
+	
+			bits = descriptor.bits === true;
+			unix = descriptor.unix === true;
+			base = descriptor.base || 2;
+			round = descriptor.round !== undefined ? descriptor.round : unix ? 1 : 2;
+			spacer = descriptor.spacer !== undefined ? descriptor.spacer : unix ? "" : " ";
+			symbols = descriptor.symbols || descriptor.suffixes || {};
+			standard = base === 2 ? descriptor.standard || "jedec" : "jedec";
+			output = descriptor.output || "string";
+			full = descriptor.fullform === true;
+			fullforms = descriptor.fullforms instanceof Array ? descriptor.fullforms : [];
+			e = descriptor.exponent !== undefined ? descriptor.exponent : -1;
+			num = Number(arg);
+			neg = num < 0;
+			ceil = base > 2 ? 1000 : 1024;
+	
+			// Flipping a negative number to determine the size
+			if (neg) {
+				num = -num;
+			}
+	
+			// Determining the exponent
+			if (e === -1 || isNaN(e)) {
+				e = Math.floor(Math.log(num) / Math.log(ceil));
+	
+				if (e < 0) {
+					e = 0;
+				}
+			}
+	
+			// Exceeding supported length, time to reduce & multiply
+			if (e > 8) {
+				e = 8;
+			}
+	
+			// Zero is now a special case because bytes divide by 1
+			if (num === 0) {
+				result[0] = 0;
+				result[1] = unix ? "" : symbol[standard][bits ? "bits" : "bytes"][e];
+			} else {
+				val = num / (base === 2 ? Math.pow(2, e * 10) : Math.pow(1000, e));
+	
+				if (bits) {
+					val = val * 8;
+	
+					if (val >= ceil && e < 8) {
+						val = val / ceil;
+						e++;
+					}
+				}
+	
+				result[0] = Number(val.toFixed(e > 0 ? round : 0));
+				result[1] = base === 10 && e === 1 ? bits ? "kb" : "kB" : symbol[standard][bits ? "bits" : "bytes"][e];
+	
+				if (unix) {
+					result[1] = standard === "jedec" ? result[1].charAt(0) : e > 0 ? result[1].replace(/B$/, "") : result[1];
+	
+					if (b.test(result[1])) {
+						result[0] = Math.floor(result[0]);
+						result[1] = "";
+					}
+				}
+			}
+	
+			// Decorating a 'diff'
+			if (neg) {
+				result[0] = -result[0];
+			}
+	
+			// Applying custom symbol
+			result[1] = symbols[result[1]] || result[1];
+	
+			// Returning Array, Object, or String (default)
+			if (output === "array") {
+				return result;
+			}
+	
+			if (output === "exponent") {
+				return e;
+			}
+	
+			if (output === "object") {
+				return { value: result[0], suffix: result[1], symbol: result[1] };
+			}
+	
+			if (full) {
+				result[1] = fullforms[e] ? fullforms[e] : fullform[standard][e] + (bits ? "bit" : "byte") + (result[0] === 1 ? "" : "s");
+			}
+	
+			return result.join(spacer);
+		}
+	
+		// Partial application for functional programming
+		filesize.partial = function (opt) {
+			return function (arg) {
+				return filesize(arg, opt);
+			};
+		};
+	
+		// CommonJS, AMD, script tag
+		if (true) {
+			module.exports = filesize;
+		} else if (typeof define === "function" && define.amd) {
+			define(function () {
+				return filesize;
+			});
+		} else {
+			global.filesize = filesize;
+		}
+	})(typeof window !== "undefined" ? window : global);
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ }),
+/* 485 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -57177,7 +57387,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _CourseForm = __webpack_require__(485);
+	var _CourseForm = __webpack_require__(486);
 	
 	var _CourseForm2 = _interopRequireDefault(_CourseForm);
 	
@@ -57244,7 +57454,7 @@
 	});
 
 /***/ }),
-/* 485 */
+/* 486 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57269,7 +57479,7 @@
 	
 	var TeacherService = _interopRequireWildcard(_TeacherService);
 	
-	var _ComboBox = __webpack_require__(486);
+	var _ComboBox = __webpack_require__(487);
 	
 	var _ComboBox2 = _interopRequireDefault(_ComboBox);
 	
@@ -57314,11 +57524,6 @@
 	    teacherChangeHandler: function teacherChangeHandler(index, value, label) {
 	        var course = this.state.course;
 	        course.teacher_id = value;
-	        this.setState({ course: course });
-	    },
-	    creditsChangeHandler: function creditsChangeHandler(event) {
-	        var course = this.state.course;
-	        course.credits = event.target.value;
 	        this.setState({ course: course });
 	    },
 	    save: function save() {
@@ -57396,20 +57601,6 @@
 	                        { className: 'slds-form-element__control' },
 	                        _react2.default.createElement(_ComboBox2.default, { data: this.state.periods, value: course.period_id, onChange: this.periodChangeHandler })
 	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-form-element' },
-	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
-	                        'Credits'
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'slds-form-element__control' },
-	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', value: course.credits, onChange: this.creditsChangeHandler })
-	                    )
 	                )
 	            )
 	        );
@@ -57417,7 +57608,7 @@
 	});
 
 /***/ }),
-/* 486 */
+/* 487 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57490,7 +57681,7 @@
 	});
 
 /***/ }),
-/* 487 */
+/* 488 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57513,11 +57704,11 @@
 	
 	var _PageHeader = __webpack_require__(364);
 	
-	var _CourseView = __webpack_require__(488);
+	var _CourseView = __webpack_require__(489);
 	
 	var _CourseView2 = _interopRequireDefault(_CourseView);
 	
-	var _CourseEnrollmentCard = __webpack_require__(489);
+	var _CourseEnrollmentCard = __webpack_require__(490);
 	
 	var _CourseEnrollmentCard2 = _interopRequireDefault(_CourseEnrollmentCard);
 	
@@ -57563,8 +57754,7 @@
 	                    onEdit: localStorage.pos == "teacher" ? this.editHandler : null,
 	                    onDelete: localStorage.pos == "teacher" ? this.deleteHandler : null },
 	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Code', value: this.state.course.code }),
-	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Period', value: this.state.course.period_name }),
-	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Credits', value: this.state.course.credits })
+	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Period', value: this.state.course.period_name })
 	            ),
 	            _react2.default.cloneElement(this.props.children, { course: this.state.course })
 	        );
@@ -57572,7 +57762,7 @@
 	});
 
 /***/ }),
-/* 488 */
+/* 489 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57585,11 +57775,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _CourseEnrollmentCard = __webpack_require__(489);
+	var _CourseEnrollmentCard = __webpack_require__(490);
 	
 	var _CourseEnrollmentCard2 = _interopRequireDefault(_CourseEnrollmentCard);
 	
-	var _CourseHomeworkCard = __webpack_require__(491);
+	var _CourseHomeworkCard = __webpack_require__(492);
 	
 	var _CourseHomeworkCard2 = _interopRequireDefault(_CourseHomeworkCard);
 	
@@ -57639,7 +57829,7 @@
 	});
 
 /***/ }),
-/* 489 */
+/* 490 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57652,7 +57842,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _EnrollmentService = __webpack_require__(490);
+	var _EnrollmentService = __webpack_require__(491);
 	
 	var EnrollmentService = _interopRequireWildcard(_EnrollmentService);
 	
@@ -57751,9 +57941,8 @@
 	                _react2.default.createElement(
 	                    _DataGrid2.default,
 	                    { data: this.state.enrollments, keyField: 'id', actions: ["View Student", "Delete"], onAction: this.actionHandler },
-	                    _react2.default.createElement('div', { header: 'Name', field: 'full_name', sortable: true, onLink: this.studentLinkHandler }),
-	                    _react2.default.createElement('div', { header: 'Phone', field: 'phone' }),
-	                    _react2.default.createElement('div', { header: 'Mobile Phone', field: 'mobile_phone' })
+	                    _react2.default.createElement('div', { header: 'Name', field: 'name', sortable: true, onLink: this.studentLinkHandler }),
+	                    _react2.default.createElement('div', { header: 'Student ID', field: 'student_id' })
 	                )
 	            )
 	        );
@@ -57761,7 +57950,7 @@
 	});
 
 /***/ }),
-/* 490 */
+/* 491 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57796,7 +57985,7 @@
 	};
 
 /***/ }),
-/* 491 */
+/* 492 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57809,7 +57998,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _HomeworkService = __webpack_require__(492);
+	var _HomeworkService = __webpack_require__(493);
 	
 	var HomeworkService = _interopRequireWildcard(_HomeworkService);
 	
@@ -57821,7 +58010,7 @@
 	
 	var _StudentSearchBox2 = _interopRequireDefault(_StudentSearchBox);
 	
-	var _HomeworkFormWindow = __webpack_require__(493);
+	var _HomeworkFormWindow = __webpack_require__(494);
 	
 	var _HomeworkFormWindow2 = _interopRequireDefault(_HomeworkFormWindow);
 	
@@ -57950,7 +58139,7 @@
 	});
 
 /***/ }),
-/* 492 */
+/* 493 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57989,7 +58178,7 @@
 	};
 
 /***/ }),
-/* 493 */
+/* 494 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58002,7 +58191,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _HomeworkForm = __webpack_require__(494);
+	var _HomeworkForm = __webpack_require__(495);
 	
 	var _HomeworkForm2 = _interopRequireDefault(_HomeworkForm);
 	
@@ -58069,7 +58258,7 @@
 	});
 
 /***/ }),
-/* 494 */
+/* 495 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58094,11 +58283,11 @@
 	
 	var TeacherService = _interopRequireWildcard(_TeacherService);
 	
-	var _HomeworkService = __webpack_require__(492);
+	var _HomeworkService = __webpack_require__(493);
 	
 	var HomeworkService = _interopRequireWildcard(_HomeworkService);
 	
-	var _ComboBox = __webpack_require__(486);
+	var _ComboBox = __webpack_require__(487);
 	
 	var _ComboBox2 = _interopRequireDefault(_ComboBox);
 	
@@ -58185,7 +58374,7 @@
 	});
 
 /***/ }),
-/* 495 */
+/* 496 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58198,7 +58387,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _CourseForm = __webpack_require__(485);
+	var _CourseForm = __webpack_require__(486);
 	
 	var _CourseForm2 = _interopRequireDefault(_CourseForm);
 	
@@ -58227,7 +58416,7 @@
 	});
 
 /***/ }),
-/* 496 */
+/* 497 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58244,13 +58433,13 @@
 	
 	var _moment2 = _interopRequireDefault(_moment);
 	
-	var _HomeworkService = __webpack_require__(492);
+	var _HomeworkService = __webpack_require__(493);
 	
 	var HomeworkService = _interopRequireWildcard(_HomeworkService);
 	
 	var _PageHeader = __webpack_require__(364);
 	
-	var _HomeworkView = __webpack_require__(497);
+	var _HomeworkView = __webpack_require__(498);
 	
 	var _HomeworkView2 = _interopRequireDefault(_HomeworkView);
 	
@@ -58305,7 +58494,7 @@
 	});
 
 /***/ }),
-/* 497 */
+/* 498 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58318,7 +58507,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _HomeworkResultCard = __webpack_require__(498);
+	var _HomeworkResultCard = __webpack_require__(499);
 	
 	var _HomeworkResultCard2 = _interopRequireDefault(_HomeworkResultCard);
 	
@@ -58367,7 +58556,7 @@
 	});
 
 /***/ }),
-/* 498 */
+/* 499 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58380,7 +58569,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ResultService = __webpack_require__(499);
+	var _ResultService = __webpack_require__(500);
 	
 	var ResultService = _interopRequireWildcard(_ResultService);
 	
@@ -58392,9 +58581,13 @@
 	
 	var _StudentSearchBox2 = _interopRequireDefault(_StudentSearchBox);
 	
+	var _ResultFormWindow = __webpack_require__(501);
+	
+	var _ResultFormWindow2 = _interopRequireDefault(_ResultFormWindow);
+	
 	var _Icons = __webpack_require__(355);
 	
-	var _reactUploadFile = __webpack_require__(500);
+	var _reactUploadFile = __webpack_require__(503);
 	
 	var _reactUploadFile2 = _interopRequireDefault(_reactUploadFile);
 	
@@ -58407,7 +58600,7 @@
 	exports.default = _react2.default.createClass({
 	    displayName: 'HomeworkResultCard',
 	    getInitialState: function getInitialState() {
-	        return { results: [], submitting: false };
+	        return { results: [], submitting: false, estimatting: false, current: null };
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(props) {
 	        this.getResults(props.homework);
@@ -58422,10 +58615,20 @@
 	        }
 	    },
 	    resultLinkHandler: function resultLinkHandler(result) {
-	        window.location.hash = "#result/" + result.id;
+	        this.setState({ estimatting: true, current: result });
+	    },
+	    resultDeleteHandler: function resultDeleteHandler(result) {
+	        var _this2 = this;
+	
+	        ResultService.deleteFile(result.path).then(function () {
+	            return _this2.getResults(_this2.props.homework);
+	        });
+	    },
+	    studentLinkHandler: function studentLinkHandler(result) {
+	        window.location.hash = "#student/" + result.id;
 	    },
 	    actionHandler: function actionHandler(data, index, value, label) {
-	        var _this2 = this;
+	        var _this3 = this;
 	
 	        switch (index) {
 	            case 0:
@@ -58433,7 +58636,7 @@
 	                break;
 	            case 1:
 	                ResultService.deleteItem(data.id).then(function () {
-	                    return _this2.getResults(_this2.props.homework);
+	                    return _this3.getResults(_this3.props.homework);
 	                });
 	                break;
 	        }
@@ -58441,8 +58644,15 @@
 	    submitHomeworkHandler: function submitHomeworkHandler() {
 	        this.setState({ submitting: true });
 	    },
+	    scoreSavedHandler: function scoreSavedHandler() {
+	        this.setState({ estimatting: false });
+	        this.getResults(this.props.homework);
+	    },
+	    scoreCancelHandler: function scoreCancelHandler() {
+	        this.setState({ estimatting: false });
+	    },
 	    render: function render() {
-	        var _this3 = this;
+	        var _this4 = this;
 	
 	        var options = {
 	            baseUrl: '/upload',
@@ -58484,7 +58694,7 @@
 	                console.log('you choose', typeof files == 'string' ? files : files[0].name);
 	            },
 	            beforeUpload: function beforeUpload(files) {
-	                _this3.setState({ homework: assign(_this3.props.homework, { std_id: localStorage.token, path: files[0].name }) });
+	                _this4.setState({ homework: assign(_this4.props.homework, { std_id: localStorage.token, path: files[0].name }) });
 	                if (typeof files === 'string') return true;
 	                if (files[0].size < 1024 * 1024 * 20) {
 	
@@ -58499,10 +58709,10 @@
 	                console.log('loading...', progress.loaded / progress.total + '%');
 	            },
 	            uploadSuccess: function uploadSuccess(resp) {
-	                ResultService.createItem(_this3.state.homework).then(function () {
-	                    return _this3.getResults(_this3.props.homework);
+	                ResultService.createItem(_this4.state.homework).then(function () {
+	                    return _this4.getResults(_this4.props.homework);
 	                }).catch(function (error) {
-	                    var event = new CustomEvent('notify', { detail: 'Student already submitted in this homework' });
+	                    var event = new CustomEvent('notify', { detail: 'You already submitted to this homework' });
 	                    document.dispatchEvent(event);
 	                });
 	                console.log('upload success!');
@@ -58571,39 +58781,20 @@
 	                { className: 'slds-card__body' },
 	                _react2.default.createElement(
 	                    _DataGrid2.default,
-	                    { data: this.state.results, keyField: 'id', actions: ["View Result", "Delete"], onAction: this.actionHandler },
-	                    _react2.default.createElement('div', { header: 'Student Name', field: 'student_name', sortable: true, onLink: this.resultLinkHandler }),
-	                    _react2.default.createElement('div', { header: 'Show details', field: 'details', actions: ["Details"] }),
-	                    _react2.default.createElement(
-	                        'button',
-	                        { className: 'slds-button slds-button--icon-border-filled' },
-	                        _react2.default.createElement(_Icons.ButtonIcon, { name: 'plus' }),
-	                        _react2.default.createElement(
-	                            'span',
-	                            { className: 'slds-assistive-text' },
-	                            'Details'
-	                        )
-	                    ),
-	                    _react2.default.createElement('div', { header: 'Delete file', field: 'delete', actions: ["Delete"] }),
-	                    _react2.default.createElement(
-	                        'button',
-	                        { className: 'slds-button slds-button--icon-border-filled' },
-	                        _react2.default.createElement(_Icons.ButtonIcon, { name: 'minus' }),
-	                        _react2.default.createElement(
-	                            'span',
-	                            { className: 'slds-assistive-text' },
-	                            'Delete'
-	                        )
-	                    ),
-	                    _react2.default.createElement('div', { header: 'Score', field: 'score', sortable: true })
+	                    { data: this.state.results, keyField: 'id', actions: localStorage.pos == "teacher" ? ["View Details", "Delete"] : null, onAction: this.actionHandler },
+	                    _react2.default.createElement('div', { header: 'Student Name', field: 'student_name', sortable: true, onLink: this.studentLinkHandler }),
+	                    _react2.default.createElement('div', { header: 'Score', field: 'score', sortable: true }),
+	                    localStorage.pos == "teacher" ? _react2.default.createElement('div', { header: 'View details', field: 'details', action: 'Details', onLink: this.resultLinkHandler }) : "",
+	                    localStorage.pos == "teacher" ? _react2.default.createElement('div', { header: 'Delete file', field: 'delete', action: 'Delete', onLink: this.resultDeleteHandler }) : ""
 	                )
-	            )
+	            ),
+	            this.state.estimatting ? _react2.default.createElement(_ResultFormWindow2.default, { result: this.state.current, homework: this.props.homework, onSaved: this.scoreSavedHandler, onCancel: this.scoreCancelHandler }) : null
 	        );
 	    }
 	});
 
 /***/ }),
-/* 499 */
+/* 500 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58611,7 +58802,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.deleteItem = exports.updateItem = exports.findByHomework = exports.createItem = exports.findById = exports.findAll = undefined;
+	exports.deleteItem = exports.updateItem = exports.deleteFile = exports.downFile = exports.findByHomework = exports.createItem = exports.findById = exports.findAll = undefined;
 	
 	var _rest = __webpack_require__(338);
 	
@@ -58637,6 +58828,14 @@
 	  return rest.post("/result", homework);
 	};
 	
+	var downFile = exports.downFile = function downFile(filename) {
+	  return rest.post("/downview", filename);
+	};
+	
+	var deleteFile = exports.deleteFile = function deleteFile(filename) {
+	  return rest.post("/deletefile", filename);
+	};
+	
 	var updateItem = exports.updateItem = function updateItem(student) {
 	  return rest.put(url, student);
 	};
@@ -58646,22 +58845,202 @@
 	};
 
 /***/ }),
-/* 500 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	!function(e,t){ true?module.exports=t(__webpack_require__(501)):"function"==typeof define&&define.amd?define(["react"],t):"object"==typeof exports?exports["react-upload-file"]=t(require("react")):e["react-upload-file"]=t(e.React)}(this,function(e){return function(e){function t(n){if(o[n])return o[n].exports;var r=o[n]={exports:{},id:n,loaded:!1};return e[n].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var o={};return t.m=e,t.c=o,t.p="",t(0)}([function(e,t,o){e.exports=o(1)},function(e,t,o){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function r(e){if(Array.isArray(e)){for(var t=0,o=Array(e.length);t<e.length;t++)o[t]=e[t];return o}return Array.from(e)}function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function s(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function p(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var a=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var o=arguments[t];for(var n in o)Object.prototype.hasOwnProperty.call(o,n)&&(e[n]=o[n])}return e},u="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},l=function(){function e(e,t){for(var o=0;o<t.length;o++){var n=t[o];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,o,n){return o&&e(t.prototype,o),n&&e(t,n),t}}(),f=o(2),c=n(f),d=function(e){function t(e){i(this,t);var o=s(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));o.state={xhrList:[],currentXHRId:0},o.commonChooseFile=function(e){if("ajax-upload-file-input"!==e.target.name){var t=o.beforeChoose();if(t!==!0&&void 0!==t)return;o.input.click()}},o.commonChangeFile=function(e){o.files=o.input.files,o.didChoose(o.files),o.props.uploadFileButton||o.commonUploadFile(e)},o.commonUploadFile=function(e){if(!o.files||!o.files.length)return!1;if(!o.baseUrl)throw new Error("baseUrl missed in options");var t=e===!0||o.beforeUpload(o.files);if(!t)return!1;var n=new FormData;n=o.appendFieldsToFormData(n);for(var i=u(o.fileFieldName),s=0===o.numberLimit?o.files.length:Math.min(o.files.length,o.numberLimit),p=s-1;p>=0;p--)if("function"===i){var a=o.files[p],l=o.fileFieldName(a);n.append(l,a)}else if("string"===i){var f=o.files[p];n.append(o.fileFieldName,f)}else{var c=o.files[p];n.append(c.name,c)}var d=o.baseUrl,y="function"==typeof o.query?o.query(o.files):o.query,m=d.indexOf("?"),b=void 0;m>-1&&(b=d.substring(m),d=d.substring(0,m)),y&&!function(){b&&console.warn("Your url contains query string, which will be ignored when options.query is set.");var e=[];Object.keys(y).forEach(function(t){return e.push(t+"="+y[t])}),b="?"+e.join("&")}(),b=b||"";var h=""+d+b,T=new XMLHttpRequest;T.open("post",h,!0),T.withCredentials=o.withCredentials;var v=o.requestHeaders;v&&Object.keys(v).forEach(function(e){return T.setRequestHeader(e,v[e])}),o.timeout&&(T.timeout=o.timeout,T.addEventListener("timeout",function(){o.uploadError({type:"408",message:"Request Timeout"})}),setTimeout(function(){},o.timeout)),T.addEventListener("load",function(){o.input.value="";var e="json"===o.dataType?JSON.parse(T.responseText):T.responseText;o.uploadSuccess(e)}),T.addEventListener("error",function(){var e="json"===o.dataType?JSON.parse(T.responseText):T.responseText;o.uploadError({type:e.type,message:e.message})}),T.addEventListener("progress",function(e){o.uploading(e)});var P=o.state.xhrList.length-1;return T.addEventListener("abort",function(){o.onAbort(P)}),T.send(n),o.setState({currentXHRId:P,xhrList:[].concat(r(o.state.xhrList),[T])}),o.didUpload(o.files,o.state.currentXHRId),!0},o.appendFieldsToFormData=function(e){var t="function"==typeof o.body?o.body():o.body;return t&&Object.keys(t).forEach(function(o){e.append(o,t[o])}),e},o.processFile=function(e){o.files=e(o.files)},o.manuallyChooseFile=function(){o.commonChooseFile()},o.manuallyUploadFile=function(e){o.files=e&&e.length?e:o.files,o.commonUploadFile(!0)},o.abort=function(e){e?o.state.xhrList[e].abort():o.state.xhrList[o.state.currentXHRId].abort()};var n=function(){},p=a({dataType:"json",timeout:0,numberLimit:0,userAgent:window.navigator.userAgent,multiple:!1,withCredentials:!1,beforeChoose:n,didChoose:n,beforeUpload:n,didUpload:n,uploading:n,uploadSuccess:n,uploadError:n,uploadFail:n,onAbort:n},e.options),l=parseInt(p.timeout,10);p.timeout=Number.isInteger(l)&&l>0?l:0;var f=p.dataType&&p.dataType.toLowerCase();return p.dataType="json"!==f&&"text",Object.keys(p).forEach(function(e){o[e]=p[e]}),o}return p(t,e),l(t,[{key:"componentDidMount",value:function(){this.input=document.querySelector("[name=ajax-upload-file-input]")}},{key:"render",value:function(){var e={accept:this.props.options.accept,multiple:this.props.options.multiple},t=c.default.cloneElement(this.props.chooseFileButton,{onClick:this.commonChooseFile},[c.default.createElement("input",a({type:"file",name:"ajax-upload-file-input",style:{display:"none"},onChange:this.commonChangeFile},e,{key:"file-button"}))]),o=this.props.uploadFileButton&&c.default.cloneElement(this.props.uploadFileButton,{onClick:this.commonUploadFile});return c.default.createElement("div",{style:{display:"inline-block"}},t,o)}}]),t}(f.Component);d.propTypes={options:f.PropTypes.shape({baseUrl:f.PropTypes.string.isRequired,query:f.PropTypes.oneOfType([f.PropTypes.object,f.PropTypes.func]),body:f.PropTypes.oneOfType([f.PropTypes.object,f.PropTypes.func]),dataType:f.PropTypes.string,timeout:f.PropTypes.number,numberLimit:f.PropTypes.oneOfType([f.PropTypes.number,f.PropTypes.func]),fileFieldName:f.PropTypes.oneOfType([f.PropTypes.string,f.PropTypes.func]),withCredentials:f.PropTypes.bool,requestHeaders:f.PropTypes.object,accept:f.PropTypes.string,multiple:f.PropTypes.bool,userAgent:f.PropTypes.string,beforeChoose:f.PropTypes.func,didChoose:f.PropTypes.func,beforeUpload:f.PropTypes.func,didUpload:f.PropTypes.func,uploading:f.PropTypes.func,uploadSuccess:f.PropTypes.func,uploadError:f.PropTypes.func,uploadFail:f.PropTypes.func,onAbort:f.PropTypes.func}).isRequired,style:f.PropTypes.object,className:f.PropTypes.string,chooseFileButton:f.PropTypes.element.isRequired,uploadFileButton:f.PropTypes.element},d.defaultProps={chooseFileButton:c.default.createElement("button",null)},t.default=d},function(t,o){t.exports=e}])});
-
-/***/ }),
 /* 501 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(502);
-
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _ResultForm = __webpack_require__(502);
+	
+	var _ResultForm2 = _interopRequireDefault(_ResultForm);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'ResultFormWindow',
+	    saveHandler: function saveHandler() {
+	        this.refs.form.save();
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	                'div',
+	                { 'aria-hidden': 'false', role: 'dialog', className: 'slds-modal slds-fade-in-open' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-modal__container' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-modal__header' },
+	                        _react2.default.createElement(
+	                            'h2',
+	                            { className: 'slds-text-heading--medium' },
+	                            'Souce Code'
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'slds-button slds-modal__close' },
+	                            _react2.default.createElement('svg', { 'aria-hidden': 'true', className: 'slds-button__icon slds-button__icon--inverse slds-button__icon--large' }),
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'slds-assistive-text' },
+	                                'Close'
+	                            )
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-modal__content', style: { overflow: "visible" } },
+	                        _react2.default.createElement(_ResultForm2.default, { ref: 'form', result: this.props.result, homework: this.props.homework, onSaved: this.props.onSaved })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-modal__footer' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'slds-button slds-button--neutral', onClick: this.props.onCancel },
+	                            'Cancel'
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'slds-button slds-button--neutral slds-button--brand', onClick: this.saveHandler },
+	                            'Save'
+	                        )
+	                    )
+	                )
+	            ),
+	            _react2.default.createElement('div', { className: 'slds-modal-backdrop slds-modal-backdrop--open' })
+	        );
+	    }
+	});
 
 /***/ }),
 /* 502 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _ResultService = __webpack_require__(500);
+	
+	var ResultService = _interopRequireWildcard(_ResultService);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'ResultForm',
+	    getInitialState: function getInitialState() {
+	        var result = this.props.result;
+	        result.course_id = this.props.homework.course_id;
+	        result.course_code = this.props.homework.course_code;
+	        result.homework_id = this.props.homework.id;
+	        return { result: result, src_code: "" };
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(props) {
+	        this.setState({ result: props.result });
+	    },
+	    componentDidMount: function componentDidMount() {
+	        this._downloadTxtFile();
+	    },
+	    scoreChangeHandler: function scoreChangeHandler(event) {
+	        var result = this.state.result;
+	        result.score = event.target.value;
+	        this.setState({ result: result });
+	    },
+	    save: function save() {
+	        var _this = this;
+	
+	        var saveItem = this.state.result.id ? ResultService.updateItem : ResultService.createItem;
+	        saveItem(this.state.result).then(function (savedresult) {
+	            if (_this.props.onSaved) _this.props.onSaved(savedresult);
+	        });
+	    },
+	    _downloadTxtFile: function _downloadTxtFile() {
+	        var _this2 = this;
+	
+	        ResultService.downFile({ filename: this.state.result.path }).then(function (downloaded) {
+	            console.log(downloaded);
+	            _this2.setState({ src_code: downloaded });
+	        });
+	    },
+	    render: function render() {
+	        var result = this.state.result;
+	        var src_code = this.state.src_code;
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'slds-form--stacked slds-grid slds-wrap' },
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-form-element' },
+	                    _react2.default.createElement(
+	                        'label',
+	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
+	                        'Source'
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: '' },
+	                        _react2.default.createElement('textarea', { className: 'slds-input', style: { "height": "400px" }, value: src_code })
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-form-element' },
+	                    _react2.default.createElement(
+	                        'label',
+	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
+	                        'Score'
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-form-element__control' },
+	                        _react2.default.createElement('input', { className: 'slds-input', type: 'number', value: result.score, onChange: this.scoreChangeHandler })
+	                    )
+	                )
+	            )
+	        );
+	    }
+	});
+
+/***/ }),
+/* 503 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	!function(e,t){ true?module.exports=t(__webpack_require__(504)):"function"==typeof define&&define.amd?define(["react"],t):"object"==typeof exports?exports["react-upload-file"]=t(require("react")):e["react-upload-file"]=t(e.React)}(this,function(e){return function(e){function t(n){if(o[n])return o[n].exports;var r=o[n]={exports:{},id:n,loaded:!1};return e[n].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var o={};return t.m=e,t.c=o,t.p="",t(0)}([function(e,t,o){e.exports=o(1)},function(e,t,o){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function r(e){if(Array.isArray(e)){for(var t=0,o=Array(e.length);t<e.length;t++)o[t]=e[t];return o}return Array.from(e)}function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function s(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function p(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var a=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var o=arguments[t];for(var n in o)Object.prototype.hasOwnProperty.call(o,n)&&(e[n]=o[n])}return e},u="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},l=function(){function e(e,t){for(var o=0;o<t.length;o++){var n=t[o];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,o,n){return o&&e(t.prototype,o),n&&e(t,n),t}}(),f=o(2),c=n(f),d=function(e){function t(e){i(this,t);var o=s(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));o.state={xhrList:[],currentXHRId:0},o.commonChooseFile=function(e){if("ajax-upload-file-input"!==e.target.name){var t=o.beforeChoose();if(t!==!0&&void 0!==t)return;o.input.click()}},o.commonChangeFile=function(e){o.files=o.input.files,o.didChoose(o.files),o.props.uploadFileButton||o.commonUploadFile(e)},o.commonUploadFile=function(e){if(!o.files||!o.files.length)return!1;if(!o.baseUrl)throw new Error("baseUrl missed in options");var t=e===!0||o.beforeUpload(o.files);if(!t)return!1;var n=new FormData;n=o.appendFieldsToFormData(n);for(var i=u(o.fileFieldName),s=0===o.numberLimit?o.files.length:Math.min(o.files.length,o.numberLimit),p=s-1;p>=0;p--)if("function"===i){var a=o.files[p],l=o.fileFieldName(a);n.append(l,a)}else if("string"===i){var f=o.files[p];n.append(o.fileFieldName,f)}else{var c=o.files[p];n.append(c.name,c)}var d=o.baseUrl,y="function"==typeof o.query?o.query(o.files):o.query,m=d.indexOf("?"),b=void 0;m>-1&&(b=d.substring(m),d=d.substring(0,m)),y&&!function(){b&&console.warn("Your url contains query string, which will be ignored when options.query is set.");var e=[];Object.keys(y).forEach(function(t){return e.push(t+"="+y[t])}),b="?"+e.join("&")}(),b=b||"";var h=""+d+b,T=new XMLHttpRequest;T.open("post",h,!0),T.withCredentials=o.withCredentials;var v=o.requestHeaders;v&&Object.keys(v).forEach(function(e){return T.setRequestHeader(e,v[e])}),o.timeout&&(T.timeout=o.timeout,T.addEventListener("timeout",function(){o.uploadError({type:"408",message:"Request Timeout"})}),setTimeout(function(){},o.timeout)),T.addEventListener("load",function(){o.input.value="";var e="json"===o.dataType?JSON.parse(T.responseText):T.responseText;o.uploadSuccess(e)}),T.addEventListener("error",function(){var e="json"===o.dataType?JSON.parse(T.responseText):T.responseText;o.uploadError({type:e.type,message:e.message})}),T.addEventListener("progress",function(e){o.uploading(e)});var P=o.state.xhrList.length-1;return T.addEventListener("abort",function(){o.onAbort(P)}),T.send(n),o.setState({currentXHRId:P,xhrList:[].concat(r(o.state.xhrList),[T])}),o.didUpload(o.files,o.state.currentXHRId),!0},o.appendFieldsToFormData=function(e){var t="function"==typeof o.body?o.body():o.body;return t&&Object.keys(t).forEach(function(o){e.append(o,t[o])}),e},o.processFile=function(e){o.files=e(o.files)},o.manuallyChooseFile=function(){o.commonChooseFile()},o.manuallyUploadFile=function(e){o.files=e&&e.length?e:o.files,o.commonUploadFile(!0)},o.abort=function(e){e?o.state.xhrList[e].abort():o.state.xhrList[o.state.currentXHRId].abort()};var n=function(){},p=a({dataType:"json",timeout:0,numberLimit:0,userAgent:window.navigator.userAgent,multiple:!1,withCredentials:!1,beforeChoose:n,didChoose:n,beforeUpload:n,didUpload:n,uploading:n,uploadSuccess:n,uploadError:n,uploadFail:n,onAbort:n},e.options),l=parseInt(p.timeout,10);p.timeout=Number.isInteger(l)&&l>0?l:0;var f=p.dataType&&p.dataType.toLowerCase();return p.dataType="json"!==f&&"text",Object.keys(p).forEach(function(e){o[e]=p[e]}),o}return p(t,e),l(t,[{key:"componentDidMount",value:function(){this.input=document.querySelector("[name=ajax-upload-file-input]")}},{key:"render",value:function(){var e={accept:this.props.options.accept,multiple:this.props.options.multiple},t=c.default.cloneElement(this.props.chooseFileButton,{onClick:this.commonChooseFile},[c.default.createElement("input",a({type:"file",name:"ajax-upload-file-input",style:{display:"none"},onChange:this.commonChangeFile},e,{key:"file-button"}))]),o=this.props.uploadFileButton&&c.default.cloneElement(this.props.uploadFileButton,{onClick:this.commonUploadFile});return c.default.createElement("div",{style:{display:"inline-block"}},t,o)}}]),t}(f.Component);d.propTypes={options:f.PropTypes.shape({baseUrl:f.PropTypes.string.isRequired,query:f.PropTypes.oneOfType([f.PropTypes.object,f.PropTypes.func]),body:f.PropTypes.oneOfType([f.PropTypes.object,f.PropTypes.func]),dataType:f.PropTypes.string,timeout:f.PropTypes.number,numberLimit:f.PropTypes.oneOfType([f.PropTypes.number,f.PropTypes.func]),fileFieldName:f.PropTypes.oneOfType([f.PropTypes.string,f.PropTypes.func]),withCredentials:f.PropTypes.bool,requestHeaders:f.PropTypes.object,accept:f.PropTypes.string,multiple:f.PropTypes.bool,userAgent:f.PropTypes.string,beforeChoose:f.PropTypes.func,didChoose:f.PropTypes.func,beforeUpload:f.PropTypes.func,didUpload:f.PropTypes.func,uploading:f.PropTypes.func,uploadSuccess:f.PropTypes.func,uploadError:f.PropTypes.func,uploadFail:f.PropTypes.func,onAbort:f.PropTypes.func}).isRequired,style:f.PropTypes.object,className:f.PropTypes.string,chooseFileButton:f.PropTypes.element.isRequired,uploadFileButton:f.PropTypes.element},d.defaultProps={chooseFileButton:c.default.createElement("button",null)},t.default=d},function(t,o){t.exports=e}])});
+
+/***/ }),
+/* 504 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = __webpack_require__(505);
+
+
+/***/ }),
+/* 505 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -58676,24 +59055,24 @@
 	
 	var _assign = __webpack_require__(188);
 	
-	var ReactBaseClasses = __webpack_require__(503);
-	var ReactChildren = __webpack_require__(512);
-	var ReactDOMFactories = __webpack_require__(520);
-	var ReactElement = __webpack_require__(514);
-	var ReactPropTypes = __webpack_require__(526);
-	var ReactVersion = __webpack_require__(528);
+	var ReactBaseClasses = __webpack_require__(506);
+	var ReactChildren = __webpack_require__(515);
+	var ReactDOMFactories = __webpack_require__(523);
+	var ReactElement = __webpack_require__(517);
+	var ReactPropTypes = __webpack_require__(529);
+	var ReactVersion = __webpack_require__(531);
 	
-	var createReactClass = __webpack_require__(529);
-	var onlyChild = __webpack_require__(535);
+	var createReactClass = __webpack_require__(532);
+	var onlyChild = __webpack_require__(538);
 	
 	var createElement = ReactElement.createElement;
 	var createFactory = ReactElement.createFactory;
 	var cloneElement = ReactElement.cloneElement;
 	
 	if (process.env.NODE_ENV !== 'production') {
-	  var lowPriorityWarning = __webpack_require__(511);
-	  var canDefineProperty = __webpack_require__(508);
-	  var ReactElementValidator = __webpack_require__(521);
+	  var lowPriorityWarning = __webpack_require__(514);
+	  var canDefineProperty = __webpack_require__(511);
+	  var ReactElementValidator = __webpack_require__(524);
 	  var didWarnPropTypesDeprecated = false;
 	  createElement = ReactElementValidator.createElement;
 	  createFactory = ReactElementValidator.createFactory;
@@ -58796,7 +59175,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 503 */
+/* 506 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -58809,15 +59188,15 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(504),
+	var _prodInvariant = __webpack_require__(507),
 	    _assign = __webpack_require__(188);
 	
-	var ReactNoopUpdateQueue = __webpack_require__(505);
+	var ReactNoopUpdateQueue = __webpack_require__(508);
 	
-	var canDefineProperty = __webpack_require__(508);
-	var emptyObject = __webpack_require__(509);
-	var invariant = __webpack_require__(510);
-	var lowPriorityWarning = __webpack_require__(511);
+	var canDefineProperty = __webpack_require__(511);
+	var emptyObject = __webpack_require__(512);
+	var invariant = __webpack_require__(513);
+	var lowPriorityWarning = __webpack_require__(514);
 	
 	/**
 	 * Base class helpers for the updating state of a component.
@@ -58942,7 +59321,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 504 */
+/* 507 */
 /***/ (function(module, exports) {
 
 	/**
@@ -58983,7 +59362,7 @@
 	module.exports = reactProdInvariant;
 
 /***/ }),
-/* 505 */
+/* 508 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -58996,7 +59375,7 @@
 	
 	'use strict';
 	
-	var warning = __webpack_require__(506);
+	var warning = __webpack_require__(509);
 	
 	function warnNoop(publicInstance, callerName) {
 	  if (process.env.NODE_ENV !== 'production') {
@@ -59081,7 +59460,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 506 */
+/* 509 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -59094,7 +59473,7 @@
 	
 	'use strict';
 	
-	var emptyFunction = __webpack_require__(507);
+	var emptyFunction = __webpack_require__(510);
 	
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -59149,7 +59528,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 507 */
+/* 510 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -59190,7 +59569,7 @@
 	module.exports = emptyFunction;
 
 /***/ }),
-/* 508 */
+/* 511 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -59219,7 +59598,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 509 */
+/* 512 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -59242,7 +59621,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 510 */
+/* 513 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -59301,7 +59680,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 511 */
+/* 514 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -59369,7 +59748,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 512 */
+/* 515 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -59382,11 +59761,11 @@
 	
 	'use strict';
 	
-	var PooledClass = __webpack_require__(513);
-	var ReactElement = __webpack_require__(514);
+	var PooledClass = __webpack_require__(516);
+	var ReactElement = __webpack_require__(517);
 	
-	var emptyFunction = __webpack_require__(507);
-	var traverseAllChildren = __webpack_require__(517);
+	var emptyFunction = __webpack_require__(510);
+	var traverseAllChildren = __webpack_require__(520);
 	
 	var twoArgumentPooler = PooledClass.twoArgumentPooler;
 	var fourArgumentPooler = PooledClass.fourArgumentPooler;
@@ -59562,7 +59941,7 @@
 	module.exports = ReactChildren;
 
 /***/ }),
-/* 513 */
+/* 516 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -59576,9 +59955,9 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(504);
+	var _prodInvariant = __webpack_require__(507);
 	
-	var invariant = __webpack_require__(510);
+	var invariant = __webpack_require__(513);
 	
 	/**
 	 * Static poolers. Several custom versions for each potential number of
@@ -59677,7 +60056,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 514 */
+/* 517 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -59692,13 +60071,13 @@
 	
 	var _assign = __webpack_require__(188);
 	
-	var ReactCurrentOwner = __webpack_require__(515);
+	var ReactCurrentOwner = __webpack_require__(518);
 	
-	var warning = __webpack_require__(506);
-	var canDefineProperty = __webpack_require__(508);
+	var warning = __webpack_require__(509);
+	var canDefineProperty = __webpack_require__(511);
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	
-	var REACT_ELEMENT_TYPE = __webpack_require__(516);
+	var REACT_ELEMENT_TYPE = __webpack_require__(519);
 	
 	var RESERVED_PROPS = {
 	  key: true,
@@ -60021,7 +60400,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 515 */
+/* 518 */
 /***/ (function(module, exports) {
 
 	/**
@@ -60052,7 +60431,7 @@
 	module.exports = ReactCurrentOwner;
 
 /***/ }),
-/* 516 */
+/* 519 */
 /***/ (function(module, exports) {
 
 	/**
@@ -60074,7 +60453,7 @@
 	module.exports = REACT_ELEMENT_TYPE;
 
 /***/ }),
-/* 517 */
+/* 520 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -60087,15 +60466,15 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(504);
+	var _prodInvariant = __webpack_require__(507);
 	
-	var ReactCurrentOwner = __webpack_require__(515);
-	var REACT_ELEMENT_TYPE = __webpack_require__(516);
+	var ReactCurrentOwner = __webpack_require__(518);
+	var REACT_ELEMENT_TYPE = __webpack_require__(519);
 	
-	var getIteratorFn = __webpack_require__(518);
-	var invariant = __webpack_require__(510);
-	var KeyEscapeUtils = __webpack_require__(519);
-	var warning = __webpack_require__(506);
+	var getIteratorFn = __webpack_require__(521);
+	var invariant = __webpack_require__(513);
+	var KeyEscapeUtils = __webpack_require__(522);
+	var warning = __webpack_require__(509);
 	
 	var SEPARATOR = '.';
 	var SUBSEPARATOR = ':';
@@ -60253,7 +60632,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 518 */
+/* 521 */
 /***/ (function(module, exports) {
 
 	/**
@@ -60296,7 +60675,7 @@
 	module.exports = getIteratorFn;
 
 /***/ }),
-/* 519 */
+/* 522 */
 /***/ (function(module, exports) {
 
 	/**
@@ -60357,7 +60736,7 @@
 	module.exports = KeyEscapeUtils;
 
 /***/ }),
-/* 520 */
+/* 523 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -60370,7 +60749,7 @@
 	
 	'use strict';
 	
-	var ReactElement = __webpack_require__(514);
+	var ReactElement = __webpack_require__(517);
 	
 	/**
 	 * Create a factory that creates HTML tag elements.
@@ -60379,7 +60758,7 @@
 	 */
 	var createDOMFactory = ReactElement.createFactory;
 	if (process.env.NODE_ENV !== 'production') {
-	  var ReactElementValidator = __webpack_require__(521);
+	  var ReactElementValidator = __webpack_require__(524);
 	  createDOMFactory = ReactElementValidator.createFactory;
 	}
 	
@@ -60529,7 +60908,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 521 */
+/* 524 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -60549,16 +60928,16 @@
 	
 	'use strict';
 	
-	var ReactCurrentOwner = __webpack_require__(515);
-	var ReactComponentTreeHook = __webpack_require__(522);
-	var ReactElement = __webpack_require__(514);
+	var ReactCurrentOwner = __webpack_require__(518);
+	var ReactComponentTreeHook = __webpack_require__(525);
+	var ReactElement = __webpack_require__(517);
 	
-	var checkReactTypeSpec = __webpack_require__(523);
+	var checkReactTypeSpec = __webpack_require__(526);
 	
-	var canDefineProperty = __webpack_require__(508);
-	var getIteratorFn = __webpack_require__(518);
-	var warning = __webpack_require__(506);
-	var lowPriorityWarning = __webpack_require__(511);
+	var canDefineProperty = __webpack_require__(511);
+	var getIteratorFn = __webpack_require__(521);
+	var warning = __webpack_require__(509);
+	var lowPriorityWarning = __webpack_require__(514);
 	
 	function getDeclarationErrorAddendum() {
 	  if (ReactCurrentOwner.current) {
@@ -60787,7 +61166,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 522 */
+/* 525 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -60801,12 +61180,12 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(504);
+	var _prodInvariant = __webpack_require__(507);
 	
-	var ReactCurrentOwner = __webpack_require__(515);
+	var ReactCurrentOwner = __webpack_require__(518);
 	
-	var invariant = __webpack_require__(510);
-	var warning = __webpack_require__(506);
+	var invariant = __webpack_require__(513);
+	var warning = __webpack_require__(509);
 	
 	function isNative(fn) {
 	  // Based on isNative() from Lodash
@@ -61169,7 +61548,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 523 */
+/* 526 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -61182,13 +61561,13 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(504);
+	var _prodInvariant = __webpack_require__(507);
 	
-	var ReactPropTypeLocationNames = __webpack_require__(524);
-	var ReactPropTypesSecret = __webpack_require__(525);
+	var ReactPropTypeLocationNames = __webpack_require__(527);
+	var ReactPropTypesSecret = __webpack_require__(528);
 	
-	var invariant = __webpack_require__(510);
-	var warning = __webpack_require__(506);
+	var invariant = __webpack_require__(513);
+	var warning = __webpack_require__(509);
 	
 	var ReactComponentTreeHook;
 	
@@ -61198,7 +61577,7 @@
 	  // https://github.com/facebook/react/issues/7240
 	  // Remove the inline requires when we don't need them anymore:
 	  // https://github.com/facebook/react/pull/7178
-	  ReactComponentTreeHook = __webpack_require__(522);
+	  ReactComponentTreeHook = __webpack_require__(525);
 	}
 	
 	var loggedTypeFailures = {};
@@ -61240,7 +61619,7 @@
 	
 	        if (process.env.NODE_ENV !== 'production') {
 	          if (!ReactComponentTreeHook) {
-	            ReactComponentTreeHook = __webpack_require__(522);
+	            ReactComponentTreeHook = __webpack_require__(525);
 	          }
 	          if (debugID !== null) {
 	            componentStackInfo = ReactComponentTreeHook.getStackAddendumByID(debugID);
@@ -61259,7 +61638,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 524 */
+/* 527 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -61287,7 +61666,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 525 */
+/* 528 */
 /***/ (function(module, exports) {
 
 	/**
@@ -61306,7 +61685,7 @@
 	module.exports = ReactPropTypesSecret;
 
 /***/ }),
-/* 526 */
+/* 529 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -61319,15 +61698,15 @@
 	
 	'use strict';
 	
-	var _require = __webpack_require__(514),
+	var _require = __webpack_require__(517),
 	    isValidElement = _require.isValidElement;
 	
-	var factory = __webpack_require__(527);
+	var factory = __webpack_require__(530);
 	
 	module.exports = factory(isValidElement);
 
 /***/ }),
-/* 527 */
+/* 530 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -61352,7 +61731,7 @@
 
 
 /***/ }),
-/* 528 */
+/* 531 */
 /***/ (function(module, exports) {
 
 	/**
@@ -61368,7 +61747,7 @@
 	module.exports = '15.6.2';
 
 /***/ }),
-/* 529 */
+/* 532 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -61381,19 +61760,19 @@
 	
 	'use strict';
 	
-	var _require = __webpack_require__(503),
+	var _require = __webpack_require__(506),
 	    Component = _require.Component;
 	
-	var _require2 = __webpack_require__(514),
+	var _require2 = __webpack_require__(517),
 	    isValidElement = _require2.isValidElement;
 	
-	var ReactNoopUpdateQueue = __webpack_require__(505);
-	var factory = __webpack_require__(530);
+	var ReactNoopUpdateQueue = __webpack_require__(508);
+	var factory = __webpack_require__(533);
 	
 	module.exports = factory(Component, isValidElement, ReactNoopUpdateQueue);
 
 /***/ }),
-/* 530 */
+/* 533 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -61408,11 +61787,11 @@
 	
 	var _assign = __webpack_require__(188);
 	
-	var emptyObject = __webpack_require__(531);
-	var _invariant = __webpack_require__(532);
+	var emptyObject = __webpack_require__(534);
+	var _invariant = __webpack_require__(535);
 	
 	if (process.env.NODE_ENV !== 'production') {
-	  var warning = __webpack_require__(533);
+	  var warning = __webpack_require__(536);
 	}
 	
 	var MIXINS_KEY = 'mixins';
@@ -62270,7 +62649,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 531 */
+/* 534 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -62293,7 +62672,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 532 */
+/* 535 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -62352,7 +62731,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 533 */
+/* 536 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -62365,7 +62744,7 @@
 	
 	'use strict';
 	
-	var emptyFunction = __webpack_require__(534);
+	var emptyFunction = __webpack_require__(537);
 	
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -62420,7 +62799,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 534 */
+/* 537 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -62461,7 +62840,7 @@
 	module.exports = emptyFunction;
 
 /***/ }),
-/* 535 */
+/* 538 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -62473,11 +62852,11 @@
 	 */
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(504);
+	var _prodInvariant = __webpack_require__(507);
 	
-	var ReactElement = __webpack_require__(514);
+	var ReactElement = __webpack_require__(517);
 	
-	var invariant = __webpack_require__(510);
+	var invariant = __webpack_require__(513);
 	
 	/**
 	 * Returns the first child in a collection of children and verifies that there
@@ -62502,7 +62881,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 536 */
+/* 539 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62515,9 +62894,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _CourseForm = __webpack_require__(485);
+	var _HomeworkForm = __webpack_require__(495);
 	
-	var _CourseForm2 = _interopRequireDefault(_CourseForm);
+	var _HomeworkForm2 = _interopRequireDefault(_HomeworkForm);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -62527,13 +62906,13 @@
 	        this.refs.form.save();
 	    },
 	    savedHandler: function savedHandler() {
-	        window.location.hash = "#course/" + this.props.course.id;
+	        window.location.hash = "#homework/" + this.props.homework.id;
 	    },
 	    render: function render() {
 	        return _react2.default.createElement(
 	            'div',
 	            { className: 'slds-m-around--medium' },
-	            _react2.default.createElement(_CourseForm2.default, { ref: 'form', course: this.props.course, onSaved: this.savedHandler }),
+	            _react2.default.createElement(_HomeworkForm2.default, { ref: 'form', homework: this.props.homework, onSaved: this.savedHandler }),
 	            _react2.default.createElement(
 	                'button',
 	                { className: 'slds-button slds-button--neutral slds-button--brand slds-m-around--small', onClick: this.saveHandler },
@@ -62544,7 +62923,7 @@
 	});
 
 /***/ }),
-/* 537 */
+/* 540 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62563,11 +62942,11 @@
 	
 	var _PageHeader = __webpack_require__(364);
 	
-	var _StudentList = __webpack_require__(538);
+	var _StudentList = __webpack_require__(541);
 	
 	var _StudentList2 = _interopRequireDefault(_StudentList);
 	
-	var _StudentFormWindow = __webpack_require__(539);
+	var _StudentFormWindow = __webpack_require__(542);
 	
 	var _StudentFormWindow2 = _interopRequireDefault(_StudentFormWindow);
 	
@@ -62616,7 +62995,7 @@
 	});
 
 /***/ }),
-/* 538 */
+/* 541 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62651,7 +63030,7 @@
 	        return _react2.default.createElement(
 	            _DataGrid2.default,
 	            { data: this.props.students },
-	            _react2.default.createElement('div', { header: 'Name', field: 'full_name', onLink: this.linkHandler }),
+	            _react2.default.createElement('div', { header: 'Name', field: 'name', onLink: this.linkHandler }),
 	            _react2.default.createElement('div', { header: 'Address', field: 'address' }),
 	            _react2.default.createElement('div', { header: 'City', field: 'city' }),
 	            _react2.default.createElement('div', { header: 'State', field: 'state' })
@@ -62660,7 +63039,7 @@
 	});
 
 /***/ }),
-/* 539 */
+/* 542 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62673,7 +63052,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _StudentForm = __webpack_require__(540);
+	var _StudentForm = __webpack_require__(543);
 	
 	var _StudentForm2 = _interopRequireDefault(_StudentForm);
 	
@@ -62740,7 +63119,7 @@
 	});
 
 /***/ }),
-/* 540 */
+/* 543 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62755,7 +63134,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactAddonsLinkedStateMixin = __webpack_require__(541);
+	var _reactAddonsLinkedStateMixin = __webpack_require__(544);
 	
 	var _reactAddonsLinkedStateMixin2 = _interopRequireDefault(_reactAddonsLinkedStateMixin);
 	
@@ -62806,143 +63185,23 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'slds-form-element__control' },
-	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('full_name') })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'fieldset',
-	                    { className: 'slds-form--compound slds-m-top--medium slds-m-bottom--medium' },
-	                    _react2.default.createElement(
-	                        'legend',
-	                        { className: 'slds-form-element__label' },
-	                        'Address'
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'form-element__group' },
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'slds-form-element__row' },
-	                            _react2.default.createElement(
-	                                'label',
-	                                { className: 'slds-form-element__control slds-size--1-of-1' },
-	                                _react2.default.createElement(
-	                                    'small',
-	                                    { className: 'slds-form-element__helper' },
-	                                    'Street'
-	                                ),
-	                                _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('address') })
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'slds-form-element__row' },
-	                            _react2.default.createElement(
-	                                'label',
-	                                { className: 'slds-form-element__control slds-size--2-of-4' },
-	                                _react2.default.createElement(
-	                                    'small',
-	                                    { className: 'slds-form-element__helper' },
-	                                    'City'
-	                                ),
-	                                _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('city') })
-	                            ),
-	                            _react2.default.createElement(
-	                                'label',
-	                                { className: 'slds-form-element__control slds-size--1-of-4' },
-	                                _react2.default.createElement(
-	                                    'small',
-	                                    { className: 'slds-form-element__helper' },
-	                                    'State'
-	                                ),
-	                                _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('state') })
-	                            ),
-	                            _react2.default.createElement(
-	                                'label',
-	                                { className: 'slds-form-element__control slds-size--1-of-4' },
-	                                _react2.default.createElement(
-	                                    'small',
-	                                    { className: 'slds-form-element__helper' },
-	                                    'ZIP Code'
-	                                ),
-	                                _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('zip') })
-	                            )
-	                        )
+	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('name') })
 	                    )
 	                )
 	            ),
-	            _react2.default.createElement(
-	                'div',
-	                { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-form-element' },
-	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
-	                        'Mobile Phone'
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'slds-form-element__control' },
-	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('mobile_phone') })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-form-element' },
-	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'slds-form-element__label', htmlFor: 'sample2' },
-	                        'Home Phone'
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'slds-form-element__control' },
-	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('phone') })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-form-element' },
-	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
-	                        'Email'
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'slds-form-element__control' },
-	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('email') })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-form-element' },
-	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
-	                        'Date of Birth'
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'slds-form-element__control' },
-	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('dob') })
-	                    )
-	                )
-	            )
+	            _react2.default.createElement('div', { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2' })
 	        );
 	    }
 	});
 
 /***/ }),
-/* 541 */
+/* 544 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(542);
+	module.exports = __webpack_require__(545);
 
 /***/ }),
-/* 542 */
+/* 545 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -62959,8 +63218,8 @@
 	
 	'use strict';
 	
-	var ReactLink = __webpack_require__(543);
-	var ReactStateSetters = __webpack_require__(544);
+	var ReactLink = __webpack_require__(546);
+	var ReactStateSetters = __webpack_require__(547);
 	
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -62983,7 +63242,7 @@
 	module.exports = LinkedStateMixin;
 
 /***/ }),
-/* 543 */
+/* 546 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -63057,7 +63316,7 @@
 	module.exports = ReactLink;
 
 /***/ }),
-/* 544 */
+/* 547 */
 /***/ (function(module, exports) {
 
 	/**
@@ -63166,7 +63425,7 @@
 	module.exports = ReactStateSetters;
 
 /***/ }),
-/* 545 */
+/* 548 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63229,14 +63488,11 @@
 	            _react2.default.createElement(
 	                _PageHeader.RecordHeader,
 	                { type: 'Student', icon: 'lead',
-	                    title: this.state.student.full_name,
+	                    title: this.state.student.name,
 	                    onEdit: localStorage.pos == "student" ? this.editHandler : null,
 	                    onDelete: localStorage.pos == "student" ? this.deleteHandler : null,
 	                    onClone: localStorage.pos == "student" ? this.cloneHandler : null },
-	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Date of Birth', value: this.state.student.dob, format: this.formatDOB }),
-	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Mobile Phone', value: this.state.student.mobile_phone }),
-	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Home Phone', value: this.state.student.phone }),
-	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Email', value: this.state.student.email })
+	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Student ID', value: this.state.student.id })
 	            ),
 	            _react2.default.cloneElement(this.props.children, { student: this.state.student })
 	        );
@@ -63244,7 +63500,7 @@
 	});
 
 /***/ }),
-/* 546 */
+/* 549 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63261,7 +63517,7 @@
 	
 	var _moment2 = _interopRequireDefault(_moment);
 	
-	var _StudentEnrollmentCard = __webpack_require__(547);
+	var _StudentEnrollmentCard = __webpack_require__(550);
 	
 	var _StudentEnrollmentCard2 = _interopRequireDefault(_StudentEnrollmentCard);
 	
@@ -63274,75 +63530,14 @@
 	        return _react2.default.createElement(
 	            'div',
 	            { className: 'slds-m-around--medium' },
-	            _react2.default.createElement(
-	                'div',
-	                { className: 'slds-grid slds-wrap slds-m-bottom--large' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium' },
-	                    _react2.default.createElement(
-	                        'dl',
-	                        { className: 'page-header--rec-home__detail-item' },
-	                        _react2.default.createElement(
-	                            'dt',
-	                            null,
-	                            _react2.default.createElement(
-	                                'p',
-	                                { className: 'slds-text-heading--label slds-truncate', title: 'Field 1' },
-	                                'Address'
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'dd',
-	                            null,
-	                            _react2.default.createElement(
-	                                'p',
-	                                { className: 'slds-text-body--regular slds-truncate', title: '' },
-	                                student.address,
-	                                _react2.default.createElement('br', null),
-	                                student.city,
-	                                ' ',
-	                                student.state,
-	                                ' ',
-	                                student.zip
-	                            )
-	                        )
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium' },
-	                    _react2.default.createElement(
-	                        'dl',
-	                        { className: 'page-header--rec-home__detail-item' },
-	                        _react2.default.createElement(
-	                            'dt',
-	                            null,
-	                            _react2.default.createElement(
-	                                'p',
-	                                { className: 'slds-text-heading--label slds-truncate', title: 'Field 1' },
-	                                'Registration Date'
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'dd',
-	                            null,
-	                            _react2.default.createElement(
-	                                'p',
-	                                { className: 'slds-text-body--regular slds-truncate', title: '' },
-	                                student.registration ? (0, _moment2.default)(student.registration).format("l") + ' (' + (0, _moment2.default)(student.registration).fromNow() + ')' : ""
-	                            )
-	                        )
-	                    )
-	                )
-	            ),
+	            _react2.default.createElement('div', { className: 'slds-grid slds-wrap slds-m-bottom--large' }),
 	            _react2.default.createElement(_StudentEnrollmentCard2.default, { student: student, onNew: this.newCourseHandler })
 	        );
 	    }
 	});
 
 /***/ }),
-/* 547 */
+/* 550 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63355,7 +63550,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _EnrollmentService = __webpack_require__(490);
+	var _EnrollmentService = __webpack_require__(491);
 	
 	var EnrollmentService = _interopRequireWildcard(_EnrollmentService);
 	
@@ -63369,7 +63564,7 @@
 	
 	var _Icons = __webpack_require__(355);
 	
-	var _CourseEnrollmentWindow = __webpack_require__(548);
+	var _CourseEnrollmentWindow = __webpack_require__(551);
 	
 	var _CourseEnrollmentWindow2 = _interopRequireDefault(_CourseEnrollmentWindow);
 	
@@ -63504,8 +63699,7 @@
 	                    _react2.default.createElement('div', { header: 'Code', field: 'code', onLink: this.courseLinkHandler }),
 	                    _react2.default.createElement('div', { header: 'Name', field: 'course_name', onLink: this.courseLinkHandler }),
 	                    _react2.default.createElement('div', { header: 'Period', field: 'period_name' }),
-	                    _react2.default.createElement('div', { header: 'Teacher', field: 'teacher_name' }),
-	                    _react2.default.createElement('div', { header: 'Credits', field: 'credits', textAlign: 'right' })
+	                    _react2.default.createElement('div', { header: 'Teacher', field: 'teacher_name' })
 	                )
 	            ),
 	            this.state.period === "current" ? _react2.default.createElement(
@@ -63531,7 +63725,7 @@
 	});
 
 /***/ }),
-/* 548 */
+/* 551 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63560,7 +63754,7 @@
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	var _ComboBox = __webpack_require__(486);
+	var _ComboBox = __webpack_require__(487);
 	
 	var _ComboBox2 = _interopRequireDefault(_ComboBox);
 	
@@ -63651,7 +63845,7 @@
 	});
 
 /***/ }),
-/* 549 */
+/* 552 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63664,7 +63858,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _StudentForm = __webpack_require__(540);
+	var _StudentForm = __webpack_require__(543);
 	
 	var _StudentForm2 = _interopRequireDefault(_StudentForm);
 	
@@ -63693,7 +63887,7 @@
 	});
 
 /***/ }),
-/* 550 */
+/* 553 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63712,11 +63906,11 @@
 	
 	var _PageHeader = __webpack_require__(364);
 	
-	var _TeacherList = __webpack_require__(551);
+	var _TeacherList = __webpack_require__(554);
 	
 	var _TeacherList2 = _interopRequireDefault(_TeacherList);
 	
-	var _TeacherFormWindow = __webpack_require__(552);
+	var _TeacherFormWindow = __webpack_require__(555);
 	
 	var _TeacherFormWindow2 = _interopRequireDefault(_TeacherFormWindow);
 	
@@ -63746,6 +63940,23 @@
 	    cancelHandler: function cancelHandler() {
 	        this.setState({ addingTeacher: false });
 	    },
+	    approveHandler: function approveHandler(data) {
+	        var _this2 = this;
+	
+	        data.allowed = 1;
+	        TeacherService.updateItem(data);
+	        TeacherService.findAll().then(function (teachers) {
+	            return _this2.setState({ teachers: teachers });
+	        });
+	    },
+	    deleteHandler: function deleteHandler(data) {
+	        var _this3 = this;
+	
+	        TeacherService.deleteItem(data.id);
+	        TeacherService.findAll().then(function (teachers) {
+	            return _this3.setState({ teachers: teachers });
+	        });
+	    },
 	    render: function render() {
 	        return _react2.default.createElement(
 	            'div',
@@ -63758,14 +63969,14 @@
 	                views: [{ id: 1, name: "Recent Teachers" }],
 	                viewId: '1',
 	                onNew: this.newHandler }),
-	            _react2.default.createElement(_TeacherList2.default, { teachers: this.state.teachers }),
+	            _react2.default.createElement(_TeacherList2.default, { teachers: this.state.teachers, onApprove: this.approveHandler, onDelete: this.deleteHandler }),
 	            this.state.addingTeacher ? _react2.default.createElement(_TeacherFormWindow2.default, { onSaved: this.savedHandler, onCancel: this.cancelHandler }) : null
 	        );
 	    }
 	});
 
 /***/ }),
-/* 551 */
+/* 554 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63782,6 +63993,14 @@
 	
 	var _DataGrid2 = _interopRequireDefault(_DataGrid);
 	
+	var _TeacherService = __webpack_require__(339);
+	
+	var TeacherService = _interopRequireWildcard(_TeacherService);
+	
+	var _Icons = __webpack_require__(355);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = _react2.default.createClass({
@@ -63790,25 +64009,27 @@
 	        window.location.hash = "#teacher/" + teacher.id;
 	    },
 	    actionHandler: function actionHandler(data, value, label) {
-	        if (label === "Delete") {
+	        if (value === 0) {
+	            this.props.onApprove(data);
+	        } else if (value === 1) {
+	            linkHandler(data);
+	        } else if (value === 2) {
 	            this.props.onDelete(data);
-	        } else if (label === "Edit") {
-	            this.props.onEdit(data);
 	        }
 	    },
 	    render: function render() {
 	        return _react2.default.createElement(
 	            _DataGrid2.default,
-	            { data: this.props.teachers },
-	            _react2.default.createElement('div', { header: 'Name', field: 'full_name', onLink: this.linkHandler }),
-	            _react2.default.createElement('div', { header: 'Address', field: 'address' }),
-	            _react2.default.createElement('div', { header: 'City', field: 'city' })
+	            { data: this.props.teachers, actions: ["Approve Teacher", "View Teacher", "Delete"], onAction: this.actionHandler },
+	            _react2.default.createElement('div', { header: 'Name', field: 'name', onLink: this.linkHandler }),
+	            _react2.default.createElement('div', { header: 'Email Address', field: 'email' }),
+	            _react2.default.createElement('div', { header: 'Approved', field: 'approved' })
 	        );
 	    }
 	});
 
 /***/ }),
-/* 552 */
+/* 555 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63821,7 +64042,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _TeacherForm = __webpack_require__(553);
+	var _TeacherForm = __webpack_require__(556);
 	
 	var _TeacherForm2 = _interopRequireDefault(_TeacherForm);
 	
@@ -63888,7 +64109,7 @@
 	});
 
 /***/ }),
-/* 553 */
+/* 556 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63903,7 +64124,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactAddonsLinkedStateMixin = __webpack_require__(541);
+	var _reactAddonsLinkedStateMixin = __webpack_require__(544);
 	
 	var _reactAddonsLinkedStateMixin2 = _interopRequireDefault(_reactAddonsLinkedStateMixin);
 	
@@ -63954,102 +64175,13 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'slds-form-element__control' },
-	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('full_name') })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'fieldset',
-	                    { className: 'slds-form--compound slds-m-top--medium slds-m-bottom--medium' },
-	                    _react2.default.createElement(
-	                        'legend',
-	                        { className: 'slds-form-element__label' },
-	                        'Address'
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'form-element__group' },
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'slds-form-element__row' },
-	                            _react2.default.createElement(
-	                                'label',
-	                                { className: 'slds-form-element__control slds-size--1-of-1' },
-	                                _react2.default.createElement(
-	                                    'small',
-	                                    { className: 'slds-form-element__helper' },
-	                                    'Street'
-	                                ),
-	                                _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('address') })
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'slds-form-element__row' },
-	                            _react2.default.createElement(
-	                                'label',
-	                                { className: 'slds-form-element__control slds-size--2-of-4' },
-	                                _react2.default.createElement(
-	                                    'small',
-	                                    { className: 'slds-form-element__helper' },
-	                                    'City'
-	                                ),
-	                                _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('city') })
-	                            ),
-	                            _react2.default.createElement(
-	                                'label',
-	                                { className: 'slds-form-element__control slds-size--1-of-4' },
-	                                _react2.default.createElement(
-	                                    'small',
-	                                    { className: 'slds-form-element__helper' },
-	                                    'State'
-	                                ),
-	                                _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('state') })
-	                            ),
-	                            _react2.default.createElement(
-	                                'label',
-	                                { className: 'slds-form-element__control slds-size--1-of-4' },
-	                                _react2.default.createElement(
-	                                    'small',
-	                                    { className: 'slds-form-element__helper' },
-	                                    'ZIP Code'
-	                                ),
-	                                _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('zip') })
-	                            )
-	                        )
+	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('name') })
 	                    )
 	                )
 	            ),
 	            _react2.default.createElement(
 	                'div',
 	                { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-form-element' },
-	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
-	                        'Mobile Phone'
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'slds-form-element__control' },
-	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('mobile_phone') })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-form-element' },
-	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'slds-form-element__label', htmlFor: 'sample2' },
-	                        'Home Phone'
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'slds-form-element__control' },
-	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('phone') })
-	                    )
-	                ),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'slds-form-element' },
@@ -64063,20 +64195,6 @@
 	                        { className: 'slds-form-element__control' },
 	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('email') })
 	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-form-element' },
-	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
-	                        'Title'
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'slds-form-element__control' },
-	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('title') })
-	                    )
 	                )
 	            )
 	        );
@@ -64084,7 +64202,7 @@
 	});
 
 /***/ }),
-/* 554 */
+/* 557 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64110,7 +64228,7 @@
 	exports.default = _react2.default.createClass({
 	    displayName: 'TeacherRecord',
 	    getInitialState: function getInitialState() {
-	        return { teacher: {} };
+	        return { teacher: {}, teachers: [] };
 	    },
 	    componentDidMount: function componentDidMount() {
 	        this.getTeacher(this.props.params.teacherId);
@@ -64133,7 +64251,6 @@
 	    editHandler: function editHandler() {
 	        window.location.hash = "#teacher/" + this.state.teacher.id + "/edit";
 	    },
-	    newCourse: function newCourse() {},
 	    render: function render() {
 	        return _react2.default.createElement(
 	            'div',
@@ -64142,13 +64259,11 @@
 	                _PageHeader.RecordHeader,
 	                { type: 'Teacher',
 	                    icon: 'user',
-	                    title: 'Professor ' + this.state.teacher.full_name,
+	                    title: 'Professor ' + this.state.teacher.name,
 	                    onEdit: this.editHandler,
 	                    onDelete: this.deleteHandler,
-	                    onClone: this.cloneHandler,
-	                    onNewCourse: this.newCourse },
-	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Mobile Phone', value: this.state.teacher.mobile_phone }),
-	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Home Phone', value: this.state.teacher.phone }),
+	                    onClone: this.cloneHandler },
+	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Name', value: this.state.teacher.name }),
 	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Email', value: this.state.teacher.email })
 	            ),
 	            _react2.default.cloneElement(this.props.children, { teacher: this.state.teacher })
@@ -64157,7 +64272,7 @@
 	});
 
 /***/ }),
-/* 555 */
+/* 558 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64174,9 +64289,17 @@
 	
 	var _moment2 = _interopRequireDefault(_moment);
 	
-	var _TeacherCoursesCard = __webpack_require__(556);
+	var _TeacherCoursesCard = __webpack_require__(559);
 	
 	var _TeacherCoursesCard2 = _interopRequireDefault(_TeacherCoursesCard);
+	
+	var _TeacherPresentationCard = __webpack_require__(560);
+	
+	var _TeacherPresentationCard2 = _interopRequireDefault(_TeacherPresentationCard);
+	
+	var _TeacherList = __webpack_require__(554);
+	
+	var _TeacherList2 = _interopRequireDefault(_TeacherList);
 	
 	var _PageHeader = __webpack_require__(364);
 	
@@ -64191,73 +64314,15 @@
 	        return _react2.default.createElement(
 	            'div',
 	            { className: 'slds-m-around--medium' },
-	            _react2.default.createElement(
-	                'div',
-	                { className: 'slds-grid slds-wrap slds-m-bottom--large' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium' },
-	                    _react2.default.createElement(
-	                        'dl',
-	                        { className: 'page-header--rec-home__detail-item' },
-	                        _react2.default.createElement(
-	                            'dt',
-	                            null,
-	                            _react2.default.createElement(
-	                                'p',
-	                                { className: 'slds-text-heading--label slds-truncate', title: 'Field 1' },
-	                                'Address'
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'dd',
-	                            null,
-	                            _react2.default.createElement(
-	                                'p',
-	                                { className: 'slds-text-body--regular slds-truncate', title: '' },
-	                                teacher.address,
-	                                _react2.default.createElement('br', null),
-	                                this.props.teacher.zip,
-	                                ' ',
-	                                this.props.teacher.city
-	                            )
-	                        )
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium' },
-	                    _react2.default.createElement(
-	                        'dl',
-	                        { className: 'page-header--rec-home__detail-item' },
-	                        _react2.default.createElement(
-	                            'dt',
-	                            null,
-	                            _react2.default.createElement(
-	                                'p',
-	                                { className: 'slds-text-heading--label slds-truncate', title: 'Field 1' },
-	                                'Title'
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'dd',
-	                            null,
-	                            _react2.default.createElement(
-	                                'p',
-	                                { className: 'slds-text-body--regular slds-truncate', title: '' },
-	                                teacher.title
-	                            )
-	                        )
-	                    )
-	                )
-	            ),
-	            _react2.default.createElement(_TeacherCoursesCard2.default, { teacher: teacher })
+	            _react2.default.createElement('div', { className: 'slds-grid slds-wrap slds-m-bottom--large' }),
+	            _react2.default.createElement(_TeacherCoursesCard2.default, { teacher: teacher }),
+	            _react2.default.createElement(_TeacherPresentationCard2.default, { teacher: teacher })
 	        );
 	    }
 	});
 
 /***/ }),
-/* 556 */
+/* 559 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64280,7 +64345,7 @@
 	
 	var _Icons = __webpack_require__(355);
 	
-	var _CourseFormWindow = __webpack_require__(484);
+	var _CourseFormWindow = __webpack_require__(485);
 	
 	var _CourseFormWindow2 = _interopRequireDefault(_CourseFormWindow);
 	
@@ -64299,7 +64364,6 @@
 	    viewAllHandler: function viewAllHandler(event) {
 	        this.getCourses(this.props.teacher.id);
 	        event.preventDefault();
-	        alert('v');
 	    },
 	    getCourses: function getCourses(teacherId, queryParams) {
 	        var _this = this;
@@ -64380,8 +64444,7 @@
 	                    { data: this.state.courses, keyField: 'id' },
 	                    _react2.default.createElement('div', { header: 'Period', field: 'period_name', sortable: true }),
 	                    _react2.default.createElement('div', { header: 'Code', field: 'code', sortable: true, onLink: this.courseLinkHandler }),
-	                    _react2.default.createElement('div', { header: 'Name', field: 'name', sortable: true, onLink: this.courseLinkHandler }),
-	                    _react2.default.createElement('div', { header: 'Credits', field: 'credits', sortable: true, textAlign: 'right' })
+	                    _react2.default.createElement('div', { header: 'Name', field: 'name', sortable: true, onLink: this.courseLinkHandler })
 	                )
 	            ),
 	            this.state.addingCourse ? _react2.default.createElement(_CourseFormWindow2.default, { tid: this.props.teacher.id, onSaved: this.newCourseSavedHandler, onCancel: this.newCourseCancelHandler }) : null
@@ -64390,7 +64453,7 @@
 	});
 
 /***/ }),
-/* 557 */
+/* 560 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64403,7 +64466,327 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _TeacherForm = __webpack_require__(553);
+	var _PresentationService = __webpack_require__(561);
+	
+	var PresentationService = _interopRequireWildcard(_PresentationService);
+	
+	var _DataGrid = __webpack_require__(483);
+	
+	var _DataGrid2 = _interopRequireDefault(_DataGrid);
+	
+	var _Icons = __webpack_require__(355);
+	
+	var _reactUploadFile = __webpack_require__(503);
+	
+	var _reactUploadFile2 = _interopRequireDefault(_reactUploadFile);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var fileDownload = __webpack_require__(562);
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'TeacherPresentationCard',
+	    getInitialState: function getInitialState() {
+	        return { presents: [] };
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(props) {
+	        this.getPresents(props.teacher.id);
+	    },
+	    viewAllHandler: function viewAllHandler(event) {
+	        this.getPresents(this.props.teacher.id);
+	        event.preventDefault();
+	    },
+	    getPresents: function getPresents(teacherId) {
+	        var _this = this;
+	
+	        if (teacherId) {
+	            PresentationService.findAll({ teacherId: teacherId }).then(function (presents) {
+	                return _this.setState({ presents: presents });
+	            });
+	        }
+	    },
+	    presentLinkHandler: function presentLinkHandler(present) {
+	        var link = document.createElement('a');
+	        link.download = present.path;
+	        link.href = 'http://localhost:5000/upload/' + present.path;
+	        var clickEvent = document.createEvent("MouseEvent");
+	        clickEvent.initEvent("click", true, true);
+	
+	        link.dispatchEvent(clickEvent);
+	        // PresentationService.downFile({filename: present.path}).then(downloaded => {
+	
+	        //     // fileDownload(downloaded, present.path);
+	        //     // writeFile(present.path, downloaded, function (err) {
+	        //     //     if (err) return console.log(err)
+	        //     //     console.log('file is written')
+	        //     //   })
+	        //     var link = document.createElement('a');
+	        //     link.download = present.path;
+	        //     link.href = 'http://localhost:5000/upload/'+present.path;
+	        // });
+	    },
+	    presentDeleteHandler: function presentDeleteHandler(present) {
+	        PresentationService.deleteItem(present.id);
+	        PresentationService.deleteFile({ filename: present.path });
+	        this.getPresents(this.props.teacher.id);
+	    },
+	    newPresentHandler: function newPresentHandler() {
+	        this.setState({ addingPresent: true });
+	    },
+	    newPresentCancelHandler: function newPresentCancelHandler() {
+	        this.setState({ addingPresent: false });
+	    },
+	    newPresentSavedHandler: function newPresentSavedHandler(present) {
+	        this.setState({ addingPresent: false });
+	        this.getPresents(this.props.teacher.id);
+	    },
+	    actionHandler: function actionHandler(data, index, value, label) {
+	        switch (label) {
+	            case "Download File":
+	                this.presentLinkHandler(data);
+	                break;
+	            case "Delete":
+	                this.presentDeleteHandler(data);
+	                break;
+	        }
+	    },
+	    render: function render() {
+	        var _this2 = this;
+	
+	        var options = {
+	            baseUrl: '/upload',
+	            query: function query(files) {
+	                var l = files.length;
+	                var queryObj = {};
+	                for (var i = l - 1; i >= 0; --i) {
+	                    queryObj[i] = files[i].name;
+	                }
+	                return queryObj;
+	            },
+	            body: {
+	                purpose: 'save'
+	            },
+	            //   body: (files) => {
+	            //     const l = files.length;
+	            //     const queryObj = {};
+	            //     for(let i = l-1; i >= 0; --i) {
+	            //       queryObj[i] = files[i].name;
+	            //     }
+	            //     return queryObj;
+	            //   },
+	            dataType: 'json',
+	            multiple: false,
+	            numberLimit: 1,
+	            accept: '.ppt,.pptx,.doc,.docx,.pdf',
+	            // fileFieldName: 'file',
+	            fileFieldName: function fileFieldName(file) {
+	                return file.name;
+	            },
+	            withCredentials: false,
+	            requestHeaders: {
+	                'method': 'POST'
+	            },
+	            beforeChoose: function beforeChoose() {
+	                return true;
+	            },
+	            didChoose: function didChoose(files) {
+	                console.log('you choose', typeof files == 'string' ? files : files[0].name);
+	            },
+	            beforeUpload: function beforeUpload(files) {
+	                _this2.setState({ present: { teacher_id: _this2.props.teacher.id, path: files[0].name, size: files[0].size } });
+	                if (typeof files === 'string') return true;
+	                if (files[0].size < 1024 * 1024 * 20) {
+	
+	                    return true;
+	                }
+	                return false;
+	            },
+	            didUpload: function didUpload(files) {
+	                console.log('you just uploaded', typeof files === 'string' ? files : files[0].name);
+	            },
+	            uploading: function uploading(progress) {
+	                console.log('loading...', progress.loaded / progress.total + '%');
+	            },
+	            uploadSuccess: function uploadSuccess(resp) {
+	                PresentationService.createItem(_this2.state.present).then(function () {
+	                    return _this2.getPresents(_this2.props.teacher.id);
+	                }).catch(function (error) {
+	                    var event = new CustomEvent('notify', { detail: 'You already uploaded this file' });
+	                    document.dispatchEvent(event);
+	                });
+	                console.log('upload success!');
+	            },
+	            uploadError: function uploadError(err) {
+	                alert(err.message);
+	            }
+	        };
+	
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'slds-card' },
+	            _react2.default.createElement(
+	                'header',
+	                { className: 'slds-card__header slds-grid' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-media slds-media--center slds-has-flexi-truncate' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-media__figure' },
+	                        _react2.default.createElement(_Icons.Icon, { name: 'file', size: 'small' })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-media__body' },
+	                        _react2.default.createElement(
+	                            'h3',
+	                            { className: 'slds-text-heading--small slds-truncate' },
+	                            'Presentations'
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-no-flex' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-button-group' },
+	                        _react2.default.createElement(_reactUploadFile2.default, { options: options,
+	                            chooseFileButton: _react2.default.createElement('button', { className: 'slds-button slds-button--neutral slds-button--small' }),
+	                            uploadFileButton: _react2.default.createElement(
+	                                'button',
+	                                { className: 'slds-button slds-button--neutral slds-button--small' },
+	                                'Upload'
+	                            ) }),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'slds-button slds-button--icon-border-filled' },
+	                            _react2.default.createElement(_Icons.ButtonIcon, { name: 'down' }),
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'slds-assistive-text' },
+	                                'Show More'
+	                            )
+	                        )
+	                    )
+	                )
+	            ),
+	            _react2.default.createElement(
+	                'section',
+	                { className: 'slds-card__body' },
+	                _react2.default.createElement(
+	                    _DataGrid2.default,
+	                    { data: this.state.presents, keyField: 'id', actions: localStorage.pos == "teacher" ? ["Download File", "Delete"] : ["Download File"], onAction: this.actionHandler },
+	                    _react2.default.createElement('div', { header: 'File Name', field: 'path', sortable: true, onLink: this.presentLinkHandler }),
+	                    _react2.default.createElement('div', { header: 'Description', field: 'description', sortable: true }),
+	                    _react2.default.createElement('div', { header: 'Size', field: 'size', sortable: true, format: 'size' }),
+	                    _react2.default.createElement('div', { header: 'Uploaded Time', field: 'uploaded_time', sortable: true, format: 'datatime' })
+	                )
+	            )
+	        );
+	    }
+	});
+
+/***/ }),
+/* 561 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.deleteItem = exports.updateItem = exports.deleteFile = exports.downFile = exports.createItem = exports.findById = exports.findAll = undefined;
+	
+	var _rest = __webpack_require__(338);
+	
+	var rest = _interopRequireWildcard(_rest);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	var url = "/presents";
+	
+	var findAll = exports.findAll = function findAll(queryParams) {
+	  return rest.get(url, queryParams);
+	};
+	
+	var findById = exports.findById = function findById(id) {
+	  return rest.get(url + "/" + id);
+	};
+	
+	var createItem = exports.createItem = function createItem(student) {
+	  return rest.post(url, student);
+	};
+	
+	var downFile = exports.downFile = function downFile(filename) {
+	  return rest.post("/download", filename);
+	};
+	
+	var deleteFile = exports.deleteFile = function deleteFile(filename) {
+	  return rest.post("/deletefile", filename);
+	};
+	
+	var updateItem = exports.updateItem = function updateItem(student) {
+	  return rest.put(url, student);
+	};
+	
+	var deleteItem = exports.deleteItem = function deleteItem(id) {
+	  return rest.del(url + "/" + id);
+	};
+
+/***/ }),
+/* 562 */
+/***/ (function(module, exports) {
+
+	module.exports = function(data, filename, mime) {
+	    var blob = new Blob([data], {type: mime || 'application/octet-stream'});
+	    if (typeof window.navigator.msSaveBlob !== 'undefined') {
+	        // IE workaround for "HTML7007: One or more blob URLs were 
+	        // revoked by closing the blob for which they were created. 
+	        // These URLs will no longer resolve as the data backing 
+	        // the URL has been freed."
+	        window.navigator.msSaveBlob(blob, filename);
+	    }
+	    else {
+	        var blobURL = window.URL.createObjectURL(blob);
+	        var tempLink = document.createElement('a');
+	        tempLink.style.display = 'none';
+	        tempLink.href = blobURL;
+	        tempLink.setAttribute('download', filename); 
+	        
+	        // Safari thinks _blank anchor are pop ups. We only want to set _blank
+	        // target if the browser does not support the HTML5 download attribute.
+	        // This allows you to download files in desktop safari if pop up blocking 
+	        // is enabled.
+	        if (typeof tempLink.download === 'undefined') {
+	            tempLink.setAttribute('target', '_blank');
+	        }
+	        
+	        document.body.appendChild(tempLink);
+	        tempLink.click();
+	        document.body.removeChild(tempLink);
+	        window.URL.revokeObjectURL(blobURL);
+	    }
+	}
+
+
+/***/ }),
+/* 563 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _TeacherForm = __webpack_require__(556);
 	
 	var _TeacherForm2 = _interopRequireDefault(_TeacherForm);
 	
@@ -64432,7 +64815,7 @@
 	});
 
 /***/ }),
-/* 558 */
+/* 564 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64449,7 +64832,7 @@
 	
 	var _reactRouter = __webpack_require__(207);
 	
-	var _Nav = __webpack_require__(559);
+	var _Nav = __webpack_require__(565);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	
@@ -64553,7 +64936,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(HomePage);
 
 /***/ }),
-/* 559 */
+/* 565 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64570,9 +64953,9 @@
 	
 	var _reactRouter = __webpack_require__(207);
 	
-	var _AppActions = __webpack_require__(560);
+	var _AppActions = __webpack_require__(566);
 	
-	var _LoadingButton = __webpack_require__(562);
+	var _LoadingButton = __webpack_require__(568);
 	
 	var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
 	
@@ -64669,7 +65052,7 @@
 	exports.default = Nav;
 
 /***/ }),
-/* 560 */
+/* 566 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64690,7 +65073,7 @@
 	
 	var _AppConstants = __webpack_require__(270);
 	
-	var _MessageConstants = __webpack_require__(561);
+	var _MessageConstants = __webpack_require__(567);
 	
 	var errorMessages = _interopRequireWildcard(_MessageConstants);
 	
@@ -64738,15 +65121,24 @@
 	 *    created in the second step
 	 */
 	
-	function login(username, password) {
+	function login(pos, stdid, email, password) {
 	  return function (dispatch) {
 	    // Show the loading indicator, hide the last error
 	    dispatch(sendingRequest(true));
 	    // If no username or password was specified, throw a field-missing error
-	    if (anyElementsEmpty({ username: username, password: password })) {
-	      dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
-	      dispatch(sendingRequest(false));
-	      return;
+	    if (pos == "teacher") {
+	      if (anyElementsEmpty({ email: email, password: password })) {
+	        dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+	        dispatch(sendingRequest(false));
+	        return;
+	      }
+	    }
+	    if (pos == "student") {
+	      if (anyElementsEmpty({ stdid: stdid, password: password })) {
+	        dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+	        dispatch(sendingRequest(false));
+	        return;
+	      }
 	    }
 	    // Generate salt for password encryption
 	    //const salt = genSalt(username);
@@ -64758,7 +65150,7 @@
 	    //     return;
 	    //   }
 	    // Use auth.js to fake a request
-	    _auth2.default.login(username, password, function (success, err) {
+	    _auth2.default.login(pos, pos == "teacher" ? email : stdid, password, function (success, err) {
 	      // When the request is finished, hide the loading indicator
 	      dispatch(sendingRequest(false));
 	      dispatch(setAuthState(success));
@@ -64768,7 +65160,9 @@
 	        forwardTo('#/' + localStorage.pos + '/' + localStorage.token);
 	        window.location.reload();
 	        dispatch(changeForm({
-	          username: "",
+	          stdid: "",
+	          email: "",
+	          name: "",
 	          password: ""
 	        }));
 	      } else {
@@ -64812,15 +65206,24 @@
 	 * @param  {string} username The username of the new user
 	 * @param  {string} password The password of the new user
 	 */
-	function register(pos, stdid, fullname, username, password) {
+	function register(pos, stdid, email, name, password) {
 	  return function (dispatch) {
 	    // Show the loading indicator, hide the last error
 	    dispatch(sendingRequest(true));
 	    // If no username or password was specified, throw a field-missing error
-	    if (anyElementsEmpty({ stdid: stdid, fullname: fullname, username: username, password: password })) {
-	      dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
-	      dispatch(sendingRequest(false));
-	      return;
+	    if (pos == "teacher") {
+	      if (anyElementsEmpty({ name: name, email: email, password: password })) {
+	        dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+	        dispatch(sendingRequest(false));
+	        return;
+	      }
+	    }
+	    if (pos == "student") {
+	      if (anyElementsEmpty({ name: name, stdid: stdid, password: password })) {
+	        dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+	        dispatch(sendingRequest(false));
+	        return;
+	      }
 	    }
 	    // Generate salt for password encryption
 	    //const salt = genSalt(username);
@@ -64832,8 +65235,7 @@
 	    //   return;
 	    // }
 	    // Use auth.js to fake a request
-	    console.log('register');
-	    _auth2.default.register(pos, stdid, fullname, username, password, function (success, err) {
+	    _auth2.default.register(pos, stdid, email, name, password, function (success, err) {
 	      // When the request is finished, hide the loading indicator
 	
 	      dispatch(sendingRequest(false));
@@ -64843,11 +65245,12 @@
 	        forwardTo('#/' + localStorage.pos + '/' + localStorage.token);
 	        window.location.reload();
 	        dispatch(changeForm({
-	          username: "",
+	          stdid: "",
+	          email: "",
+	          name: "",
 	          password: ""
 	        }));
 	      } else {
-	
 	        switch (err.type) {
 	          case 'username-exists':
 	            dispatch(setErrorMessage(errorMessages.USERNAME_TAKEN));
@@ -64942,7 +65345,7 @@
 	}
 
 /***/ }),
-/* 561 */
+/* 567 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64965,7 +65368,7 @@
 	var GENERAL_ERROR = exports.GENERAL_ERROR = 'Something went wrong, please try again';
 
 /***/ }),
-/* 562 */
+/* 568 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64978,7 +65381,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _LoadingIndicator = __webpack_require__(563);
+	var _LoadingIndicator = __webpack_require__(569);
 	
 	var _LoadingIndicator2 = _interopRequireDefault(_LoadingIndicator);
 	
@@ -65001,7 +65404,7 @@
 	exports.default = LoadingButton;
 
 /***/ }),
-/* 563 */
+/* 569 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65049,7 +65452,7 @@
 	exports.default = LoadingIndicator;
 
 /***/ }),
-/* 564 */
+/* 570 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65066,7 +65469,7 @@
 	
 	var _reactRedux = __webpack_require__(181);
 	
-	var _Form = __webpack_require__(565);
+	var _Form = __webpack_require__(571);
 	
 	var _Form2 = _interopRequireDefault(_Form);
 	
@@ -65074,9 +65477,9 @@
 	
 	var _auth2 = _interopRequireDefault(_auth);
 	
-	var _AppActions = __webpack_require__(560);
+	var _AppActions = __webpack_require__(566);
 	
-	var _LoadingIndicator = __webpack_require__(563);
+	var _LoadingIndicator = __webpack_require__(569);
 	
 	var _LoadingIndicator2 = _interopRequireDefault(_LoadingIndicator);
 	
@@ -65132,8 +65535,8 @@
 			}
 		}, {
 			key: '_login',
-			value: function _login(username, password) {
-				this.dispatch((0, _AppActions.login)(username, password));
+			value: function _login(pos, stdid, email, password) {
+				this.dispatch((0, _AppActions.login)(pos, stdid, email, password));
 			}
 		}]);
 	
@@ -65153,7 +65556,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(LoginPage);
 
 /***/ }),
-/* 565 */
+/* 571 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65168,13 +65571,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _AppActions = __webpack_require__(560);
+	var _AppActions = __webpack_require__(566);
 	
-	var _LoadingButton = __webpack_require__(562);
+	var _LoadingButton = __webpack_require__(568);
 	
 	var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
 	
-	var _ErrorMessage = __webpack_require__(566);
+	var _ErrorMessage = __webpack_require__(572);
 	
 	var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
 	
@@ -65199,10 +65602,15 @@
 	var LoginForm = function (_Component) {
 	  _inherits(LoginForm, _Component);
 	
-	  function LoginForm() {
+	  function LoginForm(props) {
 	    _classCallCheck(this, LoginForm);
 	
-	    return _possibleConstructorReturn(this, (LoginForm.__proto__ || Object.getPrototypeOf(LoginForm)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (LoginForm.__proto__ || Object.getPrototypeOf(LoginForm)).call(this, props));
+	
+	    _this.state = {
+	      showTeacher: true
+	    };
+	    return _this;
 	  }
 	
 	  _createClass(LoginForm, [{
@@ -65215,11 +65623,43 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'form__field-wrapper' },
-	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'username', value: this.props.data.username, placeholder: 'frank.underwood', onChange: this._changeUsername.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
+	          _react2.default.createElement(
+	            'select',
+	            { className: 'form__field-input', id: 'pos', value: this.props.data.pos, onChange: this._changePos.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' },
+	            _react2.default.createElement(
+	              'option',
+	              { value: 'teacher' },
+	              'Teacher'
+	            ),
+	            _react2.default.createElement(
+	              'option',
+	              { value: 'student' },
+	              'Student'
+	            )
+	          ),
 	          _react2.default.createElement(
 	            'label',
-	            { className: 'form__field-label', htmlFor: 'username' },
-	            'Username'
+	            { className: 'form__field-label', htmlFor: 'pos' },
+	            'Position'
+	          )
+	        ),
+	        this.state.showTeacher ? _react2.default.createElement(
+	          'div',
+	          { className: 'form__field-wrapper', id: 'teacher_form' },
+	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'email', value: this.props.data.email, placeholder: 'samuel.S@mail.com', onChange: this._changeEmail.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
+	          _react2.default.createElement(
+	            'label',
+	            { className: 'form__field-label', htmlFor: 'email' },
+	            'Email Address'
+	          )
+	        ) : _react2.default.createElement(
+	          'div',
+	          { className: 'form__field-wrapper', id: 'student_form' },
+	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'stdid', value: this.props.data.stdid, placeholder: '24', onChange: this._changeStdid.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
+	          _react2.default.createElement(
+	            'label',
+	            { className: 'form__field-label', htmlFor: 'stdid' },
+	            'Student ID'
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -65244,13 +65684,46 @@
 	      );
 	    }
 	
+	    // Change the position in the app state
+	
+	  }, {
+	    key: '_changePos',
+	    value: function _changePos(evt) {
+	      var newState = this._mergeWithCurrentState({
+	        pos: evt.target.value
+	      });
+	      this.setState({ showTeacher: !this.state.showTeacher });
+	      this._emitChange(newState);
+	    }
+	    // Change the Student ID in the app state
+	
+	  }, {
+	    key: '_changeStdid',
+	    value: function _changeStdid(evt) {
+	      var newState = this._mergeWithCurrentState({
+	        stdid: evt.target.value
+	      });
+	
+	      this._emitChange(newState);
+	    }
+	    // Change the email in the app state
+	
+	  }, {
+	    key: '_changeEmail',
+	    value: function _changeEmail(evt) {
+	      var newState = this._mergeWithCurrentState({
+	        email: evt.target.value
+	      });
+	
+	      this._emitChange(newState);
+	    }
 	    // Change the username in the app state
 	
 	  }, {
 	    key: '_changeUsername',
 	    value: function _changeUsername(evt) {
 	      var newState = this._mergeWithCurrentState({
-	        username: evt.target.value
+	        name: evt.target.value
 	      });
 	
 	      this._emitChange(newState);
@@ -65290,7 +65763,10 @@
 	    key: '_onSubmit',
 	    value: function _onSubmit(evt) {
 	      evt.preventDefault();
-	      this.props.onSubmit(this.props.data.username, this.props.data.password);
+	      if (this.props.data.pos == null) {
+	        this.props.data.pos = "teacher";
+	      }
+	      this.props.onSubmit(this.props.data.pos, this.props.data.stdid, this.props.data.email, this.props.data.password);
 	    }
 	  }]);
 	
@@ -65306,7 +65782,7 @@
 	exports.default = LoginForm;
 
 /***/ }),
-/* 566 */
+/* 572 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65350,7 +65826,7 @@
 	exports.default = ErrorMessage;
 
 /***/ }),
-/* 567 */
+/* 573 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65367,13 +65843,13 @@
 	
 	var _reactRedux = __webpack_require__(181);
 	
-	var _RegisterForm = __webpack_require__(568);
+	var _RegisterForm = __webpack_require__(574);
 	
 	var _RegisterForm2 = _interopRequireDefault(_RegisterForm);
 	
-	var _AppActions = __webpack_require__(560);
+	var _AppActions = __webpack_require__(566);
 	
-	var _LoadingIndicator = __webpack_require__(563);
+	var _LoadingIndicator = __webpack_require__(569);
 	
 	var _LoadingIndicator2 = _interopRequireDefault(_LoadingIndicator);
 	
@@ -65432,8 +65908,8 @@
 	
 		}, {
 			key: '_register',
-			value: function _register(pos, stdid, fullname, username, password) {
-				this.dispatch((0, _AppActions.register)(pos, stdid, fullname, username, password));
+			value: function _register(pos, stdid, email, name, password) {
+				this.dispatch((0, _AppActions.register)(pos, stdid, email, name, password));
 			}
 		}]);
 	
@@ -65453,7 +65929,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(RegisterPage);
 
 /***/ }),
-/* 568 */
+/* 574 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65468,13 +65944,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _AppActions = __webpack_require__(560);
+	var _AppActions = __webpack_require__(566);
 	
-	var _LoadingButton = __webpack_require__(562);
+	var _LoadingButton = __webpack_require__(568);
 	
 	var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
 	
-	var _ErrorMessage = __webpack_require__(566);
+	var _ErrorMessage = __webpack_require__(572);
 	
 	var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
 	
@@ -65499,10 +65975,15 @@
 	var RegisterForm = function (_Component) {
 	  _inherits(RegisterForm, _Component);
 	
-	  function RegisterForm() {
+	  function RegisterForm(props) {
 	    _classCallCheck(this, RegisterForm);
 	
-	    return _possibleConstructorReturn(this, (RegisterForm.__proto__ || Object.getPrototypeOf(RegisterForm)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (RegisterForm.__proto__ || Object.getPrototypeOf(RegisterForm)).call(this, props));
+	
+	    _this.state = {
+	      showTeacher: true
+	    };
+	    return _this;
 	  }
 	
 	  _createClass(RegisterForm, [{
@@ -65535,34 +66016,33 @@
 	            'Position'
 	          )
 	        ),
-	        _react2.default.createElement(
+	        this.state.showTeacher ? _react2.default.createElement(
 	          'div',
-	          { className: 'form__field-wrapper' },
+	          { className: 'form__field-wrapper', id: 'teacher_form' },
+	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'email', value: this.props.data.email, placeholder: 'samuel.S@mail.com', onChange: this._changeEmail.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
+	          _react2.default.createElement(
+	            'label',
+	            { className: 'form__field-label', htmlFor: 'email' },
+	            'Email Address'
+	          )
+	        ) : _react2.default.createElement(
+	          'div',
+	          { className: 'form__field-wrapper', id: 'student_form' },
 	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'stdid', value: this.props.data.stdid, placeholder: '24', onChange: this._changeStdid.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
 	          _react2.default.createElement(
 	            'label',
 	            { className: 'form__field-label', htmlFor: 'stdid' },
-	            'ID'
+	            'Student ID'
 	          )
 	        ),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'form__field-wrapper' },
-	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'fullname', value: this.props.data.fullname, placeholder: 'John Depth', onChange: this._changeFullname.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
+	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'name', value: this.props.data.name, placeholder: 'Samuel Stevens', onChange: this._changeUsername.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
 	          _react2.default.createElement(
 	            'label',
-	            { className: 'form__field-label', htmlFor: 'fullname' },
-	            'Fullname'
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'form__field-wrapper' },
-	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'username', value: this.props.data.username, placeholder: 'frank.underwood', onChange: this._changeUsername.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
-	          _react2.default.createElement(
-	            'label',
-	            { className: 'form__field-label', htmlFor: 'username' },
-	            'Username'
+	            { className: 'form__field-label', htmlFor: 'name' },
+	            'Name'
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -65594,10 +66074,10 @@
 	      var newState = this._mergeWithCurrentState({
 	        pos: evt.target.value
 	      });
-	
+	      this.setState({ showTeacher: !this.state.showTeacher });
 	      this._emitChange(newState);
 	    }
-	    // Change the username in the app state
+	    // Change the Student ID in the app state
 	
 	  }, {
 	    key: '_changeStdid',
@@ -65608,13 +66088,13 @@
 	
 	      this._emitChange(newState);
 	    }
-	    // Change the username in the app state
+	    // Change the email in the app state
 	
 	  }, {
-	    key: '_changeFullname',
-	    value: function _changeFullname(evt) {
+	    key: '_changeEmail',
+	    value: function _changeEmail(evt) {
 	      var newState = this._mergeWithCurrentState({
-	        fullname: evt.target.value
+	        email: evt.target.value
 	      });
 	
 	      this._emitChange(newState);
@@ -65625,7 +66105,7 @@
 	    key: '_changeUsername',
 	    value: function _changeUsername(evt) {
 	      var newState = this._mergeWithCurrentState({
-	        username: evt.target.value
+	        name: evt.target.value
 	      });
 	
 	      this._emitChange(newState);
@@ -65668,7 +66148,7 @@
 	      if (this.props.data.pos == null) {
 	        this.props.data.pos = "teacher";
 	      }
-	      this.props.onSubmit(this.props.data.pos, this.props.data.stdid, this.props.data.fullname, this.props.data.username, this.props.data.password);
+	      this.props.onSubmit(this.props.data.pos, this.props.data.stdid, this.props.data.email, this.props.data.name, this.props.data.password);
 	    }
 	  }]);
 	
@@ -65684,7 +66164,7 @@
 	exports.default = RegisterForm;
 
 /***/ }),
-/* 569 */
+/* 575 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65744,7 +66224,7 @@
 	exports.default = NotFound;
 
 /***/ }),
-/* 570 */
+/* 576 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65759,7 +66239,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Nav = __webpack_require__(559);
+	var _Nav = __webpack_require__(565);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	

@@ -31,8 +31,8 @@ class LoginPage extends Component {
 		);
   }
 
-	_login(username, password) {
-		this.dispatch(login(username, password));
+	_login(pos, stdid, email, password) {
+		this.dispatch(login(pos, stdid, email, password));
 	}
 }
 

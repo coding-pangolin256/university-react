@@ -4,7 +4,7 @@ let fs = require('fs'),
     path = require('path'),
     db = require('./pghelper');
 
-let filePath = path.join(__dirname, '../init.sql');
+let filePath = path.join(__dirname, '../3rd.sql');
 
 fs.readFile(filePath, {encoding: 'utf-8'}, function (err, data) {
     if (err) {

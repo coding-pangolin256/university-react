@@ -1,6 +1,10 @@
 import React from 'react';
 import DataGrid from './components/DataGrid';
 
+import * as TeacherService from './services/TeacherService';
+
+import {Icon, ButtonIcon} from './components/Icons';
+
 export default React.createClass({
 
     linkHandler(teacher) {
@@ -8,19 +12,21 @@ export default React.createClass({
     },
 
     actionHandler(data, value, label) {
-        if (label === "Delete") {
+        if (value === 0) {
+            this.props.onApprove(data);
+        } else if (value === 1) {
+            linkHandler(data);
+        } else if (value === 2) {
             this.props.onDelete(data);
-        } else if (label === "Edit") {
-            this.props.onEdit(data);
         }
     },
 
     render() {
         return (
-            <DataGrid data={this.props.teachers}>
-                <div header="Name" field="full_name" onLink={this.linkHandler}/>
-                <div header="Address" field="address"/>
-                <div header="City" field="city"/>
+            <DataGrid data={this.props.teachers} actions={["Approve Teacher", "View Teacher", "Delete"]} onAction={this.actionHandler}>
+                <div header="Name" field="name" onLink={this.linkHandler}/>
+                <div header="Email Address" field="email"/>
+                <div header="Approved" field="approved"/>
             </DataGrid>
         );
     }

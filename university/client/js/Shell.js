@@ -20,11 +20,15 @@ export default React.createClass({
                     <ul className="slds-list--horizontal">
                         {/* <li className="slds-list__item"><a href="#students"><Icon name="lead" theme={null}/>Students</a></li>
                         <li className="slds-list__item"><a href="#courses"><Icon name="orders" theme={null}/>Courses</a></li>
-                        <li className="slds-list__item slds-m-right--xx-large"><a href="#teachers"><Icon name="user" theme={null}/>Teachers</a></li>
                         <li className="slds-list__item slds-m-top--xx-small">
                             <StudentSearchBox onSelect={this.selectHandler}/>
                         </li> */}
                         <li className="slds-list__item"><a href={"#"+localStorage.pos+"/"+localStorage.token}><Icon name="home" theme={null}/>Home</a></li>
+                        {
+                            localStorage.permission == 2?
+                            <li className="slds-list__item slds-m-right--xx-large"><a href="#teachers"><Icon name="user" theme={null}/>Teachers</a></li>
+                            :""
+                        }
                     </ul>
                 </header>
                 {this.props.children}

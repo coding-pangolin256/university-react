@@ -29,6 +29,18 @@ export default React.createClass({
         this.setState({addingTeacher: false});
     },
 
+    approveHandler(data) {
+        data.allowed = 1;
+        TeacherService.updateItem(data);
+        TeacherService.findAll().then(teachers => this.setState({teachers}));
+    },
+
+    deleteHandler(data)
+    {
+        TeacherService.deleteItem(data.id);
+        TeacherService.findAll().then(teachers => this.setState({teachers}));
+    },
+
     render() {
         return (
             <div>
@@ -40,7 +52,7 @@ export default React.createClass({
                             views={[{id:1, name:"Recent Teachers"}]}
                             viewId="1"
                             onNew={this.newHandler}/>
-                <TeacherList teachers={this.state.teachers}/>
+                <TeacherList teachers={this.state.teachers} onApprove={this.approveHandler} onDelete={this.deleteHandler}/>
                 {this.state.addingTeacher?<TeacherFormWindow onSaved={this.savedHandler} onCancel={this.cancelHandler}/>:null}
             </div>
         );

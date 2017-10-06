@@ -24,7 +24,6 @@ export default React.createClass({
                 <div header="Code" field="code" onLink={this.courseLinkHandler}/>
                 <div header="Name" field="name" onLink={this.courseLinkHandler}/>
                 <div header="Teacher" field="teacher_name" onLink={this.teacherLinkHandler}/>
-                <div header="Credits" field="credits" textAlign="right"/>
                 <div header="#Enrolled" field="student_count" textAlign="right"/>
             </DataGrid>
         );

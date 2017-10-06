@@ -28,7 +28,10 @@ function request(obj) {
                     document.dispatchEvent(new Event('stopWaiting'));
                 }
                 if (xhr.status > 199 && xhr.status < 300) {
-                    resolve(xhr.responseText ? JSON.parse(xhr.responseText) : undefined);
+                    if(xhr.getResponseHeader("Content-Type").startsWith("application/json"))
+                        resolve(xhr.responseText ? JSON.parse(xhr.responseText) : undefined);
+                    else
+                        resolve(xhr.responseText ? xhr.responseText : undefined);
                 } else {
                     reject(xhr.responseText);
                 }

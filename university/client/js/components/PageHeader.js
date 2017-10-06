@@ -155,7 +155,7 @@ export let RecordHeader = React.createClass({
     },
 
     followHandler() {
-        alert("Not implemented in this demo app");
+        
     },
 
     render() {

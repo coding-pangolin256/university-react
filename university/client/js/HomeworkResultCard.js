@@ -4,6 +4,7 @@ import * as ResultService from './services/ResultService';
 
 import DataGrid from './components/DataGrid';
 import StudentSearchBox from './StudentSearchBox';
+import ResultFormWindow from './ResultFormWindow';
 
 import {Icon, ButtonIcon} from './components/Icons';
 
@@ -14,7 +15,7 @@ const assign = Object.assign || require('object.assign');
 export default React.createClass({
 
     getInitialState() {
-        return {results:[], submitting:false};
+        return {results:[], submitting:false, estimatting:false, current:null};
     },
 
     componentWillReceiveProps(props) {
@@ -28,7 +29,16 @@ export default React.createClass({
     },
 
     resultLinkHandler(result) {
-        window.location.hash = "#result/" + result.id;
+        this.setState({estimatting:true, current: result});
+    },
+
+    resultDeleteHandler(result) {
+        ResultService.deleteFile(result.path)
+        .then(() => this.getResults(this.props.homework));
+    },
+
+    studentLinkHandler(result) {
+        window.location.hash = "#student/" + result.id;
     },
 
     actionHandler(data, index, value, label) {
@@ -44,6 +54,15 @@ export default React.createClass({
     },
     submitHomeworkHandler() {
         this.setState({submitting:true});
+    },
+
+    scoreSavedHandler() {
+        this.setState({estimatting:false});
+        this.getResults(this.props.homework);
+    },
+
+    scoreCancelHandler() {
+        this.setState({estimatting:false});
     },
 
     render() {
@@ -105,7 +124,7 @@ export default React.createClass({
                 ResultService.createItem(this.state.homework)
                 .then(() => this.getResults(this.props.homework))
                 .catch((error) => {
-                    let event = new CustomEvent('notify', {detail:'Student already submitted in this homework'});
+                    let event = new CustomEvent('notify', {detail:'You already submitted to this homework'});
                     document.dispatchEvent(event);
                 });
                 console.log('upload success!');
@@ -148,23 +167,26 @@ export default React.createClass({
                 </header>
 
                 <section className="slds-card__body">
-                    <DataGrid data={this.state.results} keyField="id" actions={["View Result", "Delete"]} onAction={this.actionHandler}>
-                        <div header="Student Name" field="student_name" sortable={true} onLink={this.resultLinkHandler}/>
+                    <DataGrid data={this.state.results} keyField="id" actions={localStorage.pos=="teacher"?["View Details", "Delete"]:null} onAction={this.actionHandler}>
+                        <div header="Student Name" field="student_name" sortable={true} onLink={this.studentLinkHandler}/>
                         {/* <div header="Last Name" field="last_name" sortable={true} onLink={this.resultLinkHandler}/>
                         <div header="File Path" field="path"/> */}
-                        <div header="Show details" field="details" actions={["Details"]}/>
-                            <button className="slds-button slds-button--icon-border-filled">
-                                <ButtonIcon name="plus"/>
-                                <span className="slds-assistive-text">Details</span>
-                            </button>
-                        <div header="Delete file" field="delete" actions={["Delete"]}/>
-                            <button className="slds-button slds-button--icon-border-filled">
-                                <ButtonIcon name="minus"/>
-                                <span className="slds-assistive-text">Delete</span>
-                            </button>
                         <div header="Score" field="score" sortable={true}/>
+                        {
+                        localStorage.pos=="teacher"?
+                                <div header="View details" field="details" action="Details" onLink={this.resultLinkHandler}/>
+                            :
+                            ""
+                        }
+                        {
+                        localStorage.pos=="teacher"?
+                                <div header="Delete file" field="delete" action="Delete" onLink={this.resultDeleteHandler}/>
+                            :
+                            ""
+                        }
                     </DataGrid>
                 </section>
+                {this.state.estimatting?<ResultFormWindow result={this.state.current} homework={this.props.homework} onSaved={this.scoreSavedHandler} onCancel={this.scoreCancelHandler}/>:null}
             </div>
 
         );

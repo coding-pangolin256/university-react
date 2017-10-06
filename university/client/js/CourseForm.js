@@ -46,12 +46,6 @@ export default React.createClass({
         this.setState({course});
     },
 
-    creditsChangeHandler(event) {
-        let course = this.state.course;
-        course.credits = event.target.value;
-        this.setState({course});
-    },
-
     save() {
         let saveItem = this.state.course.id ? CourseService.updateItem : CourseService.createItem;
         saveItem(this.state.course).then(savedCourse => {
@@ -88,12 +82,6 @@ export default React.createClass({
                         <label className="slds-form-element__label" htmlFor="sample1">Period</label>
                         <div className="slds-form-element__control">
                             <ComboBox data={this.state.periods} value={course.period_id} onChange={this.periodChangeHandler}/>
-                        </div>
-                    </div>
-                    <div className="slds-form-element">
-                        <label className="slds-form-element__label" htmlFor="sample1">Credits</label>
-                        <div className="slds-form-element__control">
-                            <input className="slds-input" type="text" value={course.credits} onChange={this.creditsChangeHandler}/>
                         </div>
                     </div>
                 </div>

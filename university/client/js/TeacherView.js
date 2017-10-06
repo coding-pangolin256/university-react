@@ -2,12 +2,14 @@ import React from 'react';
 import moment from 'moment';
 
 import TeacherCoursesCard from './TeacherCoursesCard';
+import TeacherPresentationCard from './TeacherPresentationCard'
+import TeacherList from './TeacherList'
+
 import {HomeHeader} from './components/PageHeader';
 
 import {Icon, ButtonIcon} from "./components/Icons";
 
 export default React.createClass({
-
     render() {
         let teacher = this.props.teacher;
         return (
@@ -18,7 +20,7 @@ export default React.createClass({
                                 <img src={this.props.teacher.pic} alt="portrait"/>
                             </span>
                     </div> */}
-                    <div className="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium">
+                    {/* <div className="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium">
                         <dl className="page-header--rec-home__detail-item">
                             <dt>
                                 <p className="slds-text-heading--label slds-truncate" title="Field 1">Address</p>
@@ -37,9 +39,10 @@ export default React.createClass({
                                 <p className="slds-text-body--regular slds-truncate" title="">{teacher.title}</p>
                             </dd>
                         </dl>
-                    </div>
+                    </div> */}
                 </div>
                 <TeacherCoursesCard teacher={teacher}/>
+                <TeacherPresentationCard teacher={teacher}/>
             </div>
         );
     }

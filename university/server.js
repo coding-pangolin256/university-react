@@ -5,15 +5,17 @@ var express = require('express'),
     courses = require('./server/courses'),
     homeworks = require('./server/homeworks'),
     results = require('./server/results'),
+    presents = require('./server/presents'),
     enrollments = require('./server/enrollments'),
     teachers = require('./server/teachers'),
     periods = require('./server/periods'),
     multer = require('multer'),
-    // sqlinit = require('./server/sqlinit'),
+    busboy = require('connect-busboy'),
+    fs = require('fs-extra'),
+    mime = require('mime'),
+    path = require('path'),
+    //sqlinit = require('./server/sqlinit'),
     app = express();
-
-var busboy = require('connect-busboy');
-var fs = require('fs-extra'); 
 
 app.set('port', process.env.PORT || 5000);
 
@@ -31,7 +33,7 @@ app.route('/upload')
         console.log("Uploading: " + filename);
 
         //Path where image will be uploaded
-        fstream = fs.createWriteStream(__dirname + '/upload/' + filename);
+        fstream = fs.createWriteStream(__dirname + '/www/upload/' + filename);
         file.pipe(fstream);
         fstream.on('close', function () {    
             console.log("Upload Finished of " + filename);              
@@ -39,6 +41,50 @@ app.route('/upload')
         });
     });
 });
+
+app.route('/downview')
+.post(function(req, res, next){
+    var file = __dirname + '/www/upload/'+ req.body.filename;
+
+    res.setHeader('Content-disposition', 'attachment; filename=' + file);
+    res.setHeader('Content-type', 'text/plain');
+
+    fs.exists(file, (exists) => {
+        console.log(exists ? 'sending data' : 'no file to send!');
+        if(exists)
+        {
+            var filestream = fs.createReadStream(file);
+            filestream.pipe(res);
+        }
+        else
+            res.send("no file");
+    });
+});
+
+app.route('/download')
+.post(function(req, res, next){
+    var file = __dirname + '/www/upload/'+ req.body.filename;
+    var filename = path.basename(file);
+    var mimetype = mime.lookup(file);
+  
+    res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+    res.setHeader('Content-type', mimetype);
+  
+    var filestream = fs.createReadStream(file);
+    filestream.pipe(res);
+});
+app.route('/deletefile')
+.post(function(req, res, next){
+    var file = __dirname + '/www/upload/'+ req.body.filename;
+
+    fs.exists(file, (exists) => {
+        console.log(exists ? 'deleting code file' : 'no file to delete!');
+        if(exists)
+            fs.unlinkSync(file);
+      });
+    res.send('success');
+});
+
 app.get('/students', students.findAll);
 app.get('/students/:id', students.findById);
 app.get('/students/:id/enrollments', enrollments.findByStudent);
@@ -53,6 +99,12 @@ app.post('/results', results.createItem);
 app.post('/result', results.findByHomework);
 app.put('/results', results.updateItem);
 app.delete('/results/:id', results.deleteItem);
+
+app.get('/presents', presents.findAll);
+app.get('/presents/:id', presents.findById);
+app.post('/presents', presents.createItem);
+app.put('/presents', presents.updateItem);
+app.delete('/presents/:id', presents.deleteItem);
 
 app.get('/courses', courses.findAll);
 app.get('/courses/:id', courses.findById);
@@ -81,17 +133,6 @@ app.delete('/enrollments/:id', enrollments.deleteItem);
 
 app.get('/periods', periods.findAll);
 app.post('/periods', periods.currentPeriod);
-
-// app.post('/upload', function(req, res) {
-//     var file = req.files.file;
-//     console.log(file);
-//     fs.unlink(file.path, function(err) {
-//         res.json({
-//             success: !err,
-//             file: file
-//         });
-//     });
-// });
 
 app.use(function(err, req, res, next) {
     console.error(err.stack);
