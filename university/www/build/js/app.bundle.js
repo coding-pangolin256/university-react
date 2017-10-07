@@ -134,23 +134,27 @@
 	
 	var _TeacherFormWrapper2 = _interopRequireDefault(_TeacherFormWrapper);
 	
-	var _HomePage = __webpack_require__(564);
+	var _ChatHome = __webpack_require__(564);
+	
+	var _ChatHome2 = _interopRequireDefault(_ChatHome);
+	
+	var _HomePage = __webpack_require__(568);
 	
 	var _HomePage2 = _interopRequireDefault(_HomePage);
 	
-	var _LoginPage = __webpack_require__(570);
+	var _LoginPage = __webpack_require__(574);
 	
 	var _LoginPage2 = _interopRequireDefault(_LoginPage);
 	
-	var _RegisterPage = __webpack_require__(573);
+	var _RegisterPage = __webpack_require__(577);
 	
 	var _RegisterPage2 = _interopRequireDefault(_RegisterPage);
 	
-	var _NotFound = __webpack_require__(575);
+	var _NotFound = __webpack_require__(579);
 	
 	var _NotFound2 = _interopRequireDefault(_NotFound);
 	
-	var _App = __webpack_require__(576);
+	var _App = __webpack_require__(580);
 	
 	var _App2 = _interopRequireDefault(_App);
 	
@@ -247,7 +251,8 @@
 	        { path: 'teacher', component: _TeacherRecord2.default },
 	        _react2.default.createElement(_reactRouter.Route, { path: ':teacherId', component: _TeacherView2.default }),
 	        _react2.default.createElement(_reactRouter.Route, { path: ':teacherId/edit', component: _TeacherFormWrapper2.default })
-	      )
+	      ),
+	      _react2.default.createElement(_reactRouter.Route, { path: 'chat', component: _ChatHome2.default })
 	    );
 	  };
 	
@@ -39982,7 +39987,17 @@
 	                            _react2.default.createElement(_Icons.Icon, { name: 'user', theme: null }),
 	                            'Teachers'
 	                        )
-	                    ) : ""
+	                    ) : "",
+	                    _react2.default.createElement(
+	                        'li',
+	                        { className: 'slds-list__item' },
+	                        _react2.default.createElement(
+	                            'a',
+	                            { href: '#chat' },
+	                            _react2.default.createElement(_Icons.Icon, { name: 'feedback', theme: null }),
+	                            'Chat Room'
+	                        )
+	                    )
 	                )
 	            ),
 	            this.props.children
@@ -64821,6 +64836,278 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _ChatService = __webpack_require__(565);
+	
+	var ChatService = _interopRequireWildcard(_ChatService);
+	
+	var _MessageCard = __webpack_require__(566);
+	
+	var _MessageCard2 = _interopRequireDefault(_MessageCard);
+	
+	var _PageHeader = __webpack_require__(364);
+	
+	var _ChatBox = __webpack_require__(567);
+	
+	var _ChatBox2 = _interopRequireDefault(_ChatBox);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'ChatHome',
+	    getInitialState: function getInitialState() {
+	        return { msgs: [] };
+	    },
+	    componentDidMount: function componentDidMount() {
+	        this.getMessages();
+	    },
+	    getMessages: function getMessages() {
+	        var _this = this;
+	
+	        ChatService.findAll().then(function (msgs) {
+	            return _this.setState({ msgs: msgs });
+	        });
+	    },
+	    deleteHandler: function deleteHandler(msg) {
+	        ChatService.deleteItem(this.state.msg.id).then(function () {
+	            return window.location.hash = "chat";
+	        });
+	    },
+	    editHandler: function editHandler(msg) {
+	        window.location.hash = "#chat/" + msg.id + "/edit";
+	    },
+	    sendHandler: function sendHandler(msg) {
+	        var _this2 = this;
+	
+	        ChatService.createItem({ user_id: localStorage.token, pos: localStorage.pos, text: msg }).then(function () {
+	            _this2.getMessages();
+	        });
+	    },
+	    render: function render() {
+	        var rows = [];
+	        rows = this.state.msgs.map(function (item) {
+	            return _react2.default.createElement(_MessageCard2.default, { data: item });
+	        });
+	        // for (let i = 0 ; i < this.state.msgs.length; i++) {
+	        //     rows.push(<MessageCard data={this.state.msgs[i]}/>);
+	        // }
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(_PageHeader.RecordHeader, { icon: 'chat',
+	                title: 'Chat Room',
+	                itemCount: this.state.msgs.length }),
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'slds-m-around--medium' },
+	                rows
+	            ),
+	            _react2.default.createElement(_ChatBox2.default, { onSend: this.sendHandler })
+	        );
+	    }
+	});
+
+/***/ }),
+/* 565 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.deleteItem = exports.updateItem = exports.createItem = exports.findByData = exports.findById = exports.findAll = undefined;
+	
+	var _rest = __webpack_require__(338);
+	
+	var rest = _interopRequireWildcard(_rest);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	var url = "/messages";
+	
+	var findAll = exports.findAll = function findAll(queryParams) {
+	  return rest.get(url, queryParams);
+	};
+	
+	var findById = exports.findById = function findById(id) {
+	  return rest.get(url + "/" + id);
+	};
+	
+	var findByData = exports.findByData = function findByData(student) {
+	  return rest.post('/message', student);
+	};
+	
+	var createItem = exports.createItem = function createItem(student) {
+	  return rest.post(url, student);
+	};
+	
+	var updateItem = exports.updateItem = function updateItem(student) {
+	  return rest.put(url, student);
+	};
+	
+	var deleteItem = exports.deleteItem = function deleteItem(id) {
+	  return rest.del(url + "/" + id);
+	};
+
+/***/ }),
+/* 566 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _CourseService = __webpack_require__(361);
+	
+	var CourseService = _interopRequireWildcard(_CourseService);
+	
+	var _DataGrid = __webpack_require__(483);
+	
+	var _DataGrid2 = _interopRequireDefault(_DataGrid);
+	
+	var _Icons = __webpack_require__(355);
+	
+	var _CourseFormWindow = __webpack_require__(485);
+	
+	var _CourseFormWindow2 = _interopRequireDefault(_CourseFormWindow);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'MessageCard',
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'slds-card' },
+	            _react2.default.createElement(
+	                'header',
+	                { className: 'slds-card__header slds-grid' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-media slds-media--center slds-has-flexi-truncate' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-media__figure' },
+	                        _react2.default.createElement(_Icons.Icon, { name: 'post', size: 'small' })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-media__body' },
+	                        _react2.default.createElement(
+	                            'h3',
+	                            { className: 'slds-text-heading--small slds-truncate' },
+	                            this.props.data.pos == "teacher" ? 'Professor ' + this.props.data.user_name : this.props.data.user_name
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-media__body' },
+	                        _react2.default.createElement(
+	                            'span',
+	                            { className: 'slds-text-body--small slds-truncate slds-text-align--right' },
+	                            this.props.data.time
+	                        )
+	                    )
+	                )
+	            ),
+	            _react2.default.createElement(
+	                'section',
+	                { className: 'slds-card__body' },
+	                _react2.default.createElement(
+	                    'span',
+	                    { className: 'slds-input' },
+	                    this.props.data.text
+	                )
+	            )
+	        );
+	    }
+	});
+
+/***/ }),
+/* 567 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _StudentService = __webpack_require__(337);
+	
+	var StudentService = _interopRequireWildcard(_StudentService);
+	
+	var _SearchBox = __webpack_require__(357);
+	
+	var _SearchBox2 = _interopRequireDefault(_SearchBox);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'ChatBox',
+	    getInitialState: function getInitialState() {
+	        return { searchKey: "" };
+	    },
+	    handleKeyPress: function handleKeyPress(target) {
+	        if (target.charCode == 13) {
+	            this.props.onSend(this.state.searchKey);
+	            this.setState({ searchKey: "" });
+	        }
+	    },
+	
+	    changeHandler: function changeHandler(event) {
+	        var inputKey = event.target.value;
+	        this.setState({ searchKey: inputKey });
+	    },
+	
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'slds-form-element' },
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'slds-form-element__control' },
+	                _react2.default.createElement('input', { className: 'slds-input', type: 'text',
+	                    placeholder: this.props.placeholder || 'Enter your message...',
+	                    value: this.state.searchKey,
+	                    style: { minWidth: "200px", marginTop: "1px" },
+	                    onChange: this.changeHandler,
+	                    onKeyPress: this.handleKeyPress })
+	            )
+	        );
+	    }
+	});
+
+/***/ }),
+/* 568 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
 	
@@ -64832,7 +65119,7 @@
 	
 	var _reactRouter = __webpack_require__(207);
 	
-	var _Nav = __webpack_require__(565);
+	var _Nav = __webpack_require__(569);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	
@@ -64936,7 +65223,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(HomePage);
 
 /***/ }),
-/* 565 */
+/* 569 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64953,9 +65240,9 @@
 	
 	var _reactRouter = __webpack_require__(207);
 	
-	var _AppActions = __webpack_require__(566);
+	var _AppActions = __webpack_require__(570);
 	
-	var _LoadingButton = __webpack_require__(568);
+	var _LoadingButton = __webpack_require__(572);
 	
 	var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
 	
@@ -65052,7 +65339,7 @@
 	exports.default = Nav;
 
 /***/ }),
-/* 566 */
+/* 570 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65073,7 +65360,7 @@
 	
 	var _AppConstants = __webpack_require__(270);
 	
-	var _MessageConstants = __webpack_require__(567);
+	var _MessageConstants = __webpack_require__(571);
 	
 	var errorMessages = _interopRequireWildcard(_MessageConstants);
 	
@@ -65345,7 +65632,7 @@
 	}
 
 /***/ }),
-/* 567 */
+/* 571 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -65368,7 +65655,7 @@
 	var GENERAL_ERROR = exports.GENERAL_ERROR = 'Something went wrong, please try again';
 
 /***/ }),
-/* 568 */
+/* 572 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65381,7 +65668,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _LoadingIndicator = __webpack_require__(569);
+	var _LoadingIndicator = __webpack_require__(573);
 	
 	var _LoadingIndicator2 = _interopRequireDefault(_LoadingIndicator);
 	
@@ -65404,7 +65691,7 @@
 	exports.default = LoadingButton;
 
 /***/ }),
-/* 569 */
+/* 573 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65452,7 +65739,7 @@
 	exports.default = LoadingIndicator;
 
 /***/ }),
-/* 570 */
+/* 574 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65469,7 +65756,7 @@
 	
 	var _reactRedux = __webpack_require__(181);
 	
-	var _Form = __webpack_require__(571);
+	var _Form = __webpack_require__(575);
 	
 	var _Form2 = _interopRequireDefault(_Form);
 	
@@ -65477,9 +65764,9 @@
 	
 	var _auth2 = _interopRequireDefault(_auth);
 	
-	var _AppActions = __webpack_require__(566);
+	var _AppActions = __webpack_require__(570);
 	
-	var _LoadingIndicator = __webpack_require__(569);
+	var _LoadingIndicator = __webpack_require__(573);
 	
 	var _LoadingIndicator2 = _interopRequireDefault(_LoadingIndicator);
 	
@@ -65556,7 +65843,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(LoginPage);
 
 /***/ }),
-/* 571 */
+/* 575 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65571,13 +65858,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _AppActions = __webpack_require__(566);
+	var _AppActions = __webpack_require__(570);
 	
-	var _LoadingButton = __webpack_require__(568);
+	var _LoadingButton = __webpack_require__(572);
 	
 	var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
 	
-	var _ErrorMessage = __webpack_require__(572);
+	var _ErrorMessage = __webpack_require__(576);
 	
 	var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
 	
@@ -65782,7 +66069,7 @@
 	exports.default = LoginForm;
 
 /***/ }),
-/* 572 */
+/* 576 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65826,7 +66113,7 @@
 	exports.default = ErrorMessage;
 
 /***/ }),
-/* 573 */
+/* 577 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65843,13 +66130,13 @@
 	
 	var _reactRedux = __webpack_require__(181);
 	
-	var _RegisterForm = __webpack_require__(574);
+	var _RegisterForm = __webpack_require__(578);
 	
 	var _RegisterForm2 = _interopRequireDefault(_RegisterForm);
 	
-	var _AppActions = __webpack_require__(566);
+	var _AppActions = __webpack_require__(570);
 	
-	var _LoadingIndicator = __webpack_require__(569);
+	var _LoadingIndicator = __webpack_require__(573);
 	
 	var _LoadingIndicator2 = _interopRequireDefault(_LoadingIndicator);
 	
@@ -65929,7 +66216,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(RegisterPage);
 
 /***/ }),
-/* 574 */
+/* 578 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65944,13 +66231,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _AppActions = __webpack_require__(566);
+	var _AppActions = __webpack_require__(570);
 	
-	var _LoadingButton = __webpack_require__(568);
+	var _LoadingButton = __webpack_require__(572);
 	
 	var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
 	
-	var _ErrorMessage = __webpack_require__(572);
+	var _ErrorMessage = __webpack_require__(576);
 	
 	var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
 	
@@ -66164,7 +66451,7 @@
 	exports.default = RegisterForm;
 
 /***/ }),
-/* 575 */
+/* 579 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66224,7 +66511,7 @@
 	exports.default = NotFound;
 
 /***/ }),
-/* 576 */
+/* 580 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66239,7 +66526,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Nav = __webpack_require__(565);
+	var _Nav = __webpack_require__(569);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	

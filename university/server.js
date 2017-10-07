@@ -9,6 +9,7 @@ var express = require('express'),
     enrollments = require('./server/enrollments'),
     teachers = require('./server/teachers'),
     periods = require('./server/periods'),
+    messages = require('./server/messages'),
     multer = require('multer'),
     busboy = require('connect-busboy'),
     fs = require('fs-extra'),
@@ -127,6 +128,13 @@ app.post('/teachers', teachers.createItem);
 app.post('/teacher', teachers.findByData);
 app.put('/teachers', teachers.updateItem);
 app.delete('/teachers/:id', teachers.deleteItem);
+
+app.get('/messages', messages.findAll);
+app.get('/messages/:id', messages.findById);
+app.post('/messages', messages.createItem);
+app.post('/message', messages.findByData);
+app.put('/messages', messages.updateItem);
+app.delete('/messages/:id', messages.deleteItem);
 
 app.post('/enrollments', enrollments.createItem);
 app.delete('/enrollments/:id', enrollments.deleteItem);

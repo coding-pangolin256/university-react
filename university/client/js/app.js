@@ -25,6 +25,7 @@ import TeacherHome from './TeacherHome';
 import TeacherRecord from './TeacherRecord';
 import TeacherView from './TeacherView';
 import TeacherFormWrapper from './TeacherFormWrapper';
+import ChatHome from './ChatHome';
 
 // Import the components used as pages
 import HomePage from './pages/HomePage.react';
@@ -111,6 +112,7 @@ const Routesz = (store) => {
           <Route path=":teacherId" component={TeacherView}/>
           <Route path=":teacherId/edit" component={TeacherFormWrapper}/>
       </Route>
+      <Route path="chat" component={ChatHome}/>
     </Route>
     )
 
