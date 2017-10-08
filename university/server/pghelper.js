@@ -5,8 +5,8 @@ let mysql = require('mysql'),
     databaseURL = config.databaseURL;
 var pg = mysql.createPool({
     host: 'localhost',
-    user: 'root',
-    password: '',
+    user: 'baba',
+    password: 'Kunming#1',
     database: 'my_db',
     multipleStatements: true,
     pipes_as_concat: true,
