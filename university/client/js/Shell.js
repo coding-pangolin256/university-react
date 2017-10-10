@@ -36,7 +36,6 @@ export default React.createClass({
                             <li className="slds-list__item"><a href="#teachers"><Icon name="user" theme={null}/>Teachers</a></li>
                             :""
                         }
-                        <li className="slds-list__item"><a href="#chat"><Icon name="feedback" theme={null}/>Chat Room</a></li>
                         
                     </ul>
                     

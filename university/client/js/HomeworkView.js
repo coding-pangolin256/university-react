@@ -20,7 +20,6 @@ export default React.createClass({
                     </dl>
                 </div>
             </div>
-            <HomeworkResultCard homework={homework}/>
         </div>
         );
     }

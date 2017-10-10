@@ -47,8 +47,8 @@ let findById = (req, res, next) => {
 let createItem = (req, res, next) => {
     let homework = req.body;
     let table_name = homework.course_code + homework.course_id;
-    let path_field = homework.homework_id + '_hw';
-    let score_field = homework.homework_id + '_score';
+    let path_field = homework.id + '_hw';
+    let score_field = homework.id + '_score';
     // let sql = `IF EXISTS (SELECT * FROM ${table_name} WHERE std_id=${homework.std_id})
     //                 UPDATE ${table_name} SET ${path_field} = '${homework.path}' WHERE std_id=${homework.std_id}
     //             ELSE
@@ -57,14 +57,7 @@ let createItem = (req, res, next) => {
     ON DUPLICATE KEY UPDATE ${path_field} = '${homework.path}'`;
     db.query(sql, [homework.std_id, homework.path])
         .then(result => {
-            let sql = `
-                ALTER TABLE ` + homework.course_code + homework.course_id + `
-                ADD ` + result.insertId + `_hw TEXT;
-                ALTER TABLE ` + homework.course_code + homework.course_id + `
-                ADD ` + result.insertId + `_score DOUBLE;
-              `;
-            db.query(sql);
-            res.send({id: result.insertId});
+            res.json(result);
         })
         .catch(next);
 };

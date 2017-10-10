@@ -10,7 +10,7 @@ export default React.createClass({
         result.course_code = this.props.course.code;
         result.homework_id = this.props.homeworkId;
         result.path = this.props.result[result.homework_id+'_hw'];
-        console.log(result.path);
+        result.score = this.props.result[result.homework_id+'_score'];
         result.id = this.props.result.std_id;
         return {result: result, src_code:""};
     },

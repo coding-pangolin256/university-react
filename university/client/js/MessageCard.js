@@ -7,7 +7,27 @@ import {Icon, ButtonIcon} from './components/Icons';
 import CourseFormWindow from './CourseFormWindow';
 
 export default React.createClass({
-
+    attachLinkHandler(event) {
+        var link = document.createElement('a');
+        link.download = this.props.data.text;
+        link.href = 'http://localhost:5000/upload/' + link.download;
+        var clickEvent = document.createEvent("MouseEvent");
+        clickEvent.initEvent("click", true, true);
+        
+        link.dispatchEvent(clickEvent);
+        event.preventDefault();
+        // PresentationService.downFile({filename: present.path}).then(downloaded => {
+            
+        //     // fileDownload(downloaded, present.path);
+        //     // writeFile(present.path, downloaded, function (err) {
+        //     //     if (err) return console.log(err)
+        //     //     console.log('file is written')
+        //     //   })
+        //     var link = document.createElement('a');
+        //     link.download = present.path;
+        //     link.href = 'http://localhost:5000/upload/'+present.path;
+        // });
+    },
     render() {
         return (
             <div>
@@ -37,7 +57,9 @@ export default React.createClass({
                                     this.props.data.user_name}
                            
                         </div>
-                    <span className="slds-input">{this.props.data.text}</span>
+                    <span className="slds-input">{!this.props.data.type?this.props.data.text:
+                        <a href="#" className="slds-badge" onClick={this.attachLinkHandler}>{this.props.data.text}</a>}
+                    </span>
                 </section>
             </div>
         );

@@ -27,9 +27,9 @@ export default React.createClass({
         window.location.hash = "#chat/" + msg.id + "/edit";
     },
 
-    sendHandler(msg)
+    sendHandler(msg,type)
     {
-        ChatService.createItem({user_id: localStorage.token, pos: localStorage.pos, text: msg})
+        ChatService.createItem({user_id: localStorage.token, pos: localStorage.pos, text: msg, type: type, course_id: this.props.course.id})
         .then(()=>{
             this.getMessages();
         });

@@ -86,75 +86,75 @@
 	
 	var _CourseView2 = _interopRequireDefault(_CourseView);
 	
-	var _CourseFormWrapper = __webpack_require__(511);
+	var _CourseFormWrapper = __webpack_require__(512);
 	
 	var _CourseFormWrapper2 = _interopRequireDefault(_CourseFormWrapper);
 	
-	var _HomeworkRecord = __webpack_require__(512);
+	var _HomeworkRecord = __webpack_require__(513);
 	
 	var _HomeworkRecord2 = _interopRequireDefault(_HomeworkRecord);
 	
-	var _HomeworkView = __webpack_require__(513);
+	var _HomeworkView = __webpack_require__(514);
 	
 	var _HomeworkView2 = _interopRequireDefault(_HomeworkView);
 	
-	var _HomeworkFormWrapper = __webpack_require__(551);
+	var _HomeworkFormWrapper = __webpack_require__(552);
 	
 	var _HomeworkFormWrapper2 = _interopRequireDefault(_HomeworkFormWrapper);
 	
-	var _StudentHome = __webpack_require__(552);
+	var _StudentHome = __webpack_require__(553);
 	
 	var _StudentHome2 = _interopRequireDefault(_StudentHome);
 	
-	var _StudentRecord = __webpack_require__(560);
+	var _StudentRecord = __webpack_require__(561);
 	
 	var _StudentRecord2 = _interopRequireDefault(_StudentRecord);
 	
-	var _StudentView = __webpack_require__(561);
+	var _StudentView = __webpack_require__(562);
 	
 	var _StudentView2 = _interopRequireDefault(_StudentView);
 	
-	var _StudentFormWrapper = __webpack_require__(565);
+	var _StudentFormWrapper = __webpack_require__(566);
 	
 	var _StudentFormWrapper2 = _interopRequireDefault(_StudentFormWrapper);
 	
-	var _TeacherHome = __webpack_require__(566);
+	var _TeacherHome = __webpack_require__(567);
 	
 	var _TeacherHome2 = _interopRequireDefault(_TeacherHome);
 	
-	var _TeacherRecord = __webpack_require__(570);
+	var _TeacherRecord = __webpack_require__(571);
 	
 	var _TeacherRecord2 = _interopRequireDefault(_TeacherRecord);
 	
-	var _TeacherView = __webpack_require__(571);
+	var _TeacherView = __webpack_require__(572);
 	
 	var _TeacherView2 = _interopRequireDefault(_TeacherView);
 	
-	var _TeacherFormWrapper = __webpack_require__(576);
+	var _TeacherFormWrapper = __webpack_require__(577);
 	
 	var _TeacherFormWrapper2 = _interopRequireDefault(_TeacherFormWrapper);
 	
-	var _ChatHome = __webpack_require__(498);
+	var _ChatHome = __webpack_require__(508);
 	
 	var _ChatHome2 = _interopRequireDefault(_ChatHome);
 	
-	var _HomePage = __webpack_require__(577);
+	var _HomePage = __webpack_require__(578);
 	
 	var _HomePage2 = _interopRequireDefault(_HomePage);
 	
-	var _LoginPage = __webpack_require__(583);
+	var _LoginPage = __webpack_require__(584);
 	
 	var _LoginPage2 = _interopRequireDefault(_LoginPage);
 	
-	var _RegisterPage = __webpack_require__(586);
+	var _RegisterPage = __webpack_require__(587);
 	
 	var _RegisterPage2 = _interopRequireDefault(_RegisterPage);
 	
-	var _NotFound = __webpack_require__(588);
+	var _NotFound = __webpack_require__(589);
 	
 	var _NotFound2 = _interopRequireDefault(_NotFound);
 	
-	var _App = __webpack_require__(589);
+	var _App = __webpack_require__(590);
 	
 	var _App2 = _interopRequireDefault(_App);
 	
@@ -40009,17 +40009,7 @@
 	                            _react2.default.createElement(_Icons.Icon, { name: 'user', theme: null }),
 	                            'Teachers'
 	                        )
-	                    ) : "",
-	                    _react2.default.createElement(
-	                        'li',
-	                        { className: 'slds-list__item' },
-	                        _react2.default.createElement(
-	                            'a',
-	                            { href: '#chat' },
-	                            _react2.default.createElement(_Icons.Icon, { name: 'feedback', theme: null }),
-	                            'Chat Room'
-	                        )
-	                    )
+	                    ) : ""
 	                )
 	            ),
 	            this.props.children
@@ -57842,7 +57832,7 @@
 	
 	var _CourseHomeworkCard2 = _interopRequireDefault(_CourseHomeworkCard);
 	
-	var _ChatHome = __webpack_require__(498);
+	var _ChatHome = __webpack_require__(508);
 	
 	var _ChatHome2 = _interopRequireDefault(_ChatHome);
 	
@@ -57895,7 +57885,7 @@
 	            _react2.default.createElement(
 	                "div",
 	                { className: "slds-size--1-of-5 slds-medium-size--1-of-5" },
-	                _react2.default.createElement(_ChatHome2.default, null)
+	                _react2.default.createElement(_ChatHome2.default, { course: course })
 	            )
 	        );
 	    }
@@ -58048,7 +58038,7 @@
 	                { className: 'slds-card__body' },
 	                _react2.default.createElement(
 	                    _DataGrid2.default,
-	                    { data: this.state.results, keyField: 'std_id', actions: localStorage.pos == "teacher" ? ["View Student", "Delete"] : ["Submit"], onAction: this.actionHandler },
+	                    { data: this.state.results, keyField: 'std_id', actions: localStorage.pos == "teacher" ? ["View Student", "Delete"] : null, onAction: this.actionHandler },
 	                    cols
 	                )
 	            ),
@@ -58218,7 +58208,7 @@
 	        result.course_code = this.props.course.code;
 	        result.homework_id = this.props.homeworkId;
 	        result.path = this.props.result[result.homework_id + '_hw'];
-	        console.log(result.path);
+	        result.score = this.props.result[result.homework_id + '_score'];
 	        result.id = this.props.result.std_id;
 	        return { result: result, src_code: "" };
 	    },
@@ -58321,6 +58311,10 @@
 	
 	var _HomeworkFormWindow2 = _interopRequireDefault(_HomeworkFormWindow);
 	
+	var _SubmitFormWindow = __webpack_require__(498);
+	
+	var _SubmitFormWindow2 = _interopRequireDefault(_SubmitFormWindow);
+	
 	var _Icons = __webpack_require__(355);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -58345,19 +58339,23 @@
 	        }
 	    },
 	    homeworkLinkHandler: function homeworkLinkHandler(homework) {
+	        console.log('qwef');
 	        window.location.hash = "#homework/" + homework.id;
 	    },
 	    actionHandler: function actionHandler(data, index, value, label) {
 	        var _this2 = this;
 	
-	        switch (index) {
-	            case 0:
+	        switch (label) {
+	            case "View Homework":
 	                this.homeworkLinkHandler(data);
 	                break;
-	            case 1:
+	            case "Delete":
 	                HomeworkService.deleteItem(data.id).then(function () {
 	                    return _this2.getHomeworks(_this2.props.course.id);
 	                });
+	                break;
+	            case "Submit Homework":
+	                this.setState({ submitting: true, current: data });
 	                break;
 	        }
 	    },
@@ -58380,6 +58378,12 @@
 	    newHomeworkSavedHandler: function newHomeworkSavedHandler(Homework) {
 	        this.setState({ addingHomework: false });
 	        this.getHomeworks(this.props.course.id);
+	    },
+	    homeworkSubmittedHandler: function homeworkSubmittedHandler() {
+	        this.setState({ submitting: false });
+	    },
+	    homeworkSubmitCancelHandler: function homeworkSubmitCancelHandler() {
+	        this.setState({ submitting: false });
 	    },
 	    render: function render() {
 	        return _react2.default.createElement(
@@ -58435,13 +58439,13 @@
 	                { className: 'slds-card__body' },
 	                _react2.default.createElement(
 	                    _DataGrid2.default,
-	                    { data: this.state.homeworks, keyField: 'id', actions: localStorage.pos == "teacher" ? ["View Homework", "Delete"] : ["View Homework"], onAction: this.actionHandler },
-	                    _react2.default.createElement('div', { header: 'Homework Id', field: 'id', sortable: true, onLink: this.homeworkLinkHandler }),
+	                    { data: this.state.homeworks, keyField: 'id', actions: localStorage.pos == "teacher" ? ["View Homework", "Delete"] : ["Submit Homework"], onAction: this.actionHandler },
 	                    _react2.default.createElement('div', { header: 'Title', field: 'title', sortable: true, onLink: this.homeworkLinkHandler }),
 	                    _react2.default.createElement('div', { header: 'Details', field: 'details' })
 	                )
 	            ),
-	            this.state.addingHomework ? _react2.default.createElement(_HomeworkFormWindow2.default, { cid: this.props.course.id, ccode: this.props.course.code, onSaved: this.newHomeworkSavedHandler, onCancel: this.newHomeworkCancelHandler }) : null
+	            this.state.addingHomework ? _react2.default.createElement(_HomeworkFormWindow2.default, { cid: this.props.course.id, ccode: this.props.course.code, onSaved: this.newHomeworkSavedHandler, onCancel: this.newHomeworkCancelHandler }) : null,
+	            this.state.submitting ? _react2.default.createElement(_SubmitFormWindow2.default, { homework: this.state.current, onSaved: this.homeworkSubmittedHandler, onCancel: this.homeworkSubmitCancelHandler }) : null
 	        );
 	    }
 	});
@@ -58695,203 +58699,17 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ChatService = __webpack_require__(499);
+	var _ResultService = __webpack_require__(491);
 	
-	var ChatService = _interopRequireWildcard(_ChatService);
-	
-	var _MessageCard = __webpack_require__(500);
-	
-	var _MessageCard2 = _interopRequireDefault(_MessageCard);
-	
-	var _PageHeader = __webpack_require__(364);
-	
-	var _ChatBox = __webpack_require__(501);
-	
-	var _ChatBox2 = _interopRequireDefault(_ChatBox);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = _react2.default.createClass({
-	    displayName: 'ChatHome',
-	    getInitialState: function getInitialState() {
-	        return { msgs: [] };
-	    },
-	    componentDidMount: function componentDidMount() {
-	        this.getMessages();
-	    },
-	    getMessages: function getMessages() {
-	        var _this = this;
-	
-	        ChatService.findAll().then(function (msgs) {
-	            return _this.setState({ msgs: msgs });
-	        });
-	    },
-	    deleteHandler: function deleteHandler(msg) {
-	        ChatService.deleteItem(this.state.msg.id).then(function () {
-	            return window.location.hash = "chat";
-	        });
-	    },
-	    editHandler: function editHandler(msg) {
-	        window.location.hash = "#chat/" + msg.id + "/edit";
-	    },
-	    sendHandler: function sendHandler(msg) {
-	        var _this2 = this;
-	
-	        ChatService.createItem({ user_id: localStorage.token, pos: localStorage.pos, text: msg }).then(function () {
-	            _this2.getMessages();
-	        });
-	    },
-	    render: function render() {
-	        var rows = [];
-	        rows = this.state.msgs.map(function (item) {
-	            return _react2.default.createElement(_MessageCard2.default, { data: item });
-	        });
-	        // for (let i = 0 ; i < this.state.msgs.length; i++) {
-	        //     rows.push(<MessageCard data={this.state.msgs[i]}/>);
-	        // }
-	        return _react2.default.createElement(
-	            'div',
-	            { className: 'slds-card' },
-	            _react2.default.createElement(
-	                'div',
-	                { className: 'slds-m-around--medium slds-scrollable--y' },
-	                rows
-	            ),
-	            _react2.default.createElement(_ChatBox2.default, { onSend: this.sendHandler })
-	        );
-	    }
-	});
-
-/***/ }),
-/* 499 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.deleteItem = exports.updateItem = exports.createItem = exports.findByData = exports.findById = exports.findAll = undefined;
-	
-	var _rest = __webpack_require__(338);
-	
-	var rest = _interopRequireWildcard(_rest);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	var url = "/messages";
-	
-	var findAll = exports.findAll = function findAll(queryParams) {
-	  return rest.get(url, queryParams);
-	};
-	
-	var findById = exports.findById = function findById(id) {
-	  return rest.get(url + "/" + id);
-	};
-	
-	var findByData = exports.findByData = function findByData(student) {
-	  return rest.post('/message', student);
-	};
-	
-	var createItem = exports.createItem = function createItem(student) {
-	  return rest.post(url, student);
-	};
-	
-	var updateItem = exports.updateItem = function updateItem(student) {
-	  return rest.put(url, student);
-	};
-	
-	var deleteItem = exports.deleteItem = function deleteItem(id) {
-	  return rest.del(url + "/" + id);
-	};
-
-/***/ }),
-/* 500 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _CourseService = __webpack_require__(361);
-	
-	var CourseService = _interopRequireWildcard(_CourseService);
-	
-	var _DataGrid = __webpack_require__(483);
-	
-	var _DataGrid2 = _interopRequireDefault(_DataGrid);
+	var ResultService = _interopRequireWildcard(_ResultService);
 	
 	var _Icons = __webpack_require__(355);
 	
-	var _CourseFormWindow = __webpack_require__(485);
-	
-	var _CourseFormWindow2 = _interopRequireDefault(_CourseFormWindow);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = _react2.default.createClass({
-	    displayName: 'MessageCard',
-	    render: function render() {
-	        return _react2.default.createElement(
-	            'div',
-	            null,
-	            _react2.default.createElement(
-	                'section',
-	                { className: 'slds-card__body' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-media__body' },
-	                    this.props.data.pos == "teacher" ? 'Professor ' + this.props.data.user_name : this.props.data.user_name
-	                ),
-	                _react2.default.createElement(
-	                    'span',
-	                    { className: 'slds-input' },
-	                    this.props.data.text
-	                )
-	            )
-	        );
-	    }
-	});
-
-/***/ }),
-/* 501 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _StudentService = __webpack_require__(337);
-	
-	var StudentService = _interopRequireWildcard(_StudentService);
-	
-	var _Icons = __webpack_require__(355);
-	
-	var _SearchBox = __webpack_require__(357);
-	
-	var _SearchBox2 = _interopRequireDefault(_SearchBox);
-	
-	var _fileInput = __webpack_require__(502);
+	var _fileInput = __webpack_require__(499);
 	
 	var _fileInput2 = _interopRequireDefault(_fileInput);
 	
-	var _fineUploaderWrappers = __webpack_require__(504);
+	var _fineUploaderWrappers = __webpack_require__(501);
 	
 	var _fineUploaderWrappers2 = _interopRequireDefault(_fineUploaderWrappers);
 	
@@ -58899,70 +58717,118 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var assign = Object.assign || __webpack_require__(340);
+	
 	var uploader = new _fineUploaderWrappers2.default({
 	    options: {
 	        request: {
 	            endpoint: 'upload/'
-	        }
+	        },
+	        autoUpload: false
 	    }
-	
 	});
-	uploader.on('complete', function (id, name, response) {
-	    // handle completed upload
-	    console.log('asdf');
-	});
-	var fileInput = _react2.default.createElement(
-	    _fileInput2.default,
-	    { accept: '.c,.cpp,.java,.js,.txt', uploader: uploader },
-	    _react2.default.createElement(
-	        'span',
-	        { 'class': 'icon ion-upload' },
-	        _react2.default.createElement(_Icons.Icon, { name: 'link' })
-	    )
-	);
 	
 	exports.default = _react2.default.createClass({
-	    displayName: 'ChatBox',
+	    displayName: 'SubmitFormWindow',
 	    getInitialState: function getInitialState() {
-	        return { searchKey: "" };
+	        return { homework: [] };
 	    },
-	    handleKeyPress: function handleKeyPress(target) {
-	        if (target.charCode == 13) {
-	            this.props.onSend(this.state.searchKey);
-	            this.setState({ searchKey: "" });
+	    componentDidMount: function componentDidMount() {
+	        var _this = this;
+	
+	        uploader.on('complete', function (id, name, response) {
+	            // handle completed upload
+	            ResultService.createItem(_this.state.homework).then(function (result) {
+	                console.log('submitted');
+	            }).catch(function (error) {
+	                var event = new CustomEvent('notify', { detail: 'You already submitted to this homework' });
+	                document.dispatchEvent(event);
+	            });
+	            console.log('upload success!');
+	        });
+	        uploader.on('submitted', function (id) {
+	            _this.setState({ homework: assign(_this.props.homework, { std_id: localStorage.token, path: uploader.methods.getFile(id).name }) });
+	        });
+	    },
+	    saveHandler: function saveHandler() {
+	        if (this.state.homework) {
+	            uploader.methods.uploadStoredFiles();
+	            this.props.onSaved();
 	        }
 	    },
-	
-	    changeHandler: function changeHandler(event) {
-	        var inputKey = event.target.value;
-	        this.setState({ searchKey: inputKey });
-	    },
-	
 	    render: function render() {
 	        return _react2.default.createElement(
 	            'div',
-	            { className: 'slds-form-element' },
+	            null,
 	            _react2.default.createElement(
 	                'div',
-	                { className: 'slds-form-element__control' },
-	                _react2.default.createElement('input', { className: 'slds-input', type: 'text',
-	                    placeholder: this.props.placeholder || 'Enter your message...',
-	                    value: this.state.searchKey,
-	                    style: { minWidth: "200px", marginTop: "1px" },
-	                    onChange: this.changeHandler,
-	                    onKeyPress: this.handleKeyPress }),
+	                { 'aria-hidden': 'false', role: 'dialog', className: 'slds-modal slds-fade-in-open' },
 	                _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    fileInput
+	                    'div',
+	                    { className: 'slds-modal__container' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-modal__header' },
+	                        _react2.default.createElement(
+	                            'h2',
+	                            { className: 'slds-text-heading--medium' },
+	                            'Submit Homework'
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'slds-button slds-modal__close' },
+	                            _react2.default.createElement('svg', { 'aria-hidden': 'true', className: 'slds-button__icon slds-button__icon--inverse slds-button__icon--large' }),
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'slds-assistive-text' },
+	                                'Close'
+	                            )
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-modal__content', style: { overflow: "visible" } },
+	                        _react2.default.createElement(
+	                            _fileInput2.default,
+	                            { accept: '.c,.cpp,.java,.js,.txt', uploader: uploader },
+	                            _react2.default.createElement(
+	                                'span',
+	                                { 'class': 'icon ion-upload' },
+	                                'Select File',
+	                                _react2.default.createElement(_Icons.Icon, { name: 'link' })
+	                            )
+	                        ),
+	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement(
+	                            'span',
+	                            { className: 'slds-input' },
+	                            this.state.homework ? this.state.homework.path : ""
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-modal__footer' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'slds-button slds-button--neutral', onClick: this.props.onCancel },
+	                            'Cancel'
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'slds-button slds-button--neutral slds-button--brand', onClick: this.saveHandler },
+	                            'Save'
+	                        )
+	                    )
 	                )
-	            )
+	            ),
+	            _react2.default.createElement('div', { className: 'slds-modal-backdrop slds-modal-backdrop--open' })
 	        );
 	    }
 	});
 
 /***/ }),
-/* 502 */
+/* 499 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58983,7 +58849,7 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _styleableElement = __webpack_require__(503);
+	var _styleableElement = __webpack_require__(500);
 	
 	var _styleableElement2 = _interopRequireDefault(_styleableElement);
 	
@@ -59068,7 +58934,7 @@
 	exports.default = FileInput;
 
 /***/ }),
-/* 503 */
+/* 500 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59130,7 +58996,7 @@
 	exports.default = StyleableFileInput;
 
 /***/ }),
-/* 504 */
+/* 501 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59139,15 +59005,15 @@
 	    value: true
 	});
 	
-	var _baseWrapper = __webpack_require__(505);
+	var _baseWrapper = __webpack_require__(502);
 	
 	var _baseWrapper2 = _interopRequireDefault(_baseWrapper);
 	
-	var _core = __webpack_require__(509);
+	var _core = __webpack_require__(506);
 	
 	var _core2 = _interopRequireDefault(_core);
 	
-	var _callbackNames = __webpack_require__(508);
+	var _callbackNames = __webpack_require__(505);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -59179,7 +59045,7 @@
 	exports.default = FineUploaderTraditional;
 
 /***/ }),
-/* 505 */
+/* 502 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59190,11 +59056,11 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _objectAssign = __webpack_require__(506);
+	var _objectAssign = __webpack_require__(503);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
-	var _callbackProxy = __webpack_require__(507);
+	var _callbackProxy = __webpack_require__(504);
 	
 	var _callbackProxy2 = _interopRequireDefault(_callbackProxy);
 	
@@ -59308,7 +59174,7 @@
 	};
 
 /***/ }),
-/* 506 */
+/* 503 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -59397,7 +59263,7 @@
 
 
 /***/ }),
-/* 507 */
+/* 504 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59410,11 +59276,11 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _objectAssign = __webpack_require__(506);
+	var _objectAssign = __webpack_require__(503);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
-	var _callbackNames = __webpack_require__(508);
+	var _callbackNames = __webpack_require__(505);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -59558,7 +59424,7 @@
 	};
 
 /***/ }),
-/* 508 */
+/* 505 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59568,7 +59434,7 @@
 	});
 	exports.s3 = exports.traditional = exports.thenable = undefined;
 	
-	var _objectAssign = __webpack_require__(506);
+	var _objectAssign = __webpack_require__(503);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
@@ -59581,16 +59447,16 @@
 	var s3 = exports.s3 = (0, _objectAssign2.default)([], traditional, ['onCredentialsExpired']);
 
 /***/ }),
-/* 509 */
+/* 506 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	module.exports = __webpack_require__(510);
+	module.exports = __webpack_require__(507);
 
 
 /***/ }),
-/* 510 */
+/* 507 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;// Fine Uploader 5.15.0 - (c) 2013-present Widen Enterprises, Inc. MIT licensed. http://fineuploader.com
@@ -65150,7 +65016,325 @@
 	//# sourceMappingURL=fine-uploader.core.js.map
 
 /***/ }),
+/* 508 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _ChatService = __webpack_require__(509);
+	
+	var ChatService = _interopRequireWildcard(_ChatService);
+	
+	var _MessageCard = __webpack_require__(510);
+	
+	var _MessageCard2 = _interopRequireDefault(_MessageCard);
+	
+	var _PageHeader = __webpack_require__(364);
+	
+	var _ChatBox = __webpack_require__(511);
+	
+	var _ChatBox2 = _interopRequireDefault(_ChatBox);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'ChatHome',
+	    getInitialState: function getInitialState() {
+	        return { msgs: [] };
+	    },
+	    componentDidMount: function componentDidMount() {
+	        this.getMessages();
+	    },
+	    getMessages: function getMessages() {
+	        var _this = this;
+	
+	        ChatService.findAll().then(function (msgs) {
+	            return _this.setState({ msgs: msgs });
+	        });
+	    },
+	    deleteHandler: function deleteHandler(msg) {
+	        ChatService.deleteItem(this.state.msg.id).then(function () {
+	            return window.location.hash = "chat";
+	        });
+	    },
+	    editHandler: function editHandler(msg) {
+	        window.location.hash = "#chat/" + msg.id + "/edit";
+	    },
+	    sendHandler: function sendHandler(msg, type) {
+	        var _this2 = this;
+	
+	        ChatService.createItem({ user_id: localStorage.token, pos: localStorage.pos, text: msg, type: type, course_id: this.props.course.id }).then(function () {
+	            _this2.getMessages();
+	        });
+	    },
+	    render: function render() {
+	        var rows = [];
+	        rows = this.state.msgs.map(function (item) {
+	            return _react2.default.createElement(_MessageCard2.default, { data: item });
+	        });
+	        // for (let i = 0 ; i < this.state.msgs.length; i++) {
+	        //     rows.push(<MessageCard data={this.state.msgs[i]}/>);
+	        // }
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'slds-card' },
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'slds-m-around--medium slds-scrollable--y' },
+	                rows
+	            ),
+	            _react2.default.createElement(_ChatBox2.default, { onSend: this.sendHandler })
+	        );
+	    }
+	});
+
+/***/ }),
+/* 509 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.deleteItem = exports.updateItem = exports.createItem = exports.findByData = exports.findById = exports.findAll = undefined;
+	
+	var _rest = __webpack_require__(338);
+	
+	var rest = _interopRequireWildcard(_rest);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	var url = "/messages";
+	
+	var findAll = exports.findAll = function findAll(queryParams) {
+	  return rest.get(url, queryParams);
+	};
+	
+	var findById = exports.findById = function findById(id) {
+	  return rest.get(url + "/" + id);
+	};
+	
+	var findByData = exports.findByData = function findByData(student) {
+	  return rest.post('/message', student);
+	};
+	
+	var createItem = exports.createItem = function createItem(student) {
+	  return rest.post(url, student);
+	};
+	
+	var updateItem = exports.updateItem = function updateItem(student) {
+	  return rest.put(url, student);
+	};
+	
+	var deleteItem = exports.deleteItem = function deleteItem(id) {
+	  return rest.del(url + "/" + id);
+	};
+
+/***/ }),
+/* 510 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _CourseService = __webpack_require__(361);
+	
+	var CourseService = _interopRequireWildcard(_CourseService);
+	
+	var _DataGrid = __webpack_require__(483);
+	
+	var _DataGrid2 = _interopRequireDefault(_DataGrid);
+	
+	var _Icons = __webpack_require__(355);
+	
+	var _CourseFormWindow = __webpack_require__(485);
+	
+	var _CourseFormWindow2 = _interopRequireDefault(_CourseFormWindow);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'MessageCard',
+	    attachLinkHandler: function attachLinkHandler(event) {
+	        var link = document.createElement('a');
+	        link.download = this.props.data.text;
+	        link.href = 'http://localhost:5000/upload/' + link.download;
+	        var clickEvent = document.createEvent("MouseEvent");
+	        clickEvent.initEvent("click", true, true);
+	
+	        link.dispatchEvent(clickEvent);
+	        event.preventDefault();
+	        // PresentationService.downFile({filename: present.path}).then(downloaded => {
+	
+	        //     // fileDownload(downloaded, present.path);
+	        //     // writeFile(present.path, downloaded, function (err) {
+	        //     //     if (err) return console.log(err)
+	        //     //     console.log('file is written')
+	        //     //   })
+	        //     var link = document.createElement('a');
+	        //     link.download = present.path;
+	        //     link.href = 'http://localhost:5000/upload/'+present.path;
+	        // });
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	                'section',
+	                { className: 'slds-card__body' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-media__body' },
+	                    this.props.data.pos == "teacher" ? 'Professor ' + this.props.data.user_name : this.props.data.user_name
+	                ),
+	                _react2.default.createElement(
+	                    'span',
+	                    { className: 'slds-input' },
+	                    !this.props.data.type ? this.props.data.text : _react2.default.createElement(
+	                        'a',
+	                        { href: '#', className: 'slds-badge', onClick: this.attachLinkHandler },
+	                        this.props.data.text
+	                    )
+	                )
+	            )
+	        );
+	    }
+	});
+
+/***/ }),
 /* 511 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _StudentService = __webpack_require__(337);
+	
+	var StudentService = _interopRequireWildcard(_StudentService);
+	
+	var _Icons = __webpack_require__(355);
+	
+	var _SearchBox = __webpack_require__(357);
+	
+	var _SearchBox2 = _interopRequireDefault(_SearchBox);
+	
+	var _fileInput = __webpack_require__(499);
+	
+	var _fileInput2 = _interopRequireDefault(_fileInput);
+	
+	var _fineUploaderWrappers = __webpack_require__(501);
+	
+	var _fineUploaderWrappers2 = _interopRequireDefault(_fineUploaderWrappers);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var uploader = new _fineUploaderWrappers2.default({
+	    options: {
+	        request: {
+	            endpoint: 'upload/'
+	        },
+	        autoUpload: false
+	    }
+	});
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'ChatBox',
+	    getInitialState: function getInitialState() {
+	        return { searchKey: "" };
+	    },
+	    handleKeyPress: function handleKeyPress(target) {
+	        if (target.charCode == 13) {
+	            if (this.state.searchKey != "") {
+	                this.props.onSend(this.state.searchKey, 0);
+	                this.setState({ searchKey: "" });
+	            }
+	            if (this.state.attachment) {
+	                uploader.methods.uploadStoredFiles();
+	            }
+	        }
+	    },
+	
+	    changeHandler: function changeHandler(event) {
+	        var inputKey = event.target.value;
+	        this.setState({ searchKey: inputKey });
+	    },
+	    componentDidMount: function componentDidMount() {
+	        var _this = this;
+	
+	        uploader.on('complete', function (id, name, response) {
+	            // handle completed upload
+	            _this.props.onSend(_this.state.attachment, 1);
+	            _this.setState({ attachment: "" });
+	        });
+	        uploader.on('submitted', function (id) {
+	            _this.setState({ attachment: uploader.methods.getFile(id).name });
+	        });
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'slds-form-element' },
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'slds-form-element__control' },
+	                _react2.default.createElement('input', { className: 'slds-input', type: 'text',
+	                    placeholder: this.props.placeholder || 'Enter your message...',
+	                    value: this.state.searchKey,
+	                    style: { minWidth: "200px", marginTop: "1px" },
+	                    onChange: this.changeHandler,
+	                    onKeyPress: this.handleKeyPress }),
+	                _react2.default.createElement(
+	                    _fileInput2.default,
+	                    { accept: '*', uploader: uploader },
+	                    _react2.default.createElement(
+	                        'span',
+	                        { 'class': 'icon ion-upload' },
+	                        _react2.default.createElement(_Icons.Icon, { name: 'link' })
+	                    )
+	                ),
+	                '\xA0',
+	                _react2.default.createElement(
+	                    'span',
+	                    { className: 'slds-badge' },
+	                    this.state.attachment ? this.state.attachment : ""
+	                )
+	            )
+	        );
+	    }
+	});
+
+/***/ }),
+/* 512 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65192,7 +65376,7 @@
 	});
 
 /***/ }),
-/* 512 */
+/* 513 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65215,7 +65399,7 @@
 	
 	var _PageHeader = __webpack_require__(364);
 	
-	var _HomeworkView = __webpack_require__(513);
+	var _HomeworkView = __webpack_require__(514);
 	
 	var _HomeworkView2 = _interopRequireDefault(_HomeworkView);
 	
@@ -65270,7 +65454,7 @@
 	});
 
 /***/ }),
-/* 513 */
+/* 514 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65283,7 +65467,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _HomeworkResultCard = __webpack_require__(514);
+	var _HomeworkResultCard = __webpack_require__(515);
 	
 	var _HomeworkResultCard2 = _interopRequireDefault(_HomeworkResultCard);
 	
@@ -65325,14 +65509,13 @@
 	                        )
 	                    )
 	                )
-	            ),
-	            _react2.default.createElement(_HomeworkResultCard2.default, { homework: homework })
+	            )
 	        );
 	    }
 	});
 
 /***/ }),
-/* 514 */
+/* 515 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65363,7 +65546,7 @@
 	
 	var _Icons = __webpack_require__(355);
 	
-	var _reactUploadFile = __webpack_require__(515);
+	var _reactUploadFile = __webpack_require__(516);
 	
 	var _reactUploadFile2 = _interopRequireDefault(_reactUploadFile);
 	
@@ -65570,22 +65753,22 @@
 	});
 
 /***/ }),
-/* 515 */
+/* 516 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	!function(e,t){ true?module.exports=t(__webpack_require__(516)):"function"==typeof define&&define.amd?define(["react"],t):"object"==typeof exports?exports["react-upload-file"]=t(require("react")):e["react-upload-file"]=t(e.React)}(this,function(e){return function(e){function t(n){if(o[n])return o[n].exports;var r=o[n]={exports:{},id:n,loaded:!1};return e[n].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var o={};return t.m=e,t.c=o,t.p="",t(0)}([function(e,t,o){e.exports=o(1)},function(e,t,o){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function r(e){if(Array.isArray(e)){for(var t=0,o=Array(e.length);t<e.length;t++)o[t]=e[t];return o}return Array.from(e)}function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function s(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function p(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var a=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var o=arguments[t];for(var n in o)Object.prototype.hasOwnProperty.call(o,n)&&(e[n]=o[n])}return e},u="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},l=function(){function e(e,t){for(var o=0;o<t.length;o++){var n=t[o];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,o,n){return o&&e(t.prototype,o),n&&e(t,n),t}}(),f=o(2),c=n(f),d=function(e){function t(e){i(this,t);var o=s(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));o.state={xhrList:[],currentXHRId:0},o.commonChooseFile=function(e){if("ajax-upload-file-input"!==e.target.name){var t=o.beforeChoose();if(t!==!0&&void 0!==t)return;o.input.click()}},o.commonChangeFile=function(e){o.files=o.input.files,o.didChoose(o.files),o.props.uploadFileButton||o.commonUploadFile(e)},o.commonUploadFile=function(e){if(!o.files||!o.files.length)return!1;if(!o.baseUrl)throw new Error("baseUrl missed in options");var t=e===!0||o.beforeUpload(o.files);if(!t)return!1;var n=new FormData;n=o.appendFieldsToFormData(n);for(var i=u(o.fileFieldName),s=0===o.numberLimit?o.files.length:Math.min(o.files.length,o.numberLimit),p=s-1;p>=0;p--)if("function"===i){var a=o.files[p],l=o.fileFieldName(a);n.append(l,a)}else if("string"===i){var f=o.files[p];n.append(o.fileFieldName,f)}else{var c=o.files[p];n.append(c.name,c)}var d=o.baseUrl,y="function"==typeof o.query?o.query(o.files):o.query,m=d.indexOf("?"),b=void 0;m>-1&&(b=d.substring(m),d=d.substring(0,m)),y&&!function(){b&&console.warn("Your url contains query string, which will be ignored when options.query is set.");var e=[];Object.keys(y).forEach(function(t){return e.push(t+"="+y[t])}),b="?"+e.join("&")}(),b=b||"";var h=""+d+b,T=new XMLHttpRequest;T.open("post",h,!0),T.withCredentials=o.withCredentials;var v=o.requestHeaders;v&&Object.keys(v).forEach(function(e){return T.setRequestHeader(e,v[e])}),o.timeout&&(T.timeout=o.timeout,T.addEventListener("timeout",function(){o.uploadError({type:"408",message:"Request Timeout"})}),setTimeout(function(){},o.timeout)),T.addEventListener("load",function(){o.input.value="";var e="json"===o.dataType?JSON.parse(T.responseText):T.responseText;o.uploadSuccess(e)}),T.addEventListener("error",function(){var e="json"===o.dataType?JSON.parse(T.responseText):T.responseText;o.uploadError({type:e.type,message:e.message})}),T.addEventListener("progress",function(e){o.uploading(e)});var P=o.state.xhrList.length-1;return T.addEventListener("abort",function(){o.onAbort(P)}),T.send(n),o.setState({currentXHRId:P,xhrList:[].concat(r(o.state.xhrList),[T])}),o.didUpload(o.files,o.state.currentXHRId),!0},o.appendFieldsToFormData=function(e){var t="function"==typeof o.body?o.body():o.body;return t&&Object.keys(t).forEach(function(o){e.append(o,t[o])}),e},o.processFile=function(e){o.files=e(o.files)},o.manuallyChooseFile=function(){o.commonChooseFile()},o.manuallyUploadFile=function(e){o.files=e&&e.length?e:o.files,o.commonUploadFile(!0)},o.abort=function(e){e?o.state.xhrList[e].abort():o.state.xhrList[o.state.currentXHRId].abort()};var n=function(){},p=a({dataType:"json",timeout:0,numberLimit:0,userAgent:window.navigator.userAgent,multiple:!1,withCredentials:!1,beforeChoose:n,didChoose:n,beforeUpload:n,didUpload:n,uploading:n,uploadSuccess:n,uploadError:n,uploadFail:n,onAbort:n},e.options),l=parseInt(p.timeout,10);p.timeout=Number.isInteger(l)&&l>0?l:0;var f=p.dataType&&p.dataType.toLowerCase();return p.dataType="json"!==f&&"text",Object.keys(p).forEach(function(e){o[e]=p[e]}),o}return p(t,e),l(t,[{key:"componentDidMount",value:function(){this.input=document.querySelector("[name=ajax-upload-file-input]")}},{key:"render",value:function(){var e={accept:this.props.options.accept,multiple:this.props.options.multiple},t=c.default.cloneElement(this.props.chooseFileButton,{onClick:this.commonChooseFile},[c.default.createElement("input",a({type:"file",name:"ajax-upload-file-input",style:{display:"none"},onChange:this.commonChangeFile},e,{key:"file-button"}))]),o=this.props.uploadFileButton&&c.default.cloneElement(this.props.uploadFileButton,{onClick:this.commonUploadFile});return c.default.createElement("div",{style:{display:"inline-block"}},t,o)}}]),t}(f.Component);d.propTypes={options:f.PropTypes.shape({baseUrl:f.PropTypes.string.isRequired,query:f.PropTypes.oneOfType([f.PropTypes.object,f.PropTypes.func]),body:f.PropTypes.oneOfType([f.PropTypes.object,f.PropTypes.func]),dataType:f.PropTypes.string,timeout:f.PropTypes.number,numberLimit:f.PropTypes.oneOfType([f.PropTypes.number,f.PropTypes.func]),fileFieldName:f.PropTypes.oneOfType([f.PropTypes.string,f.PropTypes.func]),withCredentials:f.PropTypes.bool,requestHeaders:f.PropTypes.object,accept:f.PropTypes.string,multiple:f.PropTypes.bool,userAgent:f.PropTypes.string,beforeChoose:f.PropTypes.func,didChoose:f.PropTypes.func,beforeUpload:f.PropTypes.func,didUpload:f.PropTypes.func,uploading:f.PropTypes.func,uploadSuccess:f.PropTypes.func,uploadError:f.PropTypes.func,uploadFail:f.PropTypes.func,onAbort:f.PropTypes.func}).isRequired,style:f.PropTypes.object,className:f.PropTypes.string,chooseFileButton:f.PropTypes.element.isRequired,uploadFileButton:f.PropTypes.element},d.defaultProps={chooseFileButton:c.default.createElement("button",null)},t.default=d},function(t,o){t.exports=e}])});
+	!function(e,t){ true?module.exports=t(__webpack_require__(517)):"function"==typeof define&&define.amd?define(["react"],t):"object"==typeof exports?exports["react-upload-file"]=t(require("react")):e["react-upload-file"]=t(e.React)}(this,function(e){return function(e){function t(n){if(o[n])return o[n].exports;var r=o[n]={exports:{},id:n,loaded:!1};return e[n].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var o={};return t.m=e,t.c=o,t.p="",t(0)}([function(e,t,o){e.exports=o(1)},function(e,t,o){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function r(e){if(Array.isArray(e)){for(var t=0,o=Array(e.length);t<e.length;t++)o[t]=e[t];return o}return Array.from(e)}function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function s(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function p(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var a=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var o=arguments[t];for(var n in o)Object.prototype.hasOwnProperty.call(o,n)&&(e[n]=o[n])}return e},u="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},l=function(){function e(e,t){for(var o=0;o<t.length;o++){var n=t[o];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,o,n){return o&&e(t.prototype,o),n&&e(t,n),t}}(),f=o(2),c=n(f),d=function(e){function t(e){i(this,t);var o=s(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));o.state={xhrList:[],currentXHRId:0},o.commonChooseFile=function(e){if("ajax-upload-file-input"!==e.target.name){var t=o.beforeChoose();if(t!==!0&&void 0!==t)return;o.input.click()}},o.commonChangeFile=function(e){o.files=o.input.files,o.didChoose(o.files),o.props.uploadFileButton||o.commonUploadFile(e)},o.commonUploadFile=function(e){if(!o.files||!o.files.length)return!1;if(!o.baseUrl)throw new Error("baseUrl missed in options");var t=e===!0||o.beforeUpload(o.files);if(!t)return!1;var n=new FormData;n=o.appendFieldsToFormData(n);for(var i=u(o.fileFieldName),s=0===o.numberLimit?o.files.length:Math.min(o.files.length,o.numberLimit),p=s-1;p>=0;p--)if("function"===i){var a=o.files[p],l=o.fileFieldName(a);n.append(l,a)}else if("string"===i){var f=o.files[p];n.append(o.fileFieldName,f)}else{var c=o.files[p];n.append(c.name,c)}var d=o.baseUrl,y="function"==typeof o.query?o.query(o.files):o.query,m=d.indexOf("?"),b=void 0;m>-1&&(b=d.substring(m),d=d.substring(0,m)),y&&!function(){b&&console.warn("Your url contains query string, which will be ignored when options.query is set.");var e=[];Object.keys(y).forEach(function(t){return e.push(t+"="+y[t])}),b="?"+e.join("&")}(),b=b||"";var h=""+d+b,T=new XMLHttpRequest;T.open("post",h,!0),T.withCredentials=o.withCredentials;var v=o.requestHeaders;v&&Object.keys(v).forEach(function(e){return T.setRequestHeader(e,v[e])}),o.timeout&&(T.timeout=o.timeout,T.addEventListener("timeout",function(){o.uploadError({type:"408",message:"Request Timeout"})}),setTimeout(function(){},o.timeout)),T.addEventListener("load",function(){o.input.value="";var e="json"===o.dataType?JSON.parse(T.responseText):T.responseText;o.uploadSuccess(e)}),T.addEventListener("error",function(){var e="json"===o.dataType?JSON.parse(T.responseText):T.responseText;o.uploadError({type:e.type,message:e.message})}),T.addEventListener("progress",function(e){o.uploading(e)});var P=o.state.xhrList.length-1;return T.addEventListener("abort",function(){o.onAbort(P)}),T.send(n),o.setState({currentXHRId:P,xhrList:[].concat(r(o.state.xhrList),[T])}),o.didUpload(o.files,o.state.currentXHRId),!0},o.appendFieldsToFormData=function(e){var t="function"==typeof o.body?o.body():o.body;return t&&Object.keys(t).forEach(function(o){e.append(o,t[o])}),e},o.processFile=function(e){o.files=e(o.files)},o.manuallyChooseFile=function(){o.commonChooseFile()},o.manuallyUploadFile=function(e){o.files=e&&e.length?e:o.files,o.commonUploadFile(!0)},o.abort=function(e){e?o.state.xhrList[e].abort():o.state.xhrList[o.state.currentXHRId].abort()};var n=function(){},p=a({dataType:"json",timeout:0,numberLimit:0,userAgent:window.navigator.userAgent,multiple:!1,withCredentials:!1,beforeChoose:n,didChoose:n,beforeUpload:n,didUpload:n,uploading:n,uploadSuccess:n,uploadError:n,uploadFail:n,onAbort:n},e.options),l=parseInt(p.timeout,10);p.timeout=Number.isInteger(l)&&l>0?l:0;var f=p.dataType&&p.dataType.toLowerCase();return p.dataType="json"!==f&&"text",Object.keys(p).forEach(function(e){o[e]=p[e]}),o}return p(t,e),l(t,[{key:"componentDidMount",value:function(){this.input=document.querySelector("[name=ajax-upload-file-input]")}},{key:"render",value:function(){var e={accept:this.props.options.accept,multiple:this.props.options.multiple},t=c.default.cloneElement(this.props.chooseFileButton,{onClick:this.commonChooseFile},[c.default.createElement("input",a({type:"file",name:"ajax-upload-file-input",style:{display:"none"},onChange:this.commonChangeFile},e,{key:"file-button"}))]),o=this.props.uploadFileButton&&c.default.cloneElement(this.props.uploadFileButton,{onClick:this.commonUploadFile});return c.default.createElement("div",{style:{display:"inline-block"}},t,o)}}]),t}(f.Component);d.propTypes={options:f.PropTypes.shape({baseUrl:f.PropTypes.string.isRequired,query:f.PropTypes.oneOfType([f.PropTypes.object,f.PropTypes.func]),body:f.PropTypes.oneOfType([f.PropTypes.object,f.PropTypes.func]),dataType:f.PropTypes.string,timeout:f.PropTypes.number,numberLimit:f.PropTypes.oneOfType([f.PropTypes.number,f.PropTypes.func]),fileFieldName:f.PropTypes.oneOfType([f.PropTypes.string,f.PropTypes.func]),withCredentials:f.PropTypes.bool,requestHeaders:f.PropTypes.object,accept:f.PropTypes.string,multiple:f.PropTypes.bool,userAgent:f.PropTypes.string,beforeChoose:f.PropTypes.func,didChoose:f.PropTypes.func,beforeUpload:f.PropTypes.func,didUpload:f.PropTypes.func,uploading:f.PropTypes.func,uploadSuccess:f.PropTypes.func,uploadError:f.PropTypes.func,uploadFail:f.PropTypes.func,onAbort:f.PropTypes.func}).isRequired,style:f.PropTypes.object,className:f.PropTypes.string,chooseFileButton:f.PropTypes.element.isRequired,uploadFileButton:f.PropTypes.element},d.defaultProps={chooseFileButton:c.default.createElement("button",null)},t.default=d},function(t,o){t.exports=e}])});
 
 /***/ }),
-/* 516 */
+/* 517 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(517);
+	module.exports = __webpack_require__(518);
 
 
 /***/ }),
-/* 517 */
+/* 518 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -65600,24 +65783,24 @@
 	
 	var _assign = __webpack_require__(188);
 	
-	var ReactBaseClasses = __webpack_require__(518);
-	var ReactChildren = __webpack_require__(527);
-	var ReactDOMFactories = __webpack_require__(535);
-	var ReactElement = __webpack_require__(529);
-	var ReactPropTypes = __webpack_require__(541);
-	var ReactVersion = __webpack_require__(543);
+	var ReactBaseClasses = __webpack_require__(519);
+	var ReactChildren = __webpack_require__(528);
+	var ReactDOMFactories = __webpack_require__(536);
+	var ReactElement = __webpack_require__(530);
+	var ReactPropTypes = __webpack_require__(542);
+	var ReactVersion = __webpack_require__(544);
 	
-	var createReactClass = __webpack_require__(544);
-	var onlyChild = __webpack_require__(550);
+	var createReactClass = __webpack_require__(545);
+	var onlyChild = __webpack_require__(551);
 	
 	var createElement = ReactElement.createElement;
 	var createFactory = ReactElement.createFactory;
 	var cloneElement = ReactElement.cloneElement;
 	
 	if (process.env.NODE_ENV !== 'production') {
-	  var lowPriorityWarning = __webpack_require__(526);
-	  var canDefineProperty = __webpack_require__(523);
-	  var ReactElementValidator = __webpack_require__(536);
+	  var lowPriorityWarning = __webpack_require__(527);
+	  var canDefineProperty = __webpack_require__(524);
+	  var ReactElementValidator = __webpack_require__(537);
 	  var didWarnPropTypesDeprecated = false;
 	  createElement = ReactElementValidator.createElement;
 	  createFactory = ReactElementValidator.createFactory;
@@ -65720,7 +65903,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 518 */
+/* 519 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -65733,15 +65916,15 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(519),
+	var _prodInvariant = __webpack_require__(520),
 	    _assign = __webpack_require__(188);
 	
-	var ReactNoopUpdateQueue = __webpack_require__(520);
+	var ReactNoopUpdateQueue = __webpack_require__(521);
 	
-	var canDefineProperty = __webpack_require__(523);
-	var emptyObject = __webpack_require__(524);
-	var invariant = __webpack_require__(525);
-	var lowPriorityWarning = __webpack_require__(526);
+	var canDefineProperty = __webpack_require__(524);
+	var emptyObject = __webpack_require__(525);
+	var invariant = __webpack_require__(526);
+	var lowPriorityWarning = __webpack_require__(527);
 	
 	/**
 	 * Base class helpers for the updating state of a component.
@@ -65866,7 +66049,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 519 */
+/* 520 */
 /***/ (function(module, exports) {
 
 	/**
@@ -65907,7 +66090,7 @@
 	module.exports = reactProdInvariant;
 
 /***/ }),
-/* 520 */
+/* 521 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -65920,7 +66103,7 @@
 	
 	'use strict';
 	
-	var warning = __webpack_require__(521);
+	var warning = __webpack_require__(522);
 	
 	function warnNoop(publicInstance, callerName) {
 	  if (process.env.NODE_ENV !== 'production') {
@@ -66005,7 +66188,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 521 */
+/* 522 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -66018,7 +66201,7 @@
 	
 	'use strict';
 	
-	var emptyFunction = __webpack_require__(522);
+	var emptyFunction = __webpack_require__(523);
 	
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -66073,7 +66256,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 522 */
+/* 523 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -66114,7 +66297,7 @@
 	module.exports = emptyFunction;
 
 /***/ }),
-/* 523 */
+/* 524 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -66143,7 +66326,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 524 */
+/* 525 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -66166,7 +66349,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 525 */
+/* 526 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -66225,7 +66408,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 526 */
+/* 527 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -66293,7 +66476,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 527 */
+/* 528 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -66306,11 +66489,11 @@
 	
 	'use strict';
 	
-	var PooledClass = __webpack_require__(528);
-	var ReactElement = __webpack_require__(529);
+	var PooledClass = __webpack_require__(529);
+	var ReactElement = __webpack_require__(530);
 	
-	var emptyFunction = __webpack_require__(522);
-	var traverseAllChildren = __webpack_require__(532);
+	var emptyFunction = __webpack_require__(523);
+	var traverseAllChildren = __webpack_require__(533);
 	
 	var twoArgumentPooler = PooledClass.twoArgumentPooler;
 	var fourArgumentPooler = PooledClass.fourArgumentPooler;
@@ -66486,7 +66669,7 @@
 	module.exports = ReactChildren;
 
 /***/ }),
-/* 528 */
+/* 529 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -66500,9 +66683,9 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(519);
+	var _prodInvariant = __webpack_require__(520);
 	
-	var invariant = __webpack_require__(525);
+	var invariant = __webpack_require__(526);
 	
 	/**
 	 * Static poolers. Several custom versions for each potential number of
@@ -66601,7 +66784,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 529 */
+/* 530 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -66616,13 +66799,13 @@
 	
 	var _assign = __webpack_require__(188);
 	
-	var ReactCurrentOwner = __webpack_require__(530);
+	var ReactCurrentOwner = __webpack_require__(531);
 	
-	var warning = __webpack_require__(521);
-	var canDefineProperty = __webpack_require__(523);
+	var warning = __webpack_require__(522);
+	var canDefineProperty = __webpack_require__(524);
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	
-	var REACT_ELEMENT_TYPE = __webpack_require__(531);
+	var REACT_ELEMENT_TYPE = __webpack_require__(532);
 	
 	var RESERVED_PROPS = {
 	  key: true,
@@ -66945,7 +67128,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 530 */
+/* 531 */
 /***/ (function(module, exports) {
 
 	/**
@@ -66976,7 +67159,7 @@
 	module.exports = ReactCurrentOwner;
 
 /***/ }),
-/* 531 */
+/* 532 */
 /***/ (function(module, exports) {
 
 	/**
@@ -66998,7 +67181,7 @@
 	module.exports = REACT_ELEMENT_TYPE;
 
 /***/ }),
-/* 532 */
+/* 533 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -67011,15 +67194,15 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(519);
+	var _prodInvariant = __webpack_require__(520);
 	
-	var ReactCurrentOwner = __webpack_require__(530);
-	var REACT_ELEMENT_TYPE = __webpack_require__(531);
+	var ReactCurrentOwner = __webpack_require__(531);
+	var REACT_ELEMENT_TYPE = __webpack_require__(532);
 	
-	var getIteratorFn = __webpack_require__(533);
-	var invariant = __webpack_require__(525);
-	var KeyEscapeUtils = __webpack_require__(534);
-	var warning = __webpack_require__(521);
+	var getIteratorFn = __webpack_require__(534);
+	var invariant = __webpack_require__(526);
+	var KeyEscapeUtils = __webpack_require__(535);
+	var warning = __webpack_require__(522);
 	
 	var SEPARATOR = '.';
 	var SUBSEPARATOR = ':';
@@ -67177,7 +67360,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 533 */
+/* 534 */
 /***/ (function(module, exports) {
 
 	/**
@@ -67220,7 +67403,7 @@
 	module.exports = getIteratorFn;
 
 /***/ }),
-/* 534 */
+/* 535 */
 /***/ (function(module, exports) {
 
 	/**
@@ -67281,7 +67464,7 @@
 	module.exports = KeyEscapeUtils;
 
 /***/ }),
-/* 535 */
+/* 536 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -67294,7 +67477,7 @@
 	
 	'use strict';
 	
-	var ReactElement = __webpack_require__(529);
+	var ReactElement = __webpack_require__(530);
 	
 	/**
 	 * Create a factory that creates HTML tag elements.
@@ -67303,7 +67486,7 @@
 	 */
 	var createDOMFactory = ReactElement.createFactory;
 	if (process.env.NODE_ENV !== 'production') {
-	  var ReactElementValidator = __webpack_require__(536);
+	  var ReactElementValidator = __webpack_require__(537);
 	  createDOMFactory = ReactElementValidator.createFactory;
 	}
 	
@@ -67453,7 +67636,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 536 */
+/* 537 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -67473,16 +67656,16 @@
 	
 	'use strict';
 	
-	var ReactCurrentOwner = __webpack_require__(530);
-	var ReactComponentTreeHook = __webpack_require__(537);
-	var ReactElement = __webpack_require__(529);
+	var ReactCurrentOwner = __webpack_require__(531);
+	var ReactComponentTreeHook = __webpack_require__(538);
+	var ReactElement = __webpack_require__(530);
 	
-	var checkReactTypeSpec = __webpack_require__(538);
+	var checkReactTypeSpec = __webpack_require__(539);
 	
-	var canDefineProperty = __webpack_require__(523);
-	var getIteratorFn = __webpack_require__(533);
-	var warning = __webpack_require__(521);
-	var lowPriorityWarning = __webpack_require__(526);
+	var canDefineProperty = __webpack_require__(524);
+	var getIteratorFn = __webpack_require__(534);
+	var warning = __webpack_require__(522);
+	var lowPriorityWarning = __webpack_require__(527);
 	
 	function getDeclarationErrorAddendum() {
 	  if (ReactCurrentOwner.current) {
@@ -67711,7 +67894,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 537 */
+/* 538 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -67725,12 +67908,12 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(519);
+	var _prodInvariant = __webpack_require__(520);
 	
-	var ReactCurrentOwner = __webpack_require__(530);
+	var ReactCurrentOwner = __webpack_require__(531);
 	
-	var invariant = __webpack_require__(525);
-	var warning = __webpack_require__(521);
+	var invariant = __webpack_require__(526);
+	var warning = __webpack_require__(522);
 	
 	function isNative(fn) {
 	  // Based on isNative() from Lodash
@@ -68093,7 +68276,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 538 */
+/* 539 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -68106,13 +68289,13 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(519);
+	var _prodInvariant = __webpack_require__(520);
 	
-	var ReactPropTypeLocationNames = __webpack_require__(539);
-	var ReactPropTypesSecret = __webpack_require__(540);
+	var ReactPropTypeLocationNames = __webpack_require__(540);
+	var ReactPropTypesSecret = __webpack_require__(541);
 	
-	var invariant = __webpack_require__(525);
-	var warning = __webpack_require__(521);
+	var invariant = __webpack_require__(526);
+	var warning = __webpack_require__(522);
 	
 	var ReactComponentTreeHook;
 	
@@ -68122,7 +68305,7 @@
 	  // https://github.com/facebook/react/issues/7240
 	  // Remove the inline requires when we don't need them anymore:
 	  // https://github.com/facebook/react/pull/7178
-	  ReactComponentTreeHook = __webpack_require__(537);
+	  ReactComponentTreeHook = __webpack_require__(538);
 	}
 	
 	var loggedTypeFailures = {};
@@ -68164,7 +68347,7 @@
 	
 	        if (process.env.NODE_ENV !== 'production') {
 	          if (!ReactComponentTreeHook) {
-	            ReactComponentTreeHook = __webpack_require__(537);
+	            ReactComponentTreeHook = __webpack_require__(538);
 	          }
 	          if (debugID !== null) {
 	            componentStackInfo = ReactComponentTreeHook.getStackAddendumByID(debugID);
@@ -68183,7 +68366,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 539 */
+/* 540 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -68211,7 +68394,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 540 */
+/* 541 */
 /***/ (function(module, exports) {
 
 	/**
@@ -68230,7 +68413,7 @@
 	module.exports = ReactPropTypesSecret;
 
 /***/ }),
-/* 541 */
+/* 542 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -68243,15 +68426,15 @@
 	
 	'use strict';
 	
-	var _require = __webpack_require__(529),
+	var _require = __webpack_require__(530),
 	    isValidElement = _require.isValidElement;
 	
-	var factory = __webpack_require__(542);
+	var factory = __webpack_require__(543);
 	
 	module.exports = factory(isValidElement);
 
 /***/ }),
-/* 542 */
+/* 543 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -68276,7 +68459,7 @@
 
 
 /***/ }),
-/* 543 */
+/* 544 */
 /***/ (function(module, exports) {
 
 	/**
@@ -68292,7 +68475,7 @@
 	module.exports = '15.6.2';
 
 /***/ }),
-/* 544 */
+/* 545 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -68305,19 +68488,19 @@
 	
 	'use strict';
 	
-	var _require = __webpack_require__(518),
+	var _require = __webpack_require__(519),
 	    Component = _require.Component;
 	
-	var _require2 = __webpack_require__(529),
+	var _require2 = __webpack_require__(530),
 	    isValidElement = _require2.isValidElement;
 	
-	var ReactNoopUpdateQueue = __webpack_require__(520);
-	var factory = __webpack_require__(545);
+	var ReactNoopUpdateQueue = __webpack_require__(521);
+	var factory = __webpack_require__(546);
 	
 	module.exports = factory(Component, isValidElement, ReactNoopUpdateQueue);
 
 /***/ }),
-/* 545 */
+/* 546 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -68332,11 +68515,11 @@
 	
 	var _assign = __webpack_require__(188);
 	
-	var emptyObject = __webpack_require__(546);
-	var _invariant = __webpack_require__(547);
+	var emptyObject = __webpack_require__(547);
+	var _invariant = __webpack_require__(548);
 	
 	if (process.env.NODE_ENV !== 'production') {
-	  var warning = __webpack_require__(548);
+	  var warning = __webpack_require__(549);
 	}
 	
 	var MIXINS_KEY = 'mixins';
@@ -69194,7 +69377,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 546 */
+/* 547 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -69217,7 +69400,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 547 */
+/* 548 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -69276,7 +69459,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 548 */
+/* 549 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -69289,7 +69472,7 @@
 	
 	'use strict';
 	
-	var emptyFunction = __webpack_require__(549);
+	var emptyFunction = __webpack_require__(550);
 	
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -69344,7 +69527,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 549 */
+/* 550 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -69385,7 +69568,7 @@
 	module.exports = emptyFunction;
 
 /***/ }),
-/* 550 */
+/* 551 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -69397,11 +69580,11 @@
 	 */
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(519);
+	var _prodInvariant = __webpack_require__(520);
 	
-	var ReactElement = __webpack_require__(529);
+	var ReactElement = __webpack_require__(530);
 	
-	var invariant = __webpack_require__(525);
+	var invariant = __webpack_require__(526);
 	
 	/**
 	 * Returns the first child in a collection of children and verifies that there
@@ -69426,7 +69609,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 551 */
+/* 552 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69468,7 +69651,7 @@
 	});
 
 /***/ }),
-/* 552 */
+/* 553 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69487,11 +69670,11 @@
 	
 	var _PageHeader = __webpack_require__(364);
 	
-	var _StudentList = __webpack_require__(553);
+	var _StudentList = __webpack_require__(554);
 	
 	var _StudentList2 = _interopRequireDefault(_StudentList);
 	
-	var _StudentFormWindow = __webpack_require__(554);
+	var _StudentFormWindow = __webpack_require__(555);
 	
 	var _StudentFormWindow2 = _interopRequireDefault(_StudentFormWindow);
 	
@@ -69540,7 +69723,7 @@
 	});
 
 /***/ }),
-/* 553 */
+/* 554 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69584,7 +69767,7 @@
 	});
 
 /***/ }),
-/* 554 */
+/* 555 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69597,7 +69780,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _StudentForm = __webpack_require__(555);
+	var _StudentForm = __webpack_require__(556);
 	
 	var _StudentForm2 = _interopRequireDefault(_StudentForm);
 	
@@ -69664,7 +69847,7 @@
 	});
 
 /***/ }),
-/* 555 */
+/* 556 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69679,7 +69862,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactAddonsLinkedStateMixin = __webpack_require__(556);
+	var _reactAddonsLinkedStateMixin = __webpack_require__(557);
 	
 	var _reactAddonsLinkedStateMixin2 = _interopRequireDefault(_reactAddonsLinkedStateMixin);
 	
@@ -69740,13 +69923,13 @@
 	});
 
 /***/ }),
-/* 556 */
+/* 557 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(557);
+	module.exports = __webpack_require__(558);
 
 /***/ }),
-/* 557 */
+/* 558 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -69763,8 +69946,8 @@
 	
 	'use strict';
 	
-	var ReactLink = __webpack_require__(558);
-	var ReactStateSetters = __webpack_require__(559);
+	var ReactLink = __webpack_require__(559);
+	var ReactStateSetters = __webpack_require__(560);
 	
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -69787,7 +69970,7 @@
 	module.exports = LinkedStateMixin;
 
 /***/ }),
-/* 558 */
+/* 559 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -69861,7 +70044,7 @@
 	module.exports = ReactLink;
 
 /***/ }),
-/* 559 */
+/* 560 */
 /***/ (function(module, exports) {
 
 	/**
@@ -69970,7 +70153,7 @@
 	module.exports = ReactStateSetters;
 
 /***/ }),
-/* 560 */
+/* 561 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70045,7 +70228,7 @@
 	});
 
 /***/ }),
-/* 561 */
+/* 562 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70062,7 +70245,7 @@
 	
 	var _moment2 = _interopRequireDefault(_moment);
 	
-	var _StudentEnrollmentCard = __webpack_require__(562);
+	var _StudentEnrollmentCard = __webpack_require__(563);
 	
 	var _StudentEnrollmentCard2 = _interopRequireDefault(_StudentEnrollmentCard);
 	
@@ -70082,7 +70265,7 @@
 	});
 
 /***/ }),
-/* 562 */
+/* 563 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70095,7 +70278,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _EnrollmentService = __webpack_require__(563);
+	var _EnrollmentService = __webpack_require__(564);
 	
 	var EnrollmentService = _interopRequireWildcard(_EnrollmentService);
 	
@@ -70109,7 +70292,7 @@
 	
 	var _Icons = __webpack_require__(355);
 	
-	var _CourseEnrollmentWindow = __webpack_require__(564);
+	var _CourseEnrollmentWindow = __webpack_require__(565);
 	
 	var _CourseEnrollmentWindow2 = _interopRequireDefault(_CourseEnrollmentWindow);
 	
@@ -70270,7 +70453,7 @@
 	});
 
 /***/ }),
-/* 563 */
+/* 564 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70305,7 +70488,7 @@
 	};
 
 /***/ }),
-/* 564 */
+/* 565 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70425,7 +70608,7 @@
 	});
 
 /***/ }),
-/* 565 */
+/* 566 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70438,7 +70621,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _StudentForm = __webpack_require__(555);
+	var _StudentForm = __webpack_require__(556);
 	
 	var _StudentForm2 = _interopRequireDefault(_StudentForm);
 	
@@ -70467,7 +70650,7 @@
 	});
 
 /***/ }),
-/* 566 */
+/* 567 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70486,11 +70669,11 @@
 	
 	var _PageHeader = __webpack_require__(364);
 	
-	var _TeacherList = __webpack_require__(567);
+	var _TeacherList = __webpack_require__(568);
 	
 	var _TeacherList2 = _interopRequireDefault(_TeacherList);
 	
-	var _TeacherFormWindow = __webpack_require__(568);
+	var _TeacherFormWindow = __webpack_require__(569);
 	
 	var _TeacherFormWindow2 = _interopRequireDefault(_TeacherFormWindow);
 	
@@ -70556,7 +70739,7 @@
 	});
 
 /***/ }),
-/* 567 */
+/* 568 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70609,7 +70792,7 @@
 	});
 
 /***/ }),
-/* 568 */
+/* 569 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70622,7 +70805,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _TeacherForm = __webpack_require__(569);
+	var _TeacherForm = __webpack_require__(570);
 	
 	var _TeacherForm2 = _interopRequireDefault(_TeacherForm);
 	
@@ -70689,7 +70872,7 @@
 	});
 
 /***/ }),
-/* 569 */
+/* 570 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70704,7 +70887,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactAddonsLinkedStateMixin = __webpack_require__(556);
+	var _reactAddonsLinkedStateMixin = __webpack_require__(557);
 	
 	var _reactAddonsLinkedStateMixin2 = _interopRequireDefault(_reactAddonsLinkedStateMixin);
 	
@@ -70782,7 +70965,7 @@
 	});
 
 /***/ }),
-/* 570 */
+/* 571 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70852,7 +71035,7 @@
 	});
 
 /***/ }),
-/* 571 */
+/* 572 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70869,15 +71052,15 @@
 	
 	var _moment2 = _interopRequireDefault(_moment);
 	
-	var _TeacherCoursesCard = __webpack_require__(572);
+	var _TeacherCoursesCard = __webpack_require__(573);
 	
 	var _TeacherCoursesCard2 = _interopRequireDefault(_TeacherCoursesCard);
 	
-	var _TeacherPresentationCard = __webpack_require__(573);
+	var _TeacherPresentationCard = __webpack_require__(574);
 	
 	var _TeacherPresentationCard2 = _interopRequireDefault(_TeacherPresentationCard);
 	
-	var _TeacherList = __webpack_require__(567);
+	var _TeacherList = __webpack_require__(568);
 	
 	var _TeacherList2 = _interopRequireDefault(_TeacherList);
 	
@@ -70902,7 +71085,7 @@
 	});
 
 /***/ }),
-/* 572 */
+/* 573 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71033,7 +71216,7 @@
 	});
 
 /***/ }),
-/* 573 */
+/* 574 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71046,7 +71229,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _PresentationService = __webpack_require__(574);
+	var _PresentationService = __webpack_require__(575);
 	
 	var PresentationService = _interopRequireWildcard(_PresentationService);
 	
@@ -71056,15 +71239,15 @@
 	
 	var _Icons = __webpack_require__(355);
 	
-	var _reactUploadFile = __webpack_require__(515);
+	var _reactUploadFile = __webpack_require__(516);
 	
 	var _reactUploadFile2 = _interopRequireDefault(_reactUploadFile);
 	
-	var _fileInput = __webpack_require__(502);
+	var _fileInput = __webpack_require__(499);
 	
 	var _fileInput2 = _interopRequireDefault(_fileInput);
 	
-	var _fineUploaderWrappers = __webpack_require__(504);
+	var _fineUploaderWrappers = __webpack_require__(501);
 	
 	var _fineUploaderWrappers2 = _interopRequireDefault(_fineUploaderWrappers);
 	
@@ -71072,7 +71255,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var fileDownload = __webpack_require__(575);
+	var fileDownload = __webpack_require__(576);
 	
 	
 	var uploader = new _fineUploaderWrappers2.default({
@@ -71082,7 +71265,6 @@
 	        },
 	        autoUpload: false
 	    }
-	
 	});
 	
 	exports.default = _react2.default.createClass({
@@ -71170,79 +71352,8 @@
 	    },
 	    uploadFiles: function uploadFiles() {
 	        uploader.methods.uploadStoredFiles();
-	        console.log('up');
 	    },
 	    render: function render() {
-	        var _this3 = this;
-	
-	        var options = {
-	            baseUrl: '/upload',
-	            query: function query(files) {
-	                var l = files.length;
-	                var queryObj = {};
-	                for (var i = l - 1; i >= 0; --i) {
-	                    queryObj[i] = files[i].name;
-	                }
-	                return queryObj;
-	            },
-	            body: {
-	                purpose: 'save'
-	            },
-	            //   body: (files) => {
-	            //     const l = files.length;
-	            //     const queryObj = {};
-	            //     for(let i = l-1; i >= 0; --i) {
-	            //       queryObj[i] = files[i].name;
-	            //     }
-	            //     return queryObj;
-	            //   },
-	            dataType: 'json',
-	            multiple: false,
-	            numberLimit: 1,
-	            accept: '.ppt,.pptx,.doc,.docx,.pdf',
-	            // fileFieldName: 'file',
-	            fileFieldName: function fileFieldName(file) {
-	                return file.name;
-	            },
-	            withCredentials: false,
-	            requestHeaders: {
-	                'method': 'POST'
-	            },
-	            beforeChoose: function beforeChoose() {
-	                return true;
-	            },
-	            didChoose: function didChoose(files) {
-	                console.log('you choose', typeof files == 'string' ? files : files[0].name);
-	            },
-	            beforeUpload: function beforeUpload(files) {
-	
-	                if (typeof files === 'string') return true;
-	                if (files[0].size < 1024 * 1024 * 20) {
-	
-	                    return true;
-	                }
-	                return false;
-	            },
-	            didUpload: function didUpload(files) {
-	                console.log('you just uploaded', typeof files === 'string' ? files : files[0].name);
-	            },
-	            uploading: function uploading(progress) {
-	                console.log('loading...', progress.loaded / progress.total + '%');
-	            },
-	            uploadSuccess: function uploadSuccess(resp) {
-	                PresentationService.createItem(_this3.state.present).then(function () {
-	                    return _this3.getPresents(_this3.props.teacher.id);
-	                }).catch(function (error) {
-	                    var event = new CustomEvent('notify', { detail: 'You already uploaded this file' });
-	                    document.dispatchEvent(event);
-	                });
-	                console.log('upload success!');
-	            },
-	            uploadError: function uploadError(err) {
-	                alert(err.message);
-	            }
-	        };
-	
 	        return _react2.default.createElement(
 	            'div',
 	            { className: 'slds-card' },
@@ -71307,7 +71418,7 @@
 	});
 
 /***/ }),
-/* 574 */
+/* 575 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -71354,7 +71465,7 @@
 	};
 
 /***/ }),
-/* 575 */
+/* 576 */
 /***/ (function(module, exports) {
 
 	module.exports = function(data, filename, mime) {
@@ -71390,7 +71501,7 @@
 
 
 /***/ }),
-/* 576 */
+/* 577 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71403,7 +71514,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _TeacherForm = __webpack_require__(569);
+	var _TeacherForm = __webpack_require__(570);
 	
 	var _TeacherForm2 = _interopRequireDefault(_TeacherForm);
 	
@@ -71432,7 +71543,7 @@
 	});
 
 /***/ }),
-/* 577 */
+/* 578 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71449,7 +71560,7 @@
 	
 	var _reactRouter = __webpack_require__(207);
 	
-	var _Nav = __webpack_require__(578);
+	var _Nav = __webpack_require__(579);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	
@@ -71553,7 +71664,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(HomePage);
 
 /***/ }),
-/* 578 */
+/* 579 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71570,9 +71681,9 @@
 	
 	var _reactRouter = __webpack_require__(207);
 	
-	var _AppActions = __webpack_require__(579);
+	var _AppActions = __webpack_require__(580);
 	
-	var _LoadingButton = __webpack_require__(581);
+	var _LoadingButton = __webpack_require__(582);
 	
 	var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
 	
@@ -71669,7 +71780,7 @@
 	exports.default = Nav;
 
 /***/ }),
-/* 579 */
+/* 580 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71690,7 +71801,7 @@
 	
 	var _AppConstants = __webpack_require__(270);
 	
-	var _MessageConstants = __webpack_require__(580);
+	var _MessageConstants = __webpack_require__(581);
 	
 	var errorMessages = _interopRequireWildcard(_MessageConstants);
 	
@@ -71972,7 +72083,7 @@
 	}
 
 /***/ }),
-/* 580 */
+/* 581 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -71997,7 +72108,7 @@
 	var GENERAL_ERROR = exports.GENERAL_ERROR = 'Something went wrong, please try again';
 
 /***/ }),
-/* 581 */
+/* 582 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72010,7 +72121,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _LoadingIndicator = __webpack_require__(582);
+	var _LoadingIndicator = __webpack_require__(583);
 	
 	var _LoadingIndicator2 = _interopRequireDefault(_LoadingIndicator);
 	
@@ -72033,7 +72144,7 @@
 	exports.default = LoadingButton;
 
 /***/ }),
-/* 582 */
+/* 583 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -72081,7 +72192,7 @@
 	exports.default = LoadingIndicator;
 
 /***/ }),
-/* 583 */
+/* 584 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72098,7 +72209,7 @@
 	
 	var _reactRedux = __webpack_require__(181);
 	
-	var _Form = __webpack_require__(584);
+	var _Form = __webpack_require__(585);
 	
 	var _Form2 = _interopRequireDefault(_Form);
 	
@@ -72106,9 +72217,9 @@
 	
 	var _auth2 = _interopRequireDefault(_auth);
 	
-	var _AppActions = __webpack_require__(579);
+	var _AppActions = __webpack_require__(580);
 	
-	var _LoadingIndicator = __webpack_require__(582);
+	var _LoadingIndicator = __webpack_require__(583);
 	
 	var _LoadingIndicator2 = _interopRequireDefault(_LoadingIndicator);
 	
@@ -72185,7 +72296,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(LoginPage);
 
 /***/ }),
-/* 584 */
+/* 585 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72200,13 +72311,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _AppActions = __webpack_require__(579);
+	var _AppActions = __webpack_require__(580);
 	
-	var _LoadingButton = __webpack_require__(581);
+	var _LoadingButton = __webpack_require__(582);
 	
 	var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
 	
-	var _ErrorMessage = __webpack_require__(585);
+	var _ErrorMessage = __webpack_require__(586);
 	
 	var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
 	
@@ -72411,7 +72522,7 @@
 	exports.default = LoginForm;
 
 /***/ }),
-/* 585 */
+/* 586 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72457,7 +72568,7 @@
 	exports.default = ErrorMessage;
 
 /***/ }),
-/* 586 */
+/* 587 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72474,13 +72585,13 @@
 	
 	var _reactRedux = __webpack_require__(181);
 	
-	var _RegisterForm = __webpack_require__(587);
+	var _RegisterForm = __webpack_require__(588);
 	
 	var _RegisterForm2 = _interopRequireDefault(_RegisterForm);
 	
-	var _AppActions = __webpack_require__(579);
+	var _AppActions = __webpack_require__(580);
 	
-	var _LoadingIndicator = __webpack_require__(582);
+	var _LoadingIndicator = __webpack_require__(583);
 	
 	var _LoadingIndicator2 = _interopRequireDefault(_LoadingIndicator);
 	
@@ -72560,7 +72671,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(RegisterPage);
 
 /***/ }),
-/* 587 */
+/* 588 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72575,13 +72686,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _AppActions = __webpack_require__(579);
+	var _AppActions = __webpack_require__(580);
 	
-	var _LoadingButton = __webpack_require__(581);
+	var _LoadingButton = __webpack_require__(582);
 	
 	var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
 	
-	var _ErrorMessage = __webpack_require__(585);
+	var _ErrorMessage = __webpack_require__(586);
 	
 	var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
 	
@@ -72795,7 +72906,7 @@
 	exports.default = RegisterForm;
 
 /***/ }),
-/* 588 */
+/* 589 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72855,7 +72966,7 @@
 	exports.default = NotFound;
 
 /***/ }),
-/* 589 */
+/* 590 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72870,7 +72981,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Nav = __webpack_require__(578);
+	var _Nav = __webpack_require__(579);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	
