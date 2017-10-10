@@ -545,6 +545,29 @@ code {
   border-radius: 1px;
 }
 
+a.hw-details {
+  text-decoration: none !important;
+  color: #2FC855;
+}
+
+a.hw-details:hover, a.hw-details:focus {
+  color: #51E581;
+}
+
+.hw-none {
+  text-decoration: none !important;
+  color: #740DC9;
+}
+
+.grade-high {
+  text-decoration: none !important;
+  color: #EB2626;
+}
+
+.grade-intermediate {
+  text-decoration: none !important;
+  color: #494BDB;
+}
 /* 4. Layout-related sections */
 /*This file contains all styles related to the header of the site/application.*/
 /*This file contains all styles related to the footer of the site/application.*/
@@ -706,7 +729,6 @@ code {
 .js-form__err-animation {
   animation: shake 150ms ease-in-out;
 }
-
 @keyframes shake {
   0% {
     transform: translateX(0);
@@ -721,6 +743,19 @@ code {
     transform: translateX(0);
   }
 }
+.js-form__info-animation {
+  animation: eye 2s ease-in-out infinite;
+  -webkit-animation: eye 2s ease-in-out infinite;
+}
+@keyframes eye {
+  50% { transform: none; }   
+  55% { transform: scaleY(0.2); }
+ }
+ @-webkit-keyframes eye {
+  50% { transform: none; }   
+  55% { transform: scaleY(0.2); }
+ }
+
 .nav {
   position: fixed;
   top: 0;
@@ -919,4 +954,18 @@ code {
        -moz-user-select: none;
         -ms-user-select: none;
             user-select: none;
+}
+
+.info {
+  display: inline-block;
+  background-color: #157915;
+  color: white;
+  margin: 0;
+  padding: 0.5em 1em;
+  font-size: 0.8em;
+  font-family: 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }

@@ -5,10 +5,13 @@ import * as ResultService from './services/ResultService';
 export default React.createClass({
 
     getInitialState() {
-        let result = this.props.result;
-        result.course_id = this.props.homework.course_id;
-        result.course_code = this.props.homework.course_code;
-        result.homework_id = this.props.homework.id;
+        var result = {};
+        result.course_id = this.props.course.id;
+        result.course_code = this.props.course.code;
+        result.homework_id = this.props.homeworkId;
+        result.path = this.props.result[result.homework_id+'_hw'];
+        console.log(result.path);
+        result.id = this.props.result.std_id;
         return {result: result, src_code:""};
     },
 
@@ -28,13 +31,13 @@ export default React.createClass({
 
     save() {
         let saveItem = this.state.result.id ? ResultService.updateItem : ResultService.createItem;
+        console.log(this.state.result);
         saveItem(this.state.result).then(savedresult => {
             if (this.props.onSaved) this.props.onSaved(savedresult);
         });
     },
     _downloadTxtFile() {
         ResultService.downFile({filename:this.state.result.path}).then(downloaded => {
-            console.log(downloaded);
             this.setState({src_code: downloaded});
         });
     },

@@ -55,11 +55,10 @@ var auth = {
           var err={
             type:'input-wrong'
           };
-          if(!response.allowed)
+          if(response != null && !response.allowed)
           {
             err.type = 'permission-not-allowed';
           }
-          console.log(err.type);
           callback(false, err);
         }
       });
@@ -99,7 +98,7 @@ var auth = {
       TeacherService.createItem(data).then(response => {
         // If the user was successfully registered, log them in
         if (response.affectedRows != false) {
-          this.login(pos, email, password, callback);
+          callback(true);
         } else {
             var err = {
               type: 'username-exists'
@@ -120,7 +119,7 @@ var auth = {
         // If the user was successfully registered, log them in
         
         if (response.affectedRows != false) {
-          this.login(pos, stdid, password, callback);
+          callback(true, err);
         } else {
           // If there was a problem registering, show the error
           var err = {

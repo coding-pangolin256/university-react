@@ -68,7 +68,7 @@ class RegisterForm extends Component {
       var newState = this._mergeWithCurrentState({
         pos: evt.target.value
       });
-      this.setState({showTeacher: !this.state.showTeacher});
+      this.setState({showTeacher: evt.target.value == "teacher"});
       this._emitChange(newState);
     }
   // Change the Student ID in the app state

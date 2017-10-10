@@ -7,11 +7,38 @@ import {Icon, ButtonIcon} from './components/Icons';
 
 import ReactUploadFile from 'react-upload-file';
 var fileDownload = require('react-file-download');
+import FileInput from 'react-fine-uploader/file-input'
+import FineUploaderTraditional from 'fine-uploader-wrappers'
+
+const uploader = new FineUploaderTraditional({
+    options: {
+       request: {
+          endpoint: 'upload/'
+       },
+       autoUpload: false
+    },
+});
 
 export default React.createClass({
 
     getInitialState() {
         return {presents:[]};
+    },
+
+    componentDidMount() {
+        uploader.on('complete', (id, name, response) => {
+            // handle completed upload
+            PresentationService.createItem(this.state.present)
+            .then(() => this.getPresents(this.props.teacher.id))
+            .catch((error) => {
+                let event = new CustomEvent('notify', {detail:'You already uploaded this file'});
+                document.dispatchEvent(event);
+            });
+            console.log('upload success!');
+        })
+        uploader.on('submitted', id => {
+           this.setState({present: {teacher_id: this.props.teacher.id, path: uploader.methods.getFile(id).name, size: uploader.methods.getFile(id).size}});
+        })
     },
 
     componentWillReceiveProps(props) {
@@ -81,75 +108,11 @@ export default React.createClass({
         }
     },
 
-    render() {
-        const options = {
-            baseUrl: '/upload',
-            query: (files)=>{
-                const l = files.length;
-                const queryObj = {};
-                for(let i = l-1; i >= 0; --i) {
-                  queryObj[i] = files[i].name;
-                }
-                return queryObj;
-              },
-              body: {
-                purpose: 'save'
-              },
-            //   body: (files) => {
-            //     const l = files.length;
-            //     const queryObj = {};
-            //     for(let i = l-1; i >= 0; --i) {
-            //       queryObj[i] = files[i].name;
-            //     }
-            //     return queryObj;
-            //   },
-              dataType: 'json',
-              multiple: false,
-              numberLimit: 1,
-              accept: '.ppt,.pptx,.doc,.docx,.pdf',
-              // fileFieldName: 'file',
-              fileFieldName: (file) => {
-                return file.name;
-              },
-              withCredentials: false,
-              requestHeaders: {
-                'method': 'POST'
-              },
-              beforeChoose: () => {
-                return true;
-              },
-              didChoose: (files) => {
-                console.log('you choose', typeof files == 'string' ? files : files[0].name);
-              },
-              beforeUpload: (files) => {
-                this.setState({present: {teacher_id: this.props.teacher.id, path:files[0].name, size: files[0].size}});
-                if (typeof files === 'string') return true;
-                if (files[0].size < 1024 * 1024 * 20) {
-                  
-                  return true;
-                }
-                return false;
-              },
-              didUpload: (files) => {
-                console.log('you just uploaded', typeof files === 'string' ? files : files[0].name);
-              },
-              uploading: (progress) => {
-                console.log('loading...', progress.loaded / progress.total + '%');
-              },
-              uploadSuccess: (resp) => {
-                PresentationService.createItem(this.state.present)
-                .then(() => this.getPresents(this.props.teacher.id))
-                .catch((error) => {
-                    let event = new CustomEvent('notify', {detail:'You already uploaded this file'});
-                    document.dispatchEvent(event);
-                });
-                console.log('upload success!');
-              },
-              uploadError: (err) => {
-                alert(err.message);
-              }
-          }
+    uploadFiles(){
+        uploader.methods.uploadStoredFiles();
+    },
 
+    render() {
         return (
             <div className="slds-card">
                 <header className="slds-card__header slds-grid">
@@ -163,13 +126,18 @@ export default React.createClass({
                     </div>
                     <div className="slds-no-flex">
                         <div className="slds-button-group">
-                        <ReactUploadFile options={options} 
-                                            chooseFileButton={<button className="slds-button slds-button--neutral slds-button--small"></button>} 
-                                            uploadFileButton={<button className="slds-button slds-button--neutral slds-button--small">Upload</button>} />
+                        {/* <ReactUploadFile options={options} 
+                                            chooseFileButton={<button className="slds-button slds-button--icon-border-filled">
+                                                    <ButtonIcon name="down"/>
+                                                    <span className="slds-assistive-text">Show More</span>
+                                                </button>} 
+                                            uploadFileButton={<button className="slds-button slds-button--neutral slds-button--small">Upload</button>} /> */}
+                            <FileInput accept='.c,.cpp,.java,.js,.txt' uploader={ uploader}>
+                                <span class="icon ion-upload"><Icon name="link"/></span>
+                            </FileInput>
                             {/* <button className="slds-button slds-button--neutral slds-button--small" onClick={this.newPresentHandler}>New</button> */}
-                            <button className="slds-button slds-button--icon-border-filled">
-                                <ButtonIcon name="down"/>
-                                <span className="slds-assistive-text">Show More</span>
+                            <button className="slds-button slds-button--neutral slds-button--small" onClick={this.uploadFiles}>
+                                Upload
                             </button>
                         </div>
                     </div>

@@ -14,20 +14,19 @@ let findAll = (req, res, next) => {
         .catch(next);
 };
 
-let findByHomework = (req, res, next) => {
-    let homework = req.body;
-    let table_name = homework.course_code + homework.course_id;
-    let path_field = homework.id + '_hw';
-    let score_field = homework.id + '_score';
+let findByCourse = (req, res, next) => {
+    let course = req.body;
+    let table_name = course.code + course.id;
+    let path_field = course.id + '_hw';
+    let score_field = course.id + '_score';
     let sql = `
-        SELECT r.std_id as id, ${path_field} as path, ${score_field} as score, s.name as student_name
-        FROM ${table_name} as r
+        SELECT s.name as name, r.*
+        FROM ${table_name} r
         LEFT JOIN student as s ON r.std_id = s.id
-        WHERE ${path_field} IS NOT NULL
         ORDER BY r.std_id`;
     db.query(sql)
-        .then(homeworks =>  {
-            res.json(homeworks);
+        .then(results =>  {
+            res.json(results);
         })
         .catch(next);
 };
@@ -48,8 +47,8 @@ let findById = (req, res, next) => {
 let createItem = (req, res, next) => {
     let homework = req.body;
     let table_name = homework.course_code + homework.course_id;
-    let path_field = homework.id + '_hw';
-    let score_field = homework.id + '_score';
+    let path_field = homework.homework_id + '_hw';
+    let score_field = homework.homework_id + '_score';
     // let sql = `IF EXISTS (SELECT * FROM ${table_name} WHERE std_id=${homework.std_id})
     //                 UPDATE ${table_name} SET ${path_field} = '${homework.path}' WHERE std_id=${homework.std_id}
     //             ELSE
@@ -89,7 +88,7 @@ let deleteItem = (req, res, next) => {
 };
 
 exports.findAll = findAll;
-exports.findByHomework = findByHomework;
+exports.findByCourse = findByCourse;
 exports.findById = findById;
 exports.createItem = createItem;
 exports.updateItem = updateItem;

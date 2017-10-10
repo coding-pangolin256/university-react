@@ -53,7 +53,6 @@ const store = createStoreWithMiddleware(homeReducer);
 function checkAuth(nextState, replaceState) {
   
   let { loggedIn } = store.getState();
-  console.log(localStorage);
   return loggedIn;
   // check if the path isn't dashboard
   // that way we can apply specific logic
@@ -90,7 +89,7 @@ const Routesz = (store) => {
   )
 
   const MemberRoute = () => (
-    <Route component={Shell}>
+    <Route path="/" component={Shell}>
       {/* <IndexRoute component={StudentHome}/> */}
       {/* <IndexRoute component={TeacherHome}/>
       <Route path="students" component={StudentView}/> */}

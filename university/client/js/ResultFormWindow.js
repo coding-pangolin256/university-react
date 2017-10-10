@@ -22,7 +22,7 @@ export default React.createClass({
                             </button>
                         </div>
                         <div className="slds-modal__content" style={{overflow:"visible"}}>
-                            <ResultForm ref="form" result={this.props.result} homework={this.props.homework} onSaved={this.props.onSaved}/>
+                            <ResultForm ref="form" result={this.props.result} course={this.props.course} homeworkId={this.props.selected_hw} onSaved={this.props.onSaved}/>
                         </div>
 
                         <div className="slds-modal__footer">

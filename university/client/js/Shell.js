@@ -2,13 +2,19 @@ import React from 'react';
 
 import Spinner from './components/Spinner';
 import Toast from './components/Toast';
-import {Icon} from './components/Icons';
+import {Icon, ButtonIcon} from './components/Icons';
 import StudentSearchBox from './StudentSearchBox';
+import { browserHistory } from 'react-router';
 
 export default React.createClass({
 
     selectHandler(index, value, label) {
         window.location.hash = "student/" + value;
+    },
+    logout() {
+        localStorage.clear();
+        browserHistory.push('#/');
+        window.location.reload();
     },
 
     render() {
@@ -17,6 +23,7 @@ export default React.createClass({
                 <Spinner/>
                 <Toast/>
                 <header className="menu" style={{backgroundColor:"#01344E", verticalAlign:"middle"}}>
+                    <div className="slds-logout"><a href="" onClick={this.logout}><ButtonIcon name="logout" theme={null}/>Log out</a></div>
                     <ul className="slds-list--horizontal">
                         {/* <li className="slds-list__item"><a href="#students"><Icon name="lead" theme={null}/>Students</a></li>
                         <li className="slds-list__item"><a href="#courses"><Icon name="orders" theme={null}/>Courses</a></li>
@@ -26,11 +33,13 @@ export default React.createClass({
                         <li className="slds-list__item"><a href={"#"+localStorage.pos+"/"+localStorage.token}><Icon name="home" theme={null}/>Home</a></li>
                         {
                             localStorage.permission == 2?
-                            <li className="slds-list__item slds-m-right--xx-large"><a href="#teachers"><Icon name="user" theme={null}/>Teachers</a></li>
+                            <li className="slds-list__item"><a href="#teachers"><Icon name="user" theme={null}/>Teachers</a></li>
                             :""
                         }
                         <li className="slds-list__item"><a href="#chat"><Icon name="feedback" theme={null}/>Chat Room</a></li>
+                        
                     </ul>
+                    
                 </header>
                 {this.props.children}
             </div>

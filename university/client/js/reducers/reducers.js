@@ -10,7 +10,7 @@
  *   });
  */
 
-import { CHANGE_FORM, SET_AUTH, SENDING_REQUEST, SET_ERROR_MESSAGE } from '../constants/AppConstants';
+import { CHANGE_FORM, SET_AUTH, SENDING_REQUEST, SET_ERROR_MESSAGE, SET_INFO_MESSAGE } from '../constants/AppConstants';
 // Object.assign is not yet fully supported in all browsers, so we fallback to
 // a polyfill
 const assign = Object.assign || require('object.assign');
@@ -24,7 +24,8 @@ const initialState = {
   },
   currentlySending: false,
   loggedIn: auth.loggedIn(),
-  errorMessage: ''
+  errorMessage: '',
+  type: ''
 };
 
 // Takes care of changing the application state
@@ -47,6 +48,13 @@ export function homeReducer(state = initialState, action) {
       break;
     case SET_ERROR_MESSAGE:
       return assign({}, state, {
+        type: action.type,
+        errorMessage: action.message
+      });
+      break;
+    case SET_INFO_MESSAGE:
+      return assign({}, state, {
+        type: action.type,
         errorMessage: action.message
       });
     default:

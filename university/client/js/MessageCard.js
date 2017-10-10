@@ -10,8 +10,8 @@ export default React.createClass({
 
     render() {
         return (
-            <div className="slds-card">
-                <header className="slds-card__header slds-grid">
+            <div>
+                {/* <header className="slds-card__header slds-grid">
                     <div className="slds-media slds-media--center slds-has-flexi-truncate">
                         <div className="slds-media__figure">
                             <Icon name="post" size="small"/>
@@ -27,9 +27,16 @@ export default React.createClass({
                             <span className="slds-text-body--small slds-truncate slds-text-align--right">{this.props.data.time}</span>
                         </div>
                     </div>
-                </header>
+                </header> */}
 
                 <section className="slds-card__body">
+                        <div className="slds-media__body">
+                            
+                                {this.props.data.pos=="teacher"?
+                                    'Professor '+this.props.data.user_name:
+                                    this.props.data.user_name}
+                           
+                        </div>
                     <span className="slds-input">{this.props.data.text}</span>
                 </section>
             </div>

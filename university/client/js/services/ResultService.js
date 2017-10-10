@@ -8,7 +8,7 @@ export let findById = id => rest.get(url + "/" + id);
 
 export let createItem = student => rest.post(url, student);
 
-export let findByHomework = homework => rest.post("/result", homework);
+export let findByCourse = course => rest.post("/result", course);
 
 export let downFile = filename => rest.post("/downview", filename);
 

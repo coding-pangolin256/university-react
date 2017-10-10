@@ -2,7 +2,7 @@
 SQLyog Ultimate v12.09 (64 bit)
 MySQL - 5.5.57 : Database - my_db
 *********************************************************************
-*/
+*/
 
 /*!40101 SET NAMES utf8 */;
 
@@ -22,10 +22,16 @@ CREATE TABLE `chat` (
   `user_id` int(11) DEFAULT NULL,
   `pos` varchar(20) DEFAULT NULL,
   `text` text,
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `chat` */
+
+insert  into `chat`(`id`,`user_id`,`pos`,`text`,`time`) values (1,2,'student','What is dummy?','2017-10-07 03:54:08');
+insert  into `chat`(`id`,`user_id`,`pos`,`text`,`time`) values (2,5,'teacher','Dummy is a binary tree used for sort and search.','2017-10-07 03:55:33');
+insert  into `chat`(`id`,`user_id`,`pos`,`text`,`time`) values (3,2,'teacher','Hello, how can I downgrade MySQL server?','2017-10-07 11:24:15');
+insert  into `chat`(`id`,`user_id`,`pos`,`text`,`time`) values (4,29,'student','You can uninstall present server and then download previous version of MySQL server and install.','2017-10-07 11:27:49');
 
 /*Table structure for table `cj10244` */
 
@@ -123,7 +129,7 @@ CREATE TABLE `cs20143` (
   `2_hw` text,
   `2_score` double DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 /*Data for the table `cs20143` */
 
@@ -137,7 +143,7 @@ CREATE TABLE `enrollment` (
   `student_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `idx_enrollment` (`course_id`,`student_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=173 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 /*Data for the table `enrollment` */
 
@@ -293,11 +299,13 @@ insert  into `enrollment`(`id`,`course_id`,`student_id`) values (170,42,10);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (157,42,22);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (162,42,27);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (164,42,28);
+insert  into `enrollment`(`id`,`course_id`,`student_id`) values (171,42,29);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (168,43,8);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (158,43,22);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (166,43,24);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (163,43,27);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (165,43,28);
+insert  into `enrollment`(`id`,`course_id`,`student_id`) values (172,43,29);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (169,44,1);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (167,44,8);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (159,44,24);
@@ -426,6 +434,7 @@ insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (12,'leona.C@
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (28,'lerelei.J@bulletmail.com','Lorelei Joyner','lorelei',NULL);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (3,'libby.R@protonmail.com','Libby Robinson','libby',1);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (10,'mason.S@bulletmail.com','Mason Saunders','mason',NULL);
+insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (29,'samuel.S@outlook.com','Samuel Smile','samuel',NULL);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (24,'skylar.C@outlook.com','Skylar Carver','skylar',NULL);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (5,'smith.B@mail.com','Smith Bill','smith',1);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (6,'terrance.M@gmail.com','Terrance Meyers','terrance',NULL);
