@@ -27,9 +27,9 @@ export default React.createClass({
         window.location.hash = "#chat/" + msg.id + "/edit";
     },
 
-    sendHandler(msg)
+    sendHandler(msg,type)
     {
-        ChatService.createItem({user_id: localStorage.token, pos: localStorage.pos, text: msg})
+        ChatService.createItem({user_id: localStorage.token, pos: localStorage.pos, text: msg, type: type, course_id: this.props.course.id})
         .then(()=>{
             this.getMessages();
         });
@@ -42,12 +42,12 @@ export default React.createClass({
         //     rows.push(<MessageCard data={this.state.msgs[i]}/>);
         // }
         return (
-            <div>
-                <RecordHeader icon="chat"
+            <div  className="slds-card">
+                {/* <RecordHeader icon="chat"
                               title="Chat Room"
                               itemCount={this.state.msgs.length}>
-                </RecordHeader>
-                <div className="slds-m-around--medium">
+                </RecordHeader> */}
+                <div className="slds-m-around--medium slds-scrollable--y">
                     {rows}
                 </div>
                 <ChatBox onSend={this.sendHandler}/>

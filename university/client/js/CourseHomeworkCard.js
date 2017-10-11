@@ -6,6 +6,7 @@ import DataGrid from './components/DataGrid';
 import StudentSearchBox from './StudentSearchBox';
 
 import HomeworkFormWindow from './HomeworkFormWindow';
+import SubmitFormWindow from './SubmitFormWindow';
 
 import {Icon, ButtonIcon} from './components/Icons';
 
@@ -26,17 +27,21 @@ export default React.createClass({
     },
 
     homeworkLinkHandler(homework) {
-        window.location.hash = "#homework/" + homework.id;
+        console.log('qwef');
+        window.location.hash = "#homework/" + homework.id ;
     },
 
     actionHandler(data, index, value, label) {
-        switch(index) {
-            case 0:
+        switch(label) {
+            case "View Homework":
                 this.homeworkLinkHandler(data);
                 break;
-            case 1:
+            case "Delete":
                 HomeworkService.deleteItem(data.id)
                     .then(() => this.getHomeworks(this.props.course.id));
+                break;
+            case "Submit Homework":
+                this.setState({submitting:true, current: data});
                 break;
         }
     },
@@ -44,7 +49,7 @@ export default React.createClass({
         HomeworkService.createItem({course_id: this.props.course.id, student_id: value})
             .then(() => this.getHomeworks(this.props.course.id))
             .catch((error) => {
-                let event = new CustomEvent('notify', {detail:'Student already enrolled in this course'});
+                let event = new CustomEvent('notify', {detail:'You already enrolled in this course'});
                 document.dispatchEvent(event);
             });
 
@@ -61,6 +66,12 @@ export default React.createClass({
     newHomeworkSavedHandler(Homework) {
         this.setState({addingHomework:false});
         this.getHomeworks(this.props.course.id);
+    },
+    homeworkSubmittedHandler() {
+        this.setState({submitting:false});
+    },
+    homeworkSubmitCancelHandler() {
+        this.setState({submitting:false});
     },
 
     render() {
@@ -94,7 +105,8 @@ export default React.createClass({
                 </header>
 
                 <section className="slds-card__body">
-                    <DataGrid data={this.state.homeworks} keyField="id" actions={localStorage.pos=="teacher"?["View Homework", "Delete"]:["View Homework"]} onAction={this.actionHandler}>
+                    <DataGrid data={this.state.homeworks} keyField="id" actions={localStorage.pos=="teacher"?["View Homework", "Delete"]:["Submit Homework"]} onAction={this.actionHandler}>
+                        {/* <div header="Homework Id" field="id" sortable={true} onLink={this.homeworkLinkHandler}/> */}
                         <div header="Title" field="title" sortable={true} onLink={this.homeworkLinkHandler}/>
                         {/* <div header="Last Name" field="last_name" sortable={true} onLink={this.homeworkLinkHandler}/> */}
                         <div header="Details" field="details"/>
@@ -102,6 +114,7 @@ export default React.createClass({
                 </section>
 
                 {this.state.addingHomework?<HomeworkFormWindow cid={this.props.course.id} ccode={this.props.course.code} onSaved={this.newHomeworkSavedHandler} onCancel={this.newHomeworkCancelHandler}/>:null}
+                {this.state.submitting?<SubmitFormWindow homework={this.state.current} onSaved={this.homeworkSubmittedHandler} onCancel={this.homeworkSubmitCancelHandler}/>:null}
             </div>
 
         );

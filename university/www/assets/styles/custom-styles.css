@@ -20,3 +20,8 @@
     width: 80%;
     max-width: 80%;
 }
+
+.slds-logout {
+    float: right;
+    padding: 0.75em;
+}

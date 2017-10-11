@@ -7,11 +7,31 @@ import {Icon, ButtonIcon} from './components/Icons';
 import CourseFormWindow from './CourseFormWindow';
 
 export default React.createClass({
-
+    attachLinkHandler(event) {
+        var link = document.createElement('a');
+        link.download = this.props.data.text;
+        link.href = 'http://localhost:5000/upload/' + link.download;
+        var clickEvent = document.createEvent("MouseEvent");
+        clickEvent.initEvent("click", true, true);
+        
+        link.dispatchEvent(clickEvent);
+        event.preventDefault();
+        // PresentationService.downFile({filename: present.path}).then(downloaded => {
+            
+        //     // fileDownload(downloaded, present.path);
+        //     // writeFile(present.path, downloaded, function (err) {
+        //     //     if (err) return console.log(err)
+        //     //     console.log('file is written')
+        //     //   })
+        //     var link = document.createElement('a');
+        //     link.download = present.path;
+        //     link.href = 'http://localhost:5000/upload/'+present.path;
+        // });
+    },
     render() {
         return (
-            <div className="slds-card">
-                <header className="slds-card__header slds-grid">
+            <div>
+                {/* <header className="slds-card__header slds-grid">
                     <div className="slds-media slds-media--center slds-has-flexi-truncate">
                         <div className="slds-media__figure">
                             <Icon name="post" size="small"/>
@@ -27,10 +47,19 @@ export default React.createClass({
                             <span className="slds-text-body--small slds-truncate slds-text-align--right">{this.props.data.time}</span>
                         </div>
                     </div>
-                </header>
+                </header> */}
 
                 <section className="slds-card__body">
-                    <span className="slds-input">{this.props.data.text}</span>
+                        <div className="slds-media__body">
+                            
+                                {this.props.data.pos=="teacher"?
+                                    'Professor '+this.props.data.user_name:
+                                    this.props.data.user_name}
+                           
+                        </div>
+                    <span className="slds-input">{!this.props.data.type?this.props.data.text:
+                        <a href="#" className="slds-badge" onClick={this.attachLinkHandler}>{this.props.data.text}</a>}
+                    </span>
                 </section>
             </div>
         );

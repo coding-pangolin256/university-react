@@ -2,15 +2,17 @@ import React from 'react';
 
 import CourseEnrollmentCard from "./CourseEnrollmentCard";
 import CourseHomeworkCard from "./CourseHomeworkCard";
+import ChatHome from './ChatHome';
 
 export default React.createClass({
 
     render() {
         let course = this.props.course;
         return (
-        <div className="slds-m-around--medium">
+        <div className="slds-m-around--medium slds-grid slds-wrap">
+            <div className="slds-col--padded slds-size--4-of-5 slds-medium-size--4-of-5">
             <div className="slds-grid slds-wrap slds-m-bottom--large">
-                <div className="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium">
+                <div className="slds-col--padded slds-size--1-of-2 slds-medium-size--1-of-2">
                     <dl className="page-header--rec-home__detail-item">
                         <dt>
                             <p className="slds-text-heading--label slds-truncate" title="Field 1">Teacher</p>
@@ -21,8 +23,13 @@ export default React.createClass({
                     </dl>
                 </div>
             </div>
-            {localStorage.pos=="teacher"?<CourseEnrollmentCard course={course}/>:null}
+            {localStorage.pos=="teacher"?<CourseEnrollmentCard course={course} editable={true} title="Students" icon="lead"/>:null}
             <CourseHomeworkCard course={course}/>
+            <CourseEnrollmentCard course={course} title="Embedded Excel" icon="metrics"/>
+            </div>
+            <div className="slds-size--1-of-5 slds-medium-size--1-of-5">
+                <ChatHome course={course}/>
+            </div>
         </div>
         );
     }

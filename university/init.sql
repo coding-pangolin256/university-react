@@ -2,7 +2,7 @@
 SQLyog Ultimate v12.09 (64 bit)
 MySQL - 5.5.57 : Database - my_db
 *********************************************************************
-*/
+*/
 
 /*!40101 SET NAMES utf8 */;
 
@@ -21,11 +21,27 @@ CREATE TABLE `chat` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `pos` varchar(20) DEFAULT NULL,
+  `course_id` int(11) DEFAULT NULL,
   `text` text,
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `type` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 /*Data for the table `chat` */
+
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (1,2,'student',NULL,'What is dummy?','2017-10-07 03:54:08',NULL);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (2,5,'teacher',NULL,'Dummy is a binary tree used for sort and search.','2017-10-07 03:55:33',NULL);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (3,2,'teacher',NULL,'Hello, how can I downgrade MySQL server?','2017-10-07 11:24:15',NULL);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (4,29,'student',NULL,'You can uninstall present server and then download previous version of MySQL server and install.','2017-10-07 11:27:49',NULL);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (5,1,'student',NULL,'How can I install MacOS on my computer.','2017-10-09 10:42:59',NULL);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (6,10,'student',NULL,'sdaf','2017-10-09 22:13:36',NULL);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (7,10,'student',NULL,'asdf','2017-10-09 22:13:37',NULL);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (8,10,'student',NULL,'asdf','2017-10-09 22:13:37',NULL);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (9,10,'student',NULL,'asdf','2017-10-09 22:13:38',NULL);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (10,10,'student',NULL,'asdf','2017-10-09 22:13:38',NULL);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (11,10,'student',NULL,'asdf','2017-10-09 22:13:38',NULL);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (12,10,'student',NULL,'asdf','2017-10-09 22:13:39',NULL);
 
 /*Table structure for table `cj10244` */
 
@@ -50,24 +66,17 @@ insert  into `cj10244`(`std_id`,`24_hw`,`24_score`,`1_hw`,`1_score`,`0_hw`,`0_sc
 CREATE TABLE `cj142` (
   `std_id` int(11) NOT NULL,
   `21_hw` text,
-  `21_score` double DEFAULT NULL,
+  `21_score` float DEFAULT NULL,
   `22_hw` text,
-  `22_score` double DEFAULT NULL,
-  `1_hw` text,
-  `1_score` double DEFAULT NULL,
-  `2_hw` text,
-  `2_score` double DEFAULT NULL,
-  `3_hw` text,
-  `3_score` double DEFAULT NULL,
-  `0_hw` text,
-  `0_score` double DEFAULT NULL,
+  `22_score` float DEFAULT NULL,
   PRIMARY KEY (`std_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 /*Data for the table `cj142` */
 
-insert  into `cj142`(`std_id`,`21_hw`,`21_score`,`22_hw`,`22_score`,`1_hw`,`1_score`,`2_hw`,`2_score`,`3_hw`,`3_score`,`0_hw`,`0_score`) values (10,'eula.1036.txt',NULL,'1.cpp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-insert  into `cj142`(`std_id`,`21_hw`,`21_score`,`22_hw`,`22_score`,`1_hw`,`1_score`,`2_hw`,`2_score`,`3_hw`,`3_score`,`0_hw`,`0_score`) values (22,'vmware.log',3,'Windows 10 x64 VM.nvram',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert  into `cj142`(`std_id`,`21_hw`,`21_score`,`22_hw`,`22_score`) values (10,'eula.1036.txt',NULL,'1.cpp',7);
+insert  into `cj142`(`std_id`,`21_hw`,`21_score`,`22_hw`,`22_score`) values (22,'vmware.log',8,'',NULL);
+insert  into `cj142`(`std_id`,`21_hw`,`21_score`,`22_hw`,`22_score`) values (30,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `course` */
 
@@ -123,11 +132,13 @@ CREATE TABLE `cs20143` (
   `2_hw` text,
   `2_score` double DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 /*Data for the table `cs20143` */
 
 insert  into `cs20143`(`id`,`std_id`,`23_hw`,`23_score`,`1_hw`,`1_score`,`2_hw`,`2_score`) values (1,8,'1.cpp',NULL,NULL,NULL,NULL,NULL);
+insert  into `cs20143`(`id`,`std_id`,`23_hw`,`23_score`,`1_hw`,`1_score`,`2_hw`,`2_score`) values (2,10,NULL,NULL,NULL,NULL,NULL,NULL);
+insert  into `cs20143`(`id`,`std_id`,`23_hw`,`23_score`,`1_hw`,`1_score`,`2_hw`,`2_score`) values (3,30,NULL,NULL,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `enrollment` */
 
@@ -137,7 +148,7 @@ CREATE TABLE `enrollment` (
   `student_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `idx_enrollment` (`course_id`,`student_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 /*Data for the table `enrollment` */
 
@@ -293,11 +304,16 @@ insert  into `enrollment`(`id`,`course_id`,`student_id`) values (170,42,10);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (157,42,22);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (162,42,27);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (164,42,28);
+insert  into `enrollment`(`id`,`course_id`,`student_id`) values (171,42,29);
+insert  into `enrollment`(`id`,`course_id`,`student_id`) values (179,42,30);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (168,43,8);
+insert  into `enrollment`(`id`,`course_id`,`student_id`) values (174,43,10);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (158,43,22);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (166,43,24);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (163,43,27);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (165,43,28);
+insert  into `enrollment`(`id`,`course_id`,`student_id`) values (172,43,29);
+insert  into `enrollment`(`id`,`course_id`,`student_id`) values (180,43,30);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (169,44,1);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (167,44,8);
 insert  into `enrollment`(`id`,`course_id`,`student_id`) values (159,44,24);
@@ -332,7 +348,7 @@ CREATE TABLE `lecture` (
   `size` bigint(20) DEFAULT NULL,
   `uploaded_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 /*Data for the table `lecture` */
 
@@ -340,6 +356,9 @@ insert  into `lecture`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_t
 insert  into `lecture`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (11,18,NULL,'iOS Swift Game Development Cookbook Second Edition.pdf',4146309,'2017-10-06 23:47:02');
 insert  into `lecture`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (12,18,NULL,'CellTrack 3 EN.pdf',144778,'2017-10-06 23:47:09');
 insert  into `lecture`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (13,2,NULL,'iOS Swift Game Development Cookbook Second Edition.pdf',4146309,'2017-10-07 00:07:25');
+insert  into `lecture`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (14,2,NULL,'1.cpp',3601,'2017-10-10 04:07:11');
+insert  into `lecture`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (20,2,NULL,'mail.txt',134,'2017-10-10 04:08:44');
+insert  into `lecture`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (26,2,NULL,'mail.txt',134,'2017-10-10 04:20:56');
 
 /*Table structure for table `period` */
 
@@ -400,6 +419,8 @@ insert  into `student`(`id`,`name`,`pwd`) values (27,'Keegan Clayton','keegan');
 insert  into `student`(`id`,`name`,`pwd`) values (28,'John Reid','john');
 insert  into `student`(`id`,`name`,`pwd`) values (29,'Alexa Vance','alexa');
 insert  into `student`(`id`,`name`,`pwd`) values (30,'Maria May','maria');
+insert  into `student`(`id`,`name`,`pwd`) values (31,'Louis Reynolds','louis');
+insert  into `student`(`id`,`name`,`pwd`) values (33,'Todd Ruiz','todd');
 
 /*Table structure for table `teacher` */
 
@@ -411,21 +432,31 @@ CREATE TABLE `teacher` (
   `allowed` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`email`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 
 /*Data for the table `teacher` */
 
+insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (32,'abby.R@outlook.com','Abby Riley','abby',NULL);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (14,'ana.M@bulletmail.com','Ana Mitchell','ana',1);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (16,'bobby.C@gmail.com','Bobby Chambers','bobby',NULL);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (1,'brinley.S@mail.com','Brinley Sherman','brinley',NULL);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (2,'brown.D@gmail.com','Brown Davies','brown',2);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (20,'desmond.H@gmail.com','Desmond Hodges','desmond',NULL);
+insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (38,'diana.K@gmail.com','Diana Kirby','diana',NULL);
+insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (36,'gisselle.M@mail.com','Gisselle Medina','gissele',NULL);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (18,'kaia.R@gmail.com','Kaia Rosa','kaia',1);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (22,'kolten.G@outlook.com','Kolten Grimes','kolten',NULL);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (12,'leona.C@outlook.com','Leona Clemons','leona',NULL);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (28,'lerelei.J@bulletmail.com','Lorelei Joyner','lorelei',NULL);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (3,'libby.R@protonmail.com','Libby Robinson','libby',1);
+insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (35,'maia.A@me.com','Maia Alexander','maia',NULL);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (10,'mason.S@bulletmail.com','Mason Saunders','mason',NULL);
+insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (34,'reece.H@mail.com','Reece Harvey','reece',NULL);
+insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (39,'remington.G@me.com','Remington Gomez','remington',NULL);
+insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (33,'ryan.A@mail.com','Ryan Atkinson','ryan',NULL);
+insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (29,'samuel.S@outlook.com','Samuel Smile','samuel',NULL);
+insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (37,'sarah.M@outlook.com','Sarah Matthews','sarah',NULL);
+insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (30,'sariyah.K@me.com','Sariyah Keller','sariyah',NULL);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (24,'skylar.C@outlook.com','Skylar Carver','skylar',NULL);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (5,'smith.B@mail.com','Smith Bill','smith',1);
 insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (6,'terrance.M@gmail.com','Terrance Meyers','terrance',NULL);

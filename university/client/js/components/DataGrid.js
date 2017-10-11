@@ -65,13 +65,17 @@ let Column = React.createClass({
 
     linkHandler(event) {
         if (this.props.onLink) {
-            this.props.onLink(this.props.data);
+            if(this.props.action != "Details")
+                this.props.onLink(this.props.data);
+            else
+                this.props.onLink({homeworkId: this.props.field.replace("_score",""), result: this.props.data});
         }
         event.preventDefault();
     },
 
     render() {
         let value = this.props.data[this.props.field];
+
         if (this.props.format === "currency") {
             value = parseFloat(value).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
         } else if (this.props.format === "date") {
@@ -80,14 +84,21 @@ let Column = React.createClass({
             value = moment(value).format("YYYY/MM/DD hh:MM:ss");
         } else if (this.props.format === "size") {
             value = filesize(value);
-        }
+        } 
 
         if (this.props.onLink && !this.props.ignoreLinks) {
             if(this.props.action == "Details")
             {
-                value = <button className="slds-button slds-button--icon-border-filled" onClick={this.linkHandler}>
-                        <ButtonIcon name="add"/>
-                    </button>
+                let path = this.props.data[this.props.field.replace('_score','_hw')];
+                value = path?<div>
+                        <a href="" onClick={this.linkHandler} className="hw-details">
+                            <ButtonIcon name="add"/>
+                        </a>
+                        <span className={parseFloat(value)>=8.0?"grade-high":(parseFloat(value)>=6.0?"grade-intermediate":"")}>&nbsp;{value}</span>
+                        </div>:
+                        <div className="hw-none">
+                        <ButtonIcon name="ban"/>
+                        </div>
             }
             else if(this.props.action == "Delete")
             {
@@ -97,6 +108,9 @@ let Column = React.createClass({
             }
             else
                 value = <a href="#" onClick={this.linkHandler}>{value}</a>
+        } else if(this.props.field.endsWith('_score'))
+        {
+            value = <span className={parseFloat(value)>=8.0?"grade-high":(parseFloat(value)>=6.0?"grade-intermediate":"")}>{value}</span>
         }
 
         return (

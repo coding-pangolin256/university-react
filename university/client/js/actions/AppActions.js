@@ -24,7 +24,7 @@
  */
 
 import bcrypt from 'bcryptjs';
-import { SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE } from '../constants/AppConstants';
+import { SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, SET_INFO_MESSAGE } from '../constants/AppConstants';
 import * as errorMessages  from '../constants/MessageConstants';
 import auth from '../utils/auth';
 import genSalt from '../utils/salt';
@@ -83,11 +83,17 @@ export function login(pos, stdid, email, password) {
           }));
         } else {
           switch (err.type) {
+            case 'permission-not-allowed':
+              dispatch(setErrorMessage(errorMessages.PERMISSION_NOT_ALLOWED));
+              return;
             case 'user-doesnt-exist':
               dispatch(setErrorMessage(errorMessages.USER_NOT_FOUND));
               return;
             case 'password-wrong':
               dispatch(setErrorMessage(errorMessages.WRONG_PASSWORD));
+              return;
+            case 'input-wrong':
+              dispatch(setErrorMessage(errorMessages.WRONG_INPUT));
               return;
             default:
               dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
@@ -160,8 +166,12 @@ export function register(pos, stdid, email, name, password) {
         dispatch(setAuthState(success));
         if (success) {
           // If the register worked, forward the user to the homepage and clear the form
-          forwardTo('#/'+localStorage.pos+'/'+localStorage.token);
-          window.location.reload();
+          dispatch(setErrorMessage(errorMessages.SUCCESSFUL_REGISTER));
+          setTimeout(() => {
+            forwardTo('#/');
+            window.location.reload();
+          }, 2000);
+          
           dispatch(changeForm({
             stdid: "",
             email: "",
@@ -221,15 +231,16 @@ export function sendingRequest(sending) {
  */
 function setErrorMessage(message) {
   return (dispatch) => {
-    dispatch({ type: SET_ERROR_MESSAGE, message });
+    let type = message == errorMessages.SUCCESSFUL_REGISTER?SET_INFO_MESSAGE:SET_ERROR_MESSAGE;
+    dispatch({ type: type, message });
 
     const form = document.querySelector('.form-page__form-wrapper');
     if (form) {
-      form.classList.add('js-form__err-animation');
+      form.classList.add(type == SET_ERROR_MESSAGE?'js-form__err-animation':'js-form__info-animation');
       // Remove the animation class after the animation is finished, so it
       // can play again on the next error
       setTimeout(() => {
-        form.classList.remove('js-form__err-animation');
+        form.classList.remove(type == SET_ERROR_MESSAGE?'js-form__err-animation':'js-form__info-animation');
       }, 150);
 
       // Remove the error message after 3 seconds
@@ -245,7 +256,6 @@ function setErrorMessage(message) {
  * @param {string} location The route the user should be forwarded to
  */
 function forwardTo(location) {
-  console.log('forwardTo(' + location + ')');
   browserHistory.push(location);
 }
 

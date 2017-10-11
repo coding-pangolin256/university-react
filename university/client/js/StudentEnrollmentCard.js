@@ -28,13 +28,13 @@ export default React.createClass({
     },
 
     newEnrollmentSelectedHandler(course) {
-        EnrollmentService.createItem({student_id: this.props.student.id, course_id: course.id})
+        EnrollmentService.createItem({student_id: this.props.student.id, course_id: course.id, course_code: course.code})
             .then(() => {
                 this.getEnrollments(this.props.student.id);
                 this.setState({addingEnrollment:false});
             })
             .catch((error) => {
-                let event = new CustomEvent('notify', {detail:'Student already enrolled in this course'});
+                let event = new CustomEvent('notify', {detail:'You already enrolled in this course'});
                 document.dispatchEvent(event);
             });
     },

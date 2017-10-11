@@ -38,7 +38,7 @@ app.route('/upload')
         file.pipe(fstream);
         fstream.on('close', function () {    
             console.log("Upload Finished of " + filename);              
-            res.redirect('back');           //where to go next
+            res.json({success: true, filePath:filename});           //where to go next
         });
     });
 });
@@ -97,7 +97,7 @@ app.delete('/students/:id', students.deleteItem);
 app.get('/results', results.findAll);
 app.get('/results/:id', results.findById);
 app.post('/results', results.createItem);
-app.post('/result', results.findByHomework);
+app.post('/result', results.findByCourse);
 app.put('/results', results.updateItem);
 app.delete('/results/:id', results.deleteItem);
 
