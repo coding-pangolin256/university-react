@@ -28,12 +28,10 @@ class LoginForm extends Component {
         <ErrorMessage />
         <div className="form__field-wrapper">
           <label className="form__field-label" htmlFor="pos">Position</label>
-          <div className="form__field-input">
-          <select id="pos" value={this.props.data.pos} onChange={this._changePos.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" >
+          <select className="form__field-input" id="pos" value={this.props.data.pos} onChange={this._changePos.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" >
             <option value="teacher">Teacher</option>
             <option value="student">Student</option>
           </select>
-          </div>
         </div>
         {
           this.state.showTeacher?
