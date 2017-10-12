@@ -36,21 +36,21 @@ class RegisterForm extends Component {
         {
           this.state.showTeacher?
             <div className="form__field-wrapper" id="teacher_form">
-              <input className="form__field-input" type="text" id="email" value={this.props.data.email} placeholder="samuel.S@mail.com" onChange={this._changeEmail.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
+              <input className="form__field-input" type="text" id="email" value={this.props.data.email} onChange={this._changeEmail.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
               <label className="form__field-label" htmlFor="email">Email Address</label>
             </div>
             :
             <div className="form__field-wrapper" id="student_form">
-              <input className="form__field-input" type="text" id="stdid" value={this.props.data.stdid} placeholder="24" onChange={this._changeStdid.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
+              <input className="form__field-input" type="text" id="stdid" value={this.props.data.stdid} onChange={this._changeStdid.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
               <label className="form__field-label" htmlFor="stdid">Student ID</label>
             </div>
         }
         <div className="form__field-wrapper">
-          <input className="form__field-input" type="text" id="name" value={this.props.data.name} placeholder="Samuel Stevens" onChange={this._changeUsername.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
+          <input className="form__field-input" type="text" id="name" value={this.props.data.name} onChange={this._changeUsername.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
           <label className="form__field-label" htmlFor="name">Name</label>
         </div>
         <div className="form__field-wrapper">
-          <input className="form__field-input" id="password" type="password" value={this.props.data.password} placeholder="••••••••••"  onChange={this._changePassword.bind(this)} />
+          <input className="form__field-input" id="password" type="password" value={this.props.data.password} onChange={this._changePassword.bind(this)} />
           <label className="form__field-label" htmlFor="password">Password</label>
         </div>
         <div className="form__submit-btn-wrapper">

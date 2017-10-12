@@ -73,7 +73,7 @@ export function login(pos, stdid, email, password) {
 
         if (success === true) {
           // If the login worked, forward the user to the whiteboard and clear the form
-          forwardTo('#/'+localStorage.pos+'/'+localStorage.token);
+          forwardTo('#/'+sessionStorage.pos+'/'+sessionStorage.token);
           window.location.reload();
           dispatch(changeForm({
             stdid: "",

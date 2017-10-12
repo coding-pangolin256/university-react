@@ -13,7 +13,7 @@ var auth = {
    * @param  {Function} callback Called after a user was logged in on the remote server
    */
   login(pos, name, password, callback) {
-    // If there is a token in the localStorage, the user already is
+    // If there is a token in the sessionStorage, the user already is
     // authenticated
     if (this.loggedIn()) {
       callback(true);
@@ -25,11 +25,11 @@ var auth = {
     {
       StudentService.findByData({ 'id': name, 'pwd': password }).then(response => {
         // If the user was authenticated successfully, save a random token to the
-        // localStorage
+        // sessionStorage
         if (response != null) {
-          localStorage.token = response.id;
-          localStorage.permission = 0;
-          localStorage.pos = "student";
+          sessionStorage.token = response.id;
+          sessionStorage.permission = 0;
+          sessionStorage.pos = "student";
           callback(true);
         } else {
           // If there was a problem authenticating the user, show an error on the
@@ -45,11 +45,11 @@ var auth = {
     {
       TeacherService.findByData({ 'email': name, 'pwd': password }).then(response => {
         // If the user was authenticated successfully, save a random token to the
-        // localStorage
+        // sessionStorage
         if (response != null && response.allowed) {
-          localStorage.token = response.id;
-          localStorage.pos = "teacher";
-          localStorage.permission = response.allowed;
+          sessionStorage.token = response.id;
+          sessionStorage.pos = "teacher";
+          sessionStorage.permission = response.allowed;
           callback(true);
         } else {
           var err={
@@ -77,7 +77,7 @@ var auth = {
    * @return {boolean} True if there is a logged in user, false if there isn't
    */
   loggedIn() {
-    return !!localStorage.token;
+    return !!sessionStorage.token;
   },
   /**
    * Registers a user in the system

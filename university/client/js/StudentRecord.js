@@ -40,9 +40,9 @@ export default React.createClass({
             <div>
                 <RecordHeader type="Student" icon="lead"
                               title={this.state.student.name}
-                              onEdit={localStorage.pos=="student"?this.editHandler:null}
-                              onDelete={localStorage.pos=="student"?this.deleteHandler:null}
-                              onClone={localStorage.pos=="student"?this.cloneHandler:null}>
+                              onEdit={sessionStorage.pos=="student"?this.editHandler:null}
+                              onDelete={sessionStorage.pos=="student"?this.deleteHandler:null}
+                              onClone={sessionStorage.pos=="student"?this.cloneHandler:null}>
                     {/* <HeaderField label="Date of Birth" value={this.state.student.dob} format={this.formatDOB}/> */}
                     <HeaderField label="Student ID" value={this.state.student.id}/>
                 </RecordHeader>

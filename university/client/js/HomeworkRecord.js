@@ -40,8 +40,8 @@ export default React.createClass({
                 <RecordHeader type="Homework"
                               icon="report"
                               title={this.state.homework.title}
-                              onEdit={localStorage.pos=="teacher"?this.editHandler:null}
-                              onDelete={localStorage.pos=="teacher"?this.deleteHandler:null}>
+                              onEdit={sessionStorage.pos=="teacher"?this.editHandler:null}
+                              onDelete={sessionStorage.pos=="teacher"?this.deleteHandler:null}>
                     <HeaderField label="Details" value={this.state.homework.details}/>
                     {/* <HeaderField label="Course" value={this.state.homework.course_name}/> */}
                 </RecordHeader>

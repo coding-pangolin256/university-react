@@ -6,7 +6,11 @@ let ErrorMessage = (props) => {
 	return (
 		props.errorMessage ?
 			<div className="error-wrapper">
-				<p className={props.type == "SET_ERROR_MESSAGE"?"error":"info"}>{props.errorMessage}</p>
+				<span className={props.type == "SET_ERROR_MESSAGE"?"error":"info"}>
+				{props.errorMessage.split('\n').map((item, key) => {
+					return <span key={key}>{item}<br/></span>
+				})}
+				</span>
 			</div>
 			:<div></div>
 	);
