@@ -3,11 +3,11 @@ import genSalt from './salt';
 
 const salt = bcrypt.genSaltSync(10);
 let users;
-// webpack doesn't like localStorage otherwise
-let localStorage = global.window.localStorage;
+// webpack doesn't like sessionStorage otherwise
+let sessionStorage = global.window.sessionStorage;
 
 /**
- * Fake remote server, using bcrypt and localStorage to persist data across page
+ * Fake remote server, using bcrypt and sessionStorage to persist data across page
  * reloads
  * @type {Object}
  */
@@ -16,9 +16,9 @@ var server = {
    * Populates the users var, similar to seeding a database in the real world
    */
   init() {
-    // Get the previous users from localStorage if they exist, otherwise
-    // populates the localStorage
-    if (localStorage.users === undefined || !localStorage.encrypted) {
+    // Get the previous users from sessionStorage if they exist, otherwise
+    // populates the sessionStorage
+    if (sessionStorage.users === undefined || !sessionStorage.encrypted) {
       // Set default user
       
       const AzureDiamond = "teacher";
@@ -31,10 +31,10 @@ var server = {
       users = {
         [AzureDiamond]: userInfo
       };
-      localStorage.users = JSON.stringify(users);
-      localStorage.encrypted = true;
+      sessionStorage.users = JSON.stringify(users);
+      sessionStorage.encrypted = true;
     } else {
-      users = JSON.parse(localStorage.users);
+      users = JSON.parse(sessionStorage.users);
     }
   },
   /**
@@ -89,7 +89,7 @@ var server = {
   register(username, password, callback) {
     if (!this.doesUserExist(username)) {
       // If the username isn't used, hash the password with bcrypt to store it
-      // in localStorage
+      // in sessionStorage
 
       fetch('http://localhost:3200/add_user/', {
         method: 'POST',
@@ -118,7 +118,7 @@ var server = {
    * @param  {Function} callback Called after the user was logged out
    */
   logout(callback) {
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     if (callback) callback();
   },
   /**

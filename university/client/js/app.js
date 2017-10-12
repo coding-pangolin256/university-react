@@ -51,7 +51,6 @@ const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 const store = createStoreWithMiddleware(homeReducer);
 
 function checkAuth(nextState, replaceState) {
-  
   let { loggedIn } = store.getState();
   return loggedIn;
   // check if the path isn't dashboard

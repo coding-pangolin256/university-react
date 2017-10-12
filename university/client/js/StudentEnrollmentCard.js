@@ -96,7 +96,7 @@ export default React.createClass({
                         </div>
                     </div>
                     {
-                    localStorage.pos == "student"?
+                    sessionStorage.pos == "student"?
                     <div className="slds-no-flex">
                         <div className="slds-button-group">
                             <button className="slds-button slds-button--neutral slds-button--small" onClick={this.newEnrollmentHandler}>New</button>
@@ -111,7 +111,7 @@ export default React.createClass({
                 </header>
 
                 <section className="slds-card__body">
-                    <DataGrid data={this.state.enrollments} keyField="id" actions={localStorage.pos=="teacher"?["View Course", "View Teacher", "Delete"]:["View Course", "Delete"]} onAction={this.actionHandler}>
+                    <DataGrid data={this.state.enrollments} keyField="id" actions={sessionStorage.pos=="teacher"?["View Course", "View Teacher", "Delete"]:["View Course", "Delete"]} onAction={this.actionHandler}>
                         <div header="Code" field="code" onLink={this.courseLinkHandler}/>
                         <div header="Name" field="course_name" onLink={this.courseLinkHandler}/>
                         <div header="Period" field="period_name"/>

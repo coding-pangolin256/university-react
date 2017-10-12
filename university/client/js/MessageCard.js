@@ -10,7 +10,7 @@ export default React.createClass({
     attachLinkHandler(event) {
         var link = document.createElement('a');
         link.download = this.props.data.text;
-        link.href = 'http://localhost:5000/upload/' + link.download;
+        link.href = window.location.protocol + '/upload/' + link.download;
         var clickEvent = document.createEvent("MouseEvent");
         clickEvent.initEvent("click", true, true);
         
@@ -50,12 +50,12 @@ export default React.createClass({
                 </header> */}
 
                 <section className="slds-card__body">
-                        <div className="slds-media__body">
-                            
+                        <div className="slds-media__body ">
+                            <small>
                                 {this.props.data.pos=="teacher"?
                                     'Professor '+this.props.data.user_name:
-                                    this.props.data.user_name}
-                           
+                                    null}
+                            </small>
                         </div>
                     <span className="slds-input">{!this.props.data.type?this.props.data.text:
                         <a href="#" className="slds-badge" onClick={this.attachLinkHandler}>{this.props.data.text}</a>}

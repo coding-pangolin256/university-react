@@ -12,7 +12,7 @@ export default React.createClass({
         window.location.hash = "student/" + value;
     },
     logout() {
-        localStorage.clear();
+        sessionStorage.clear();
         browserHistory.push('#/');
         window.location.reload();
     },
@@ -30,9 +30,9 @@ export default React.createClass({
                         <li className="slds-list__item slds-m-top--xx-small">
                             <StudentSearchBox onSelect={this.selectHandler}/>
                         </li> */}
-                        <li className="slds-list__item"><a href={"#"+localStorage.pos+"/"+localStorage.token}><Icon name="home" theme={null}/>Home</a></li>
+                        <li className="slds-list__item"><a href={"#"+sessionStorage.pos+"/"+sessionStorage.token}><Icon name="home" theme={null}/>Home</a></li>
                         {
-                            localStorage.permission == 2?
+                            sessionStorage.permission == 2?
                             <li className="slds-list__item"><a href="#teachers"><Icon name="user" theme={null}/>Teachers</a></li>
                             :""
                         }

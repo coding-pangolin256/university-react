@@ -106,7 +106,7 @@ export default React.createClass({
                 console.log('you choose', typeof files == 'string' ? files : files[0].name);
               },
               beforeUpload: (files) => {
-                this.setState({homework: assign(this.props.homework,({std_id: localStorage.token, path:files[0].name}))});
+                this.setState({homework: assign(this.props.homework,({std_id: sessionStorage.token, path:files[0].name}))});
                 if (typeof files === 'string') return true;
                 if (files[0].size < 1024 * 1024 * 20) {
                   
@@ -149,7 +149,7 @@ export default React.createClass({
                         <StudentSearchBox placeholder="Search to enroll..." onSelect={this.studentSelectHandler}/>
                     </div> */}
                     {
-                    localStorage.pos=="student"?
+                    sessionStorage.pos=="student"?
                     <div className="slds-no-flex">
                         <div className="slds-button-group">
                         <ReactUploadFile options={options} 
@@ -167,19 +167,19 @@ export default React.createClass({
                 </header>
 
                 <section className="slds-card__body">
-                    <DataGrid data={this.state.results} keyField="id" actions={localStorage.pos=="teacher"?["View Details", "Delete"]:null} onAction={this.actionHandler}>
+                    <DataGrid data={this.state.results} keyField="id" actions={sessionStorage.pos=="teacher"?["View Details", "Delete"]:null} onAction={this.actionHandler}>
                         <div header="Student Name" field="student_name" sortable={true} onLink={this.studentLinkHandler}/>
                         {/* <div header="Last Name" field="last_name" sortable={true} onLink={this.resultLinkHandler}/>
                         <div header="File Path" field="path"/> */}
                         <div header="Score" field="score" sortable={true}/>
                         {
-                        localStorage.pos=="teacher"?
+                        sessionStorage.pos=="teacher"?
                                 <div header="View details" field="details" action="Details" onLink={this.resultLinkHandler}/>
                             :
                             ""
                         }
                         {
-                        localStorage.pos=="teacher"?
+                        sessionStorage.pos=="teacher"?
                                 <div header="Delete file" field="delete" action="Delete" onLink={this.resultDeleteHandler}/>
                             :
                             ""

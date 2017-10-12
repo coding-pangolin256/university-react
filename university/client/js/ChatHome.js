@@ -8,15 +8,34 @@ import ChatBox from './ChatBox';
 export default React.createClass({
 
     getInitialState() {
-        return {msgs: []};
+        return {msgs: [], msg_len: 0};
     },
 
     componentDidMount() {
         this.getMessages();
+        var intervalId = setInterval(this.getMessages, 3000);
+        // store intervalId in the state so it can be accessed later:
+        this.setState({intervalId: intervalId});
+    },
+    componentWillUnmount() {
+        // use intervalId from the state to clear the interval
+        clearInterval(this.state.intervalId);
+    },
+
+    componentDidUpdate() {
+        if(this.state.msg_len != this.state.msgs.length)
+        {
+            var objDiv = document.getElementById("cht_box");
+            objDiv.scrollTop = objDiv.scrollHeight;
+            this.setState({msg_len: this.state.msgs.length});
+        }
     },
 
     getMessages() {
-        ChatService.findAll().then(msgs => this.setState({msgs}));
+        fetch(window.location.protocol + 'messages')
+        .then((response) => {
+            return response.json();
+        }).then((data) => {this.setState({msgs: data})});
     },
 
     deleteHandler(msg) {
@@ -29,7 +48,7 @@ export default React.createClass({
 
     sendHandler(msg,type)
     {
-        ChatService.createItem({user_id: localStorage.token, pos: localStorage.pos, text: msg, type: type, course_id: this.props.course.id})
+        ChatService.createItem({user_id: sessionStorage.token, pos: sessionStorage.pos, text: msg, type: type, course_id: this.props.course.id})
         .then(()=>{
             this.getMessages();
         });
@@ -47,11 +66,12 @@ export default React.createClass({
                               title="Chat Room"
                               itemCount={this.state.msgs.length}>
                 </RecordHeader> */}
-                <div className="slds-m-around--medium slds-scrollable--y">
+                <div className="slds-m-around--medium slds-scrollable--y" id="cht_box">
                     {rows}
                 </div>
                 <ChatBox onSend={this.sendHandler}/>
             </div>
+            
         );
     }
 });

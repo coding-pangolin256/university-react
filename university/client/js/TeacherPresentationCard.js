@@ -59,7 +59,7 @@ export default React.createClass({
     presentLinkHandler(present) {
         var link = document.createElement('a');
         link.download = present.path;
-        link.href = 'http://localhost:5000/upload/'+present.path;
+        link.href = window.location.protocol + '/upload/'+present.path;
         var clickEvent = document.createEvent("MouseEvent");
         clickEvent.initEvent("click", true, true);
         
@@ -144,7 +144,7 @@ export default React.createClass({
                 </header>
 
                 <section className="slds-card__body">
-                    <DataGrid data={this.state.presents} keyField="id" actions={localStorage.pos=="teacher"?["Download File", "Delete"]:["Download File"]} onAction={this.actionHandler}>
+                    <DataGrid data={this.state.presents} keyField="id" actions={sessionStorage.pos=="teacher"?["Download File", "Delete"]:["Download File"]} onAction={this.actionHandler}>
                         <div header="File Name" field="path" sortable={true} onLink={this.presentLinkHandler}/>
                         <div header="Description" field="description" sortable={true}/>
                         <div header="Size" field="size" sortable={true} format="size"/>

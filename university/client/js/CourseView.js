@@ -23,7 +23,7 @@ export default React.createClass({
                     </dl>
                 </div>
             </div>
-            {localStorage.pos=="teacher"?<CourseEnrollmentCard course={course} editable={true} title="Students" icon="lead"/>:null}
+            {sessionStorage.pos=="teacher"?<CourseEnrollmentCard course={course} editable={true} title="Students" icon="lead"/>:null}
             <CourseHomeworkCard course={course}/>
             <CourseEnrollmentCard course={course} title="Embedded Excel" icon="metrics"/>
             </div>

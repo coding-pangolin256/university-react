@@ -29033,7 +29033,7 @@
 	   * @param  {Function} callback Called after a user was logged in on the remote server
 	   */
 	  login: function login(pos, name, password, callback) {
-	    // If there is a token in the localStorage, the user already is
+	    // If there is a token in the sessionStorage, the user already is
 	    // authenticated
 	    if (this.loggedIn()) {
 	      callback(true);
@@ -29044,11 +29044,11 @@
 	    if (pos == "student") {
 	      StudentService.findByData({ 'id': name, 'pwd': password }).then(function (response) {
 	        // If the user was authenticated successfully, save a random token to the
-	        // localStorage
+	        // sessionStorage
 	        if (response != null) {
-	          localStorage.token = response.id;
-	          localStorage.permission = 0;
-	          localStorage.pos = "student";
+	          sessionStorage.token = response.id;
+	          sessionStorage.permission = 0;
+	          sessionStorage.pos = "student";
 	          callback(true);
 	        } else {
 	          // If there was a problem authenticating the user, show an error on the
@@ -29062,11 +29062,11 @@
 	    } else {
 	      TeacherService.findByData({ 'email': name, 'pwd': password }).then(function (response) {
 	        // If the user was authenticated successfully, save a random token to the
-	        // localStorage
+	        // sessionStorage
 	        if (response != null && response.allowed) {
-	          localStorage.token = response.id;
-	          localStorage.pos = "teacher";
-	          localStorage.permission = response.allowed;
+	          sessionStorage.token = response.id;
+	          sessionStorage.pos = "teacher";
+	          sessionStorage.permission = response.allowed;
 	          callback(true);
 	        } else {
 	          var err = {
@@ -29095,7 +29095,7 @@
 	   * @return {boolean} True if there is a logged in user, false if there isn't
 	   */
 	  loggedIn: function loggedIn() {
-	    return !!localStorage.token;
+	    return !!sessionStorage.token;
 	  },
 	
 	  /**
@@ -29217,11 +29217,11 @@
 	
 	var salt = _bcryptjs2.default.genSaltSync(10);
 	var users = void 0;
-	// webpack doesn't like localStorage otherwise
-	var localStorage = global.window.localStorage;
+	// webpack doesn't like sessionStorage otherwise
+	var sessionStorage = global.window.sessionStorage;
 	
 	/**
-	 * Fake remote server, using bcrypt and localStorage to persist data across page
+	 * Fake remote server, using bcrypt and sessionStorage to persist data across page
 	 * reloads
 	 * @type {Object}
 	 */
@@ -29230,9 +29230,9 @@
 	   * Populates the users var, similar to seeding a database in the real world
 	   */
 	  init: function init() {
-	    // Get the previous users from localStorage if they exist, otherwise
-	    // populates the localStorage
-	    if (localStorage.users === undefined || !localStorage.encrypted) {
+	    // Get the previous users from sessionStorage if they exist, otherwise
+	    // populates the sessionStorage
+	    if (sessionStorage.users === undefined || !sessionStorage.encrypted) {
 	      // Set default user
 	
 	      var AzureDiamond = "teacher";
@@ -29243,10 +29243,10 @@
 	        permission: 2
 	      };
 	      users = _defineProperty({}, AzureDiamond, userInfo);
-	      localStorage.users = JSON.stringify(users);
-	      localStorage.encrypted = true;
+	      sessionStorage.users = JSON.stringify(users);
+	      sessionStorage.encrypted = true;
 	    } else {
-	      users = JSON.parse(localStorage.users);
+	      users = JSON.parse(sessionStorage.users);
 	    }
 	  },
 	
@@ -29301,7 +29301,7 @@
 	  register: function register(username, password, callback) {
 	    if (!this.doesUserExist(username)) {
 	      // If the username isn't used, hash the password with bcrypt to store it
-	      // in localStorage
+	      // in sessionStorage
 	
 	      fetch('http://localhost:3200/add_user/', {
 	        method: 'POST',
@@ -29331,7 +29331,7 @@
 	   * @param  {Function} callback Called after the user was logged out
 	   */
 	  logout: function logout(callback) {
-	    localStorage.removeItem('token');
+	    sessionStorage.removeItem('token');
 	    if (callback) callback();
 	  },
 	
@@ -39964,7 +39964,7 @@
 	        window.location.hash = "student/" + value;
 	    },
 	    logout: function logout() {
-	        localStorage.clear();
+	        sessionStorage.clear();
 	        _reactRouter.browserHistory.push('#/');
 	        window.location.reload();
 	    },
@@ -39995,12 +39995,12 @@
 	                        { className: 'slds-list__item' },
 	                        _react2.default.createElement(
 	                            'a',
-	                            { href: "#" + localStorage.pos + "/" + localStorage.token },
+	                            { href: "#" + sessionStorage.pos + "/" + sessionStorage.token },
 	                            _react2.default.createElement(_Icons.Icon, { name: 'home', theme: null }),
 	                            'Home'
 	                        )
 	                    ),
-	                    localStorage.permission == 2 ? _react2.default.createElement(
+	                    sessionStorage.permission == 2 ? _react2.default.createElement(
 	                        'li',
 	                        { className: 'slds-list__item' },
 	                        _react2.default.createElement(
@@ -57132,6 +57132,9 @@
 	    actionHandler: function actionHandler(index, value, label) {
 	        this.props.onAction(this.props.data, index, value, label);
 	    },
+	    singleActionHandler: function singleActionHandler() {
+	        this.actionHandler(0, 0, this.props.actions[0]);
+	    },
 	    clickHandler: function clickHandler() {
 	        if (this.props.onClick) {
 	            this.props.onClick(this.props.data);
@@ -57153,13 +57156,18 @@
 	        }
 	
 	        if (this.props.actions) {
+	            console.log(this.props.actions);
 	            var actions = this.props.actions.map(function (action, index) {
 	                return { id: index, name: action };
 	            });
 	            columns.push(_react2.default.createElement(
 	                'td',
 	                { style: { width: "50px" } },
-	                _react2.default.createElement(ActionButton, { actions: actions, onChange: this.actionHandler })
+	                this.props.actions.length > 1 ? _react2.default.createElement(ActionButton, { actions: actions, onChange: this.actionHandler }) : _react2.default.createElement(
+	                    'button',
+	                    { className: 'slds-button slds-button--neutral slds-button--small', onClick: this.singleActionHandler },
+	                    actions[0].name
+	                )
 	            ));
 	        }
 	
@@ -57800,8 +57808,8 @@
 	                { type: 'Course',
 	                    icon: 'orders',
 	                    title: this.state.course.name,
-	                    onEdit: localStorage.pos == "teacher" ? this.editHandler : null,
-	                    onDelete: localStorage.pos == "teacher" ? this.deleteHandler : null },
+	                    onEdit: sessionStorage.pos == "teacher" ? this.editHandler : null,
+	                    onDelete: sessionStorage.pos == "teacher" ? this.deleteHandler : null },
 	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Code', value: this.state.course.code }),
 	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Period', value: this.state.course.period_name })
 	            ),
@@ -57878,7 +57886,7 @@
 	                        )
 	                    )
 	                ),
-	                localStorage.pos == "teacher" ? _react2.default.createElement(_CourseEnrollmentCard2.default, { course: course, editable: true, title: "Students", icon: "lead" }) : null,
+	                sessionStorage.pos == "teacher" ? _react2.default.createElement(_CourseEnrollmentCard2.default, { course: course, editable: true, title: "Students", icon: "lead" }) : null,
 	                _react2.default.createElement(_CourseHomeworkCard2.default, { course: course }),
 	                _react2.default.createElement(_CourseEnrollmentCard2.default, { course: course, title: "Embedded Excel", icon: "metrics" })
 	            ),
@@ -58038,7 +58046,7 @@
 	                { className: 'slds-card__body' },
 	                _react2.default.createElement(
 	                    _DataGrid2.default,
-	                    { data: this.state.results, keyField: 'std_id', actions: localStorage.pos == "teacher" ? ["View Student", "Delete"] : null, onAction: this.actionHandler },
+	                    { data: this.state.results, keyField: 'std_id', actions: sessionStorage.pos == "teacher" ? ["View Student", "Delete"] : null, onAction: this.actionHandler },
 	                    cols
 	                )
 	            ),
@@ -58354,7 +58362,7 @@
 	                    return _this2.getHomeworks(_this2.props.course.id);
 	                });
 	                break;
-	            case "Submit Homework":
+	            case "Submit":
 	                this.setState({ submitting: true, current: data });
 	                break;
 	        }
@@ -58410,7 +58418,7 @@
 	                        )
 	                    )
 	                ),
-	                localStorage.pos == "teacher" ? _react2.default.createElement(
+	                sessionStorage.pos == "teacher" ? _react2.default.createElement(
 	                    'div',
 	                    { className: 'slds-no-flex' },
 	                    _react2.default.createElement(
@@ -58439,7 +58447,7 @@
 	                { className: 'slds-card__body' },
 	                _react2.default.createElement(
 	                    _DataGrid2.default,
-	                    { data: this.state.homeworks, keyField: 'id', actions: localStorage.pos == "teacher" ? ["View Homework", "Delete"] : ["Submit Homework"], onAction: this.actionHandler },
+	                    { data: this.state.homeworks, keyField: 'id', actions: sessionStorage.pos == "teacher" ? ["View Homework", "Delete"] : ["Submit"], onAction: this.actionHandler },
 	                    _react2.default.createElement('div', { header: 'Title', field: 'title', sortable: true, onLink: this.homeworkLinkHandler }),
 	                    _react2.default.createElement('div', { header: 'Details', field: 'details' })
 	                )
@@ -58747,7 +58755,7 @@
 	            console.log('upload success!');
 	        });
 	        uploader.on('submitted', function (id) {
-	            _this.setState({ homework: assign(_this.props.homework, { std_id: localStorage.token, path: uploader.methods.getFile(id).name }) });
+	            _this.setState({ homework: assign(_this.props.homework, { std_id: sessionStorage.token, path: uploader.methods.getFile(id).name }) });
 	        });
 	    },
 	    saveHandler: function saveHandler() {
@@ -65050,16 +65058,32 @@
 	exports.default = _react2.default.createClass({
 	    displayName: 'ChatHome',
 	    getInitialState: function getInitialState() {
-	        return { msgs: [] };
+	        return { msgs: [], msg_len: 0 };
 	    },
 	    componentDidMount: function componentDidMount() {
 	        this.getMessages();
+	        var intervalId = setInterval(this.getMessages, 3000);
+	        // store intervalId in the state so it can be accessed later:
+	        this.setState({ intervalId: intervalId });
+	    },
+	    componentWillUnmount: function componentWillUnmount() {
+	        // use intervalId from the state to clear the interval
+	        clearInterval(this.state.intervalId);
+	    },
+	    componentDidUpdate: function componentDidUpdate() {
+	        if (this.state.msg_len != this.state.msgs.length) {
+	            var objDiv = document.getElementById("cht_box");
+	            objDiv.scrollTop = objDiv.scrollHeight;
+	            this.setState({ msg_len: this.state.msgs.length });
+	        }
 	    },
 	    getMessages: function getMessages() {
 	        var _this = this;
 	
-	        ChatService.findAll().then(function (msgs) {
-	            return _this.setState({ msgs: msgs });
+	        fetch(window.location.protocol + 'messages').then(function (response) {
+	            return response.json();
+	        }).then(function (data) {
+	            _this.setState({ msgs: data });
 	        });
 	    },
 	    deleteHandler: function deleteHandler(msg) {
@@ -65073,7 +65097,7 @@
 	    sendHandler: function sendHandler(msg, type) {
 	        var _this2 = this;
 	
-	        ChatService.createItem({ user_id: localStorage.token, pos: localStorage.pos, text: msg, type: type, course_id: this.props.course.id }).then(function () {
+	        ChatService.createItem({ user_id: sessionStorage.token, pos: sessionStorage.pos, text: msg, type: type, course_id: this.props.course.id }).then(function () {
 	            _this2.getMessages();
 	        });
 	    },
@@ -65090,7 +65114,7 @@
 	            { className: 'slds-card' },
 	            _react2.default.createElement(
 	                'div',
-	                { className: 'slds-m-around--medium slds-scrollable--y' },
+	                { className: 'slds-m-around--medium slds-scrollable--y', id: 'cht_box' },
 	                rows
 	            ),
 	            _react2.default.createElement(_ChatBox2.default, { onSend: this.sendHandler })
@@ -65178,7 +65202,7 @@
 	    attachLinkHandler: function attachLinkHandler(event) {
 	        var link = document.createElement('a');
 	        link.download = this.props.data.text;
-	        link.href = 'http://localhost:5000/upload/' + link.download;
+	        link.href = window.location.protocol + '/upload/' + link.download;
 	        var clickEvent = document.createEvent("MouseEvent");
 	        clickEvent.initEvent("click", true, true);
 	
@@ -65205,8 +65229,12 @@
 	                { className: 'slds-card__body' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'slds-media__body' },
-	                    this.props.data.pos == "teacher" ? 'Professor ' + this.props.data.user_name : this.props.data.user_name
+	                    { className: 'slds-media__body ' },
+	                    _react2.default.createElement(
+	                        'small',
+	                        null,
+	                        this.props.data.pos == "teacher" ? 'Professor ' + this.props.data.user_name : null
+	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'span',
@@ -65444,8 +65472,8 @@
 	                { type: 'Homework',
 	                    icon: 'report',
 	                    title: this.state.homework.title,
-	                    onEdit: localStorage.pos == "teacher" ? this.editHandler : null,
-	                    onDelete: localStorage.pos == "teacher" ? this.deleteHandler : null },
+	                    onEdit: sessionStorage.pos == "teacher" ? this.editHandler : null,
+	                    onDelete: sessionStorage.pos == "teacher" ? this.deleteHandler : null },
 	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Details', value: this.state.homework.details })
 	            ),
 	            _react2.default.cloneElement(this.props.children, { homework: this.state.homework })
@@ -65653,7 +65681,7 @@
 	                console.log('you choose', typeof files == 'string' ? files : files[0].name);
 	            },
 	            beforeUpload: function beforeUpload(files) {
-	                _this4.setState({ homework: assign(_this4.props.homework, { std_id: localStorage.token, path: files[0].name }) });
+	                _this4.setState({ homework: assign(_this4.props.homework, { std_id: sessionStorage.token, path: files[0].name }) });
 	                if (typeof files === 'string') return true;
 	                if (files[0].size < 1024 * 1024 * 20) {
 	
@@ -65705,7 +65733,7 @@
 	                        )
 	                    )
 	                ),
-	                localStorage.pos == "student" ? _react2.default.createElement(
+	                sessionStorage.pos == "student" ? _react2.default.createElement(
 	                    'div',
 	                    { className: 'slds-no-flex' },
 	                    _react2.default.createElement(
@@ -65740,11 +65768,11 @@
 	                { className: 'slds-card__body' },
 	                _react2.default.createElement(
 	                    _DataGrid2.default,
-	                    { data: this.state.results, keyField: 'id', actions: localStorage.pos == "teacher" ? ["View Details", "Delete"] : null, onAction: this.actionHandler },
+	                    { data: this.state.results, keyField: 'id', actions: sessionStorage.pos == "teacher" ? ["View Details", "Delete"] : null, onAction: this.actionHandler },
 	                    _react2.default.createElement('div', { header: 'Student Name', field: 'student_name', sortable: true, onLink: this.studentLinkHandler }),
 	                    _react2.default.createElement('div', { header: 'Score', field: 'score', sortable: true }),
-	                    localStorage.pos == "teacher" ? _react2.default.createElement('div', { header: 'View details', field: 'details', action: 'Details', onLink: this.resultLinkHandler }) : "",
-	                    localStorage.pos == "teacher" ? _react2.default.createElement('div', { header: 'Delete file', field: 'delete', action: 'Delete', onLink: this.resultDeleteHandler }) : ""
+	                    sessionStorage.pos == "teacher" ? _react2.default.createElement('div', { header: 'View details', field: 'details', action: 'Details', onLink: this.resultLinkHandler }) : "",
+	                    sessionStorage.pos == "teacher" ? _react2.default.createElement('div', { header: 'Delete file', field: 'delete', action: 'Delete', onLink: this.resultDeleteHandler }) : ""
 	                )
 	            ),
 	            this.state.estimatting ? _react2.default.createElement(_ResultFormWindow2.default, { result: this.state.current, homework: this.props.homework, onSaved: this.scoreSavedHandler, onCancel: this.scoreCancelHandler }) : null
@@ -70217,9 +70245,9 @@
 	                _PageHeader.RecordHeader,
 	                { type: 'Student', icon: 'lead',
 	                    title: this.state.student.name,
-	                    onEdit: localStorage.pos == "student" ? this.editHandler : null,
-	                    onDelete: localStorage.pos == "student" ? this.deleteHandler : null,
-	                    onClone: localStorage.pos == "student" ? this.cloneHandler : null },
+	                    onEdit: sessionStorage.pos == "student" ? this.editHandler : null,
+	                    onDelete: sessionStorage.pos == "student" ? this.deleteHandler : null,
+	                    onClone: sessionStorage.pos == "student" ? this.cloneHandler : null },
 	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Student ID', value: this.state.student.id })
 	            ),
 	            _react2.default.cloneElement(this.props.children, { student: this.state.student })
@@ -70394,7 +70422,7 @@
 	                        )
 	                    )
 	                ),
-	                localStorage.pos == "student" ? _react2.default.createElement(
+	                sessionStorage.pos == "student" ? _react2.default.createElement(
 	                    'div',
 	                    { className: 'slds-no-flex' },
 	                    _react2.default.createElement(
@@ -70423,7 +70451,7 @@
 	                { className: 'slds-card__body' },
 	                _react2.default.createElement(
 	                    _DataGrid2.default,
-	                    { data: this.state.enrollments, keyField: 'id', actions: localStorage.pos == "teacher" ? ["View Course", "View Teacher", "Delete"] : ["View Course", "Delete"], onAction: this.actionHandler },
+	                    { data: this.state.enrollments, keyField: 'id', actions: sessionStorage.pos == "teacher" ? ["View Course", "View Teacher", "Delete"] : ["View Course", "Delete"], onAction: this.actionHandler },
 	                    _react2.default.createElement('div', { header: 'Code', field: 'code', onLink: this.courseLinkHandler }),
 	                    _react2.default.createElement('div', { header: 'Name', field: 'course_name', onLink: this.courseLinkHandler }),
 	                    _react2.default.createElement('div', { header: 'Period', field: 'period_name' }),
@@ -70775,15 +70803,13 @@
 	        if (value === 0) {
 	            this.props.onApprove(data);
 	        } else if (value === 1) {
-	            linkHandler(data);
-	        } else if (value === 2) {
 	            this.props.onDelete(data);
 	        }
 	    },
 	    render: function render() {
 	        return _react2.default.createElement(
 	            _DataGrid2.default,
-	            { data: this.props.teachers, actions: ["Approve Teacher", "View Teacher", "Delete"], onAction: this.actionHandler },
+	            { data: this.props.teachers, actions: ["Approve", "Delete"], onAction: this.actionHandler },
 	            _react2.default.createElement('div', { header: 'Name', field: 'name', onLink: this.linkHandler }),
 	            _react2.default.createElement('div', { header: 'Email Address', field: 'email' }),
 	            _react2.default.createElement('div', { header: 'Approved', field: 'approved' })
@@ -71308,7 +71334,7 @@
 	    presentLinkHandler: function presentLinkHandler(present) {
 	        var link = document.createElement('a');
 	        link.download = present.path;
-	        link.href = 'http://localhost:5000/upload/' + present.path;
+	        link.href = window.location.protocol + '/upload/' + present.path;
 	        var clickEvent = document.createEvent("MouseEvent");
 	        clickEvent.initEvent("click", true, true);
 	
@@ -71406,7 +71432,7 @@
 	                { className: 'slds-card__body' },
 	                _react2.default.createElement(
 	                    _DataGrid2.default,
-	                    { data: this.state.presents, keyField: 'id', actions: localStorage.pos == "teacher" ? ["Download File", "Delete"] : ["Download File"], onAction: this.actionHandler },
+	                    { data: this.state.presents, keyField: 'id', actions: sessionStorage.pos == "teacher" ? ["Download File", "Delete"] : ["Download File"], onAction: this.actionHandler },
 	                    _react2.default.createElement('div', { header: 'File Name', field: 'path', sortable: true, onLink: this.presentLinkHandler }),
 	                    _react2.default.createElement('div', { header: 'Description', field: 'description', sortable: true }),
 	                    _react2.default.createElement('div', { header: 'Size', field: 'size', sortable: true, format: 'size' }),
@@ -71885,7 +71911,7 @@
 	
 	      if (success === true) {
 	        // If the login worked, forward the user to the whiteboard and clear the form
-	        forwardTo('#/' + localStorage.pos + '/' + localStorage.token);
+	        forwardTo('#/' + sessionStorage.pos + '/' + sessionStorage.token);
 	        window.location.reload();
 	        dispatch(changeForm({
 	          stdid: "",
@@ -72103,7 +72129,7 @@
 	var USER_NOT_FOUND = exports.USER_NOT_FOUND = 'This username does not exist.';
 	var USERNAME_TAKEN = exports.USERNAME_TAKEN = 'Sorry, but this username is already taken';
 	var WRONG_INPUT = exports.WRONG_INPUT = 'Wrong input.';
-	var PERMISSION_NOT_ALLOWED = exports.PERMISSION_NOT_ALLOWED = 'Permission is not allowed';
+	var PERMISSION_NOT_ALLOWED = exports.PERMISSION_NOT_ALLOWED = 'Your account has not been approved yet. \n      If you are in a hurry, please contact ....';
 	var SUCCESSFUL_REGISTER = exports.SUCCESSFUL_REGISTER = 'You have been successfully registered.';
 	var GENERAL_ERROR = exports.GENERAL_ERROR = 'Something went wrong, please try again';
 
@@ -72364,6 +72390,11 @@
 	          'div',
 	          { className: 'form__field-wrapper' },
 	          _react2.default.createElement(
+	            'label',
+	            { className: 'form__field-label', htmlFor: 'pos' },
+	            'Position'
+	          ),
+	          _react2.default.createElement(
 	            'select',
 	            { className: 'form__field-input', id: 'pos', value: this.props.data.pos, onChange: this._changePos.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' },
 	            _react2.default.createElement(
@@ -72376,41 +72407,36 @@
 	              { value: 'student' },
 	              'Student'
 	            )
-	          ),
-	          _react2.default.createElement(
-	            'label',
-	            { className: 'form__field-label', htmlFor: 'pos' },
-	            'Position'
 	          )
 	        ),
 	        this.state.showTeacher ? _react2.default.createElement(
 	          'div',
 	          { className: 'form__field-wrapper', id: 'teacher_form' },
-	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'email', value: this.props.data.email, placeholder: 'samuel.S@mail.com', onChange: this._changeEmail.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
 	          _react2.default.createElement(
 	            'label',
 	            { className: 'form__field-label', htmlFor: 'email' },
 	            'Email Address'
-	          )
+	          ),
+	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'email', value: this.props.data.email, onChange: this._changeEmail.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' })
 	        ) : _react2.default.createElement(
 	          'div',
 	          { className: 'form__field-wrapper', id: 'student_form' },
-	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'stdid', value: this.props.data.stdid, placeholder: '24', onChange: this._changeStdid.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
 	          _react2.default.createElement(
 	            'label',
 	            { className: 'form__field-label', htmlFor: 'stdid' },
 	            'Student ID'
-	          )
+	          ),
+	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'stdid', value: this.props.data.stdid, onChange: this._changeStdid.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' })
 	        ),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'form__field-wrapper' },
-	          _react2.default.createElement('input', { className: 'form__field-input', id: 'password', type: 'password', value: this.props.data.password, placeholder: '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022', onChange: this._changePassword.bind(this) }),
 	          _react2.default.createElement(
 	            'label',
 	            { className: 'form__field-label', htmlFor: 'password' },
 	            'Password'
-	          )
+	          ),
+	          _react2.default.createElement('input', { className: 'form__field-input', id: 'password', type: 'password', value: this.props.data.password, onChange: this._changePassword.bind(this) })
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -72545,9 +72571,16 @@
 			'div',
 			{ className: 'error-wrapper' },
 			_react2.default.createElement(
-				'p',
+				'span',
 				{ className: props.type == "SET_ERROR_MESSAGE" ? "error" : "info" },
-				props.errorMessage
+				props.errorMessage.split('\n').map(function (item, key) {
+					return _react2.default.createElement(
+						'span',
+						{ key: key },
+						item,
+						_react2.default.createElement('br', null)
+					);
+				})
 			)
 		) : _react2.default.createElement('div', null);
 	};
@@ -72761,7 +72794,7 @@
 	        this.state.showTeacher ? _react2.default.createElement(
 	          'div',
 	          { className: 'form__field-wrapper', id: 'teacher_form' },
-	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'email', value: this.props.data.email, placeholder: 'samuel.S@mail.com', onChange: this._changeEmail.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
+	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'email', value: this.props.data.email, onChange: this._changeEmail.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
 	          _react2.default.createElement(
 	            'label',
 	            { className: 'form__field-label', htmlFor: 'email' },
@@ -72770,7 +72803,7 @@
 	        ) : _react2.default.createElement(
 	          'div',
 	          { className: 'form__field-wrapper', id: 'student_form' },
-	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'stdid', value: this.props.data.stdid, placeholder: '24', onChange: this._changeStdid.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
+	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'stdid', value: this.props.data.stdid, onChange: this._changeStdid.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
 	          _react2.default.createElement(
 	            'label',
 	            { className: 'form__field-label', htmlFor: 'stdid' },
@@ -72780,7 +72813,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'form__field-wrapper' },
-	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'name', value: this.props.data.name, placeholder: 'Samuel Stevens', onChange: this._changeUsername.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
+	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'name', value: this.props.data.name, onChange: this._changeUsername.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' }),
 	          _react2.default.createElement(
 	            'label',
 	            { className: 'form__field-label', htmlFor: 'name' },
@@ -72790,7 +72823,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'form__field-wrapper' },
-	          _react2.default.createElement('input', { className: 'form__field-input', id: 'password', type: 'password', value: this.props.data.password, placeholder: '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022', onChange: this._changePassword.bind(this) }),
+	          _react2.default.createElement('input', { className: 'form__field-input', id: 'password', type: 'password', value: this.props.data.password, onChange: this._changePassword.bind(this) }),
 	          _react2.default.createElement(
 	            'label',
 	            { className: 'form__field-label', htmlFor: 'password' },

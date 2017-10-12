@@ -114,7 +114,7 @@ export default React.createClass({
                 </header>
 
                 <section className="slds-card__body">
-                    <DataGrid data={this.state.results} keyField="std_id" actions={localStorage.pos=="teacher"?["View Student", "Delete"]:null} onAction={this.actionHandler}>
+                    <DataGrid data={this.state.results} keyField="std_id" actions={sessionStorage.pos=="teacher"?["View Student", "Delete"]:null} onAction={this.actionHandler}>
                         {/* <div header="Name" field="name" sortable={true} onLink={this.studentLinkHandler}/>
                         <div header="Student ID" field="std_id"/> */}
                         {cols}

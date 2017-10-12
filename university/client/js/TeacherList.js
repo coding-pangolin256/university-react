@@ -15,15 +15,13 @@ export default React.createClass({
         if (value === 0) {
             this.props.onApprove(data);
         } else if (value === 1) {
-            linkHandler(data);
-        } else if (value === 2) {
             this.props.onDelete(data);
         }
     },
 
     render() {
         return (
-            <DataGrid data={this.props.teachers} actions={["Approve Teacher", "View Teacher", "Delete"]} onAction={this.actionHandler}>
+            <DataGrid data={this.props.teachers} actions={["Approve", "Delete"]} onAction={this.actionHandler}>
                 <div header="Name" field="name" onLink={this.linkHandler}/>
                 <div header="Email Address" field="email"/>
                 <div header="Approved" field="approved"/>

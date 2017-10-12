@@ -40,7 +40,7 @@ export default React.createClass({
                 HomeworkService.deleteItem(data.id)
                     .then(() => this.getHomeworks(this.props.course.id));
                 break;
-            case "Submit Homework":
+            case "Submit":
                 this.setState({submitting:true, current: data});
                 break;
         }
@@ -90,7 +90,7 @@ export default React.createClass({
                         <StudentSearchBox placeholder="Search to enroll..." onSelect={this.studentSelectHandler}/>
                     </div> */}
                     {
-                    localStorage.pos=="teacher"?
+                    sessionStorage.pos=="teacher"?
                     <div className="slds-no-flex">
                         <div className="slds-button-group">
                             <button className="slds-button slds-button--neutral slds-button--small" onClick={this.newHomeworkHandler}>New</button>
@@ -105,7 +105,7 @@ export default React.createClass({
                 </header>
 
                 <section className="slds-card__body">
-                    <DataGrid data={this.state.homeworks} keyField="id" actions={localStorage.pos=="teacher"?["View Homework", "Delete"]:["Submit Homework"]} onAction={this.actionHandler}>
+                    <DataGrid data={this.state.homeworks} keyField="id" actions={sessionStorage.pos=="teacher"?["View Homework", "Delete"]:["Submit"]} onAction={this.actionHandler}>
                         {/* <div header="Homework Id" field="id" sortable={true} onLink={this.homeworkLinkHandler}/> */}
                         <div header="Title" field="title" sortable={true} onLink={this.homeworkLinkHandler}/>
                         {/* <div header="Last Name" field="last_name" sortable={true} onLink={this.homeworkLinkHandler}/> */}

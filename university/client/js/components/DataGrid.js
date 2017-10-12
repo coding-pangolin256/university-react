@@ -130,6 +130,10 @@ let Row = React.createClass({
         this.props.onAction(this.props.data, index, value, label);
     },
 
+    singleActionHandler() {
+        this.actionHandler(0,0,this.props.actions[0]);
+    },
+
     clickHandler() {
         if (this.props.onClick) {
             this.props.onClick(this.props.data);
@@ -152,12 +156,18 @@ let Row = React.createClass({
         }
 
         if (this.props.actions) {
-            let actions = this.props.actions.map((action, index) => ({id: index, name: action}));
-            columns.push(
-                <td style={{width:"50px"}}>
-                    <ActionButton actions={actions} onChange={this.actionHandler}/>
-                </td>
-            );
+                console.log(this.props.actions);
+                let actions = this.props.actions.map((action, index) => ({id: index, name: action}));
+                columns.push(
+                    <td style={{width:"50px"}}>
+                        {
+                            this.props.actions.length > 1?<ActionButton actions={actions} onChange={this.actionHandler}/>:
+                            <button className="slds-button slds-button--neutral slds-button--small" onClick={this.singleActionHandler}>
+                                {actions[0].name}
+                            </button>
+                        }
+                    </td>
+                );
         }
 
         return (
