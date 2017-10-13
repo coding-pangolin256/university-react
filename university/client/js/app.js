@@ -1,6 +1,7 @@
 import React from 'react';
 import {render} from 'react-dom';
 
+import { CSSTransitionGroup } from 'react-transition-group'
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import ReactDOM from 'react-dom';
@@ -29,6 +30,8 @@ import ChatHome from './ChatHome';
 
 // Import the components used as pages
 import HomePage from './pages/HomePage.react';
+import TeacherPage from './pages/TeacherPage.react';
+import StudentPage from './pages/StudentPage.react';
 import LoginPage from './pages/LoginPage.react';
 import RegisterPage from './pages/RegisterPage.react';
 import NotFound from './pages/NotFound.react';
@@ -81,8 +84,8 @@ const Routesz = (store) => {
     <Route component={App}>
         <IndexRoute component={HomePage} />
         <Route>
-            <Route path="login" component={LoginPage} />
-            <Route path="register" component={RegisterPage} />
+            <Route path="teacher" component={TeacherPage}/>
+            <Route path="student" component={StudentPage}/>
         </Route>
     </Route>
   )

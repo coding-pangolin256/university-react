@@ -4,7 +4,7 @@ let db = require('./pghelper');
 
 let findAll = (req, res, next) => {
     let name = req.query.name;
-    let sql = `SELECT id, name, email, allowed, IF ( allowed, 'Approved', 'Not') approved
+    let sql = `SELECT id, name, email, allowed, university, department, IF ( allowed, 'Approved', 'Not') approved
         FROM teacher ORDER BY name`;
     db.query(sql)
         .then(result => res.json(result))
@@ -13,7 +13,7 @@ let findAll = (req, res, next) => {
 
 let findById = (req, res, next) => {
     let id = req.params.id;
-    let sql = `SELECT id, name, email, allowed
+    let sql = `SELECT id, name, email, university, department, allowed
         FROM teacher WHERE id=?`;
     db.query(sql, [parseInt(id)])
         .then(teachers =>  res.json(teachers[0]))
@@ -22,7 +22,7 @@ let findById = (req, res, next) => {
 
 let findByData = (req, res, next) => {
     let teacher = req.body;
-    let sql = `SELECT id, name, email, allowed FROM teacher WHERE email=? AND pwd=?`;
+    let sql = `SELECT id, name, email, university, department, allowed FROM teacher WHERE email=? AND pwd=?`;
     db.query(sql, [teacher.email,teacher.pwd])
     .then(teachers =>  res.json(teachers[0]))
     .catch(next);
@@ -41,8 +41,8 @@ let createItem = (req, res, next) => {
 
 let updateItem = (req, res, next) => {
     let teacher = req.body;
-    let sql = `UPDATE teacher SET name=?, email=?, allowed=? WHERE id=?`;
-    db.query(sql, [teacher.name, teacher.email, teacher.allowed, teacher.id])
+    let sql = `UPDATE teacher SET name=?, email=?, university=?, department=?, allowed=? WHERE id=?`;
+    db.query(sql, [teacher.name, teacher.email, teacher.allowed, teacher.university, teacher.department, teacher.id])
         .then(() => res.send({result: 'ok'}))
         .catch(next);
 };

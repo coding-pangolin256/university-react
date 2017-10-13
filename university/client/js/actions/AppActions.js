@@ -128,22 +128,23 @@ export function logout() {
  * @param  {string} username The username of the new user
  * @param  {string} password The password of the new user
  */
-export function register(pos, stdid, email, name, password) {
+export function register(data) {
   return (dispatch) => {
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
+    console.log(data);
     // If no username or password was specified, throw a field-missing error
-    if(pos == "teacher")
+    if(data.pos == "teacher")
     {
-      if (anyElementsEmpty({ name, email, password })) {
+      if (anyElementsEmpty({ data })) {
         dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
         dispatch(sendingRequest(false));
         return;
       }  
     }
-    if(pos == "student")
+    if(data.pos == "student")
     {
-      if (anyElementsEmpty({ name, stdid, password })) {
+      if (anyElementsEmpty({ data })) {
         dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
         dispatch(sendingRequest(false));
         return;
@@ -159,7 +160,7 @@ export function register(pos, stdid, email, name, password) {
       //   return;
       // }
       // Use auth.js to fake a request
-      auth.register(pos, stdid, email, name, password, (success, err) => {
+      auth.register(data, (success, err) => {
         // When the request is finished, hide the loading indicator
         
         dispatch(sendingRequest(false));

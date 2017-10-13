@@ -24,15 +24,15 @@ class RegisterPage extends Component {
 					</div>
 					{/* While the form is sending, show the loading indicator,
 						otherwise show "Register" on the submit button */}
-		    	<RegisterForm data={formState} dispatch={dispatch} location={location} history={this.props.history} onSubmit={this._register} btnText={"Register"} currentlySending={currentlySending}/>
+		    	<RegisterForm data={formState} dispatch={dispatch} location={location} pos={this.props.pos} history={this.props.history} onSubmit={this._register} btnText={"Register"} currentlySending={currentlySending}/>
 				</div>
 			</div>
 		);
   }
 
 	// Register a user
-	_register(pos, stdid, email, name, password) {
-		this.dispatch(register(pos, stdid, email, name, password));
+	_register(data) {
+		this.dispatch(register(data));
 	}
 }
 

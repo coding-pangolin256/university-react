@@ -258,7 +258,6 @@ samp {
 button,
 input,
 optgroup,
-select,
 textarea {
   color: inherit; /* 1 */
   font: inherit; /* 2 */
@@ -329,6 +328,9 @@ input {
   line-height: normal;
 }
 
+select {
+  -webkit-appearance: textfield !important;
+}
 /**
  * It's recommended that you don't attempt to style these elements.
  * Firefox's implementation doesn't respect box-sizing, padding, or width.
@@ -616,7 +618,7 @@ a.hw-details:hover, a.hw-details:focus {
 }
 
 .text-section {
-	margin: 3em auto;
+	margin: 6em auto;
 }
 .form-page__wrapper {
 	display: -ms-flexbox;
@@ -694,7 +696,7 @@ a.hw-details:hover, a.hw-details:focus {
 
 .form__field-input {
   position: relative;
-  padding: 1.625em 16px;
+  padding: 1em 16px;
   width: 100%;
   color: #666;
   border: none;

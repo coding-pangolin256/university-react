@@ -19,39 +19,46 @@ class RegisterForm extends Component {
 		super(props);
 
 		this.state = {
-			showTeacher: true
+			showTeacher: props.pos=="teacher"
 		};
 	}
   render() {
     return(
       <form className="form" onSubmit={this._onSubmit.bind(this)}>
         <ErrorMessage />
-        <div className="form__field-wrapper">
-          <select className="form__field-input" id="pos" value={this.props.data.pos} onChange={this._changePos.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" >
-            <option value="teacher">Teacher</option>
-            <option value="student">Student</option>
-          </select>
-          <label className="form__field-label" htmlFor="pos">Position</label>
-        </div>
+        {
+          this.state.showTeacher?
+            <div>
+              <div className="form__field-wrapper" id="teacher_form">
+                <label className="form__field-label" htmlFor="university">University</label>
+                <input className="form__field-input" type="text" id="university" value={this.props.data.university} onChange={this._changeUniversity.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
+              </div>
+              <div className="form__field-wrapper" id="teacher_form">
+                <label className="form__field-label" htmlFor="email">Department</label>
+                <input className="form__field-input" type="text" id="department" value={this.props.data.department} onChange={this._changeDepartment.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
+              </div>
+            </div>:
+            null
+        }
         {
           this.state.showTeacher?
             <div className="form__field-wrapper" id="teacher_form">
+            <label className="form__field-label" htmlFor="email">Email Address</label>
               <input className="form__field-input" type="text" id="email" value={this.props.data.email} onChange={this._changeEmail.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
-              <label className="form__field-label" htmlFor="email">Email Address</label>
             </div>
             :
             <div className="form__field-wrapper" id="student_form">
+            <label className="form__field-label" htmlFor="stdid">Student ID</label>
               <input className="form__field-input" type="text" id="stdid" value={this.props.data.stdid} onChange={this._changeStdid.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
-              <label className="form__field-label" htmlFor="stdid">Student ID</label>
             </div>
         }
         <div className="form__field-wrapper">
-          <input className="form__field-input" type="text" id="name" value={this.props.data.name} onChange={this._changeUsername.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
           <label className="form__field-label" htmlFor="name">Name</label>
+          <input className="form__field-input" type="text" id="name" value={this.props.data.name} onChange={this._changeUsername.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
         </div>
         <div className="form__field-wrapper">
-          <input className="form__field-input" id="password" type="password" value={this.props.data.password} onChange={this._changePassword.bind(this)} />
           <label className="form__field-label" htmlFor="password">Password</label>
+          <input className="form__field-input" id="password" type="password" value={this.props.data.password} onChange={this._changePassword.bind(this)} />
         </div>
         <div className="form__submit-btn-wrapper">
           {this.props.currentlySending ? (
@@ -62,6 +69,20 @@ class RegisterForm extends Component {
         </div>
       </form>
     );
+  }
+  // Change the position in the app state
+  _changeUniversity(evt) {
+    var newState = this._mergeWithCurrentState({
+      university: evt.target.value
+    });
+    this._emitChange(newState);
+  }
+  // Change the position in the app state
+  _changeDepartment(evt) {
+    var newState = this._mergeWithCurrentState({
+      department: evt.target.value
+    });
+    this._emitChange(newState);
   }
   // Change the position in the app state
     _changePos(evt) {
@@ -118,11 +139,10 @@ class RegisterForm extends Component {
   // onSubmit call the passed onSubmit function
   _onSubmit(evt) {
     evt.preventDefault();
-    if(this.props.data.pos == null)
-    {
-      this.props.data.pos = "teacher";
-    }
-    this.props.onSubmit(this.props.data.pos, this.props.data.stdid, this.props.data.email, this.props.data.name, this.props.data.password);
+    this._mergeWithCurrentState({
+      pos: this.props.pos
+    });
+    this.props.onSubmit(this.props.data);
   }
 }
 

@@ -17,7 +17,6 @@ class Nav extends Component {
     // based on the current authentication state.
     const navButtons = this.props.loggedIn ? (
         <div>
-          <Link to="/whiteboard" className="btn btn--dash btn--nav">whiteboard</Link>
           {this.props.currentlySending ? (
             <LoadingButton className="btn--nav" />
           ) : (
@@ -26,15 +25,15 @@ class Nav extends Component {
         </div>
       ) : (
         <div>
-          <Link to="/register" className="btn btn--login btn--nav">Register</Link>
-          <Link to="/login" className="btn btn--login btn--nav">Login</Link>
+          <Link to="/teacher" className="btn btn--login btn--nav">TEACHER</Link>
+          <Link to="/student" className="btn btn--login btn--nav">STUDENT</Link>
         </div>
       );
 
     return(
       <div className="nav">
         <div className="nav__wrapper">
-          <Link to="/" className="nav__logo-wrapper"><h1 className="nav__logo">Home&nbsp;work</h1></Link>
+          <Link to="/" className="nav__logo-wrapper"><h1 className="nav__logo">UNIVERSITY</h1></Link>
           { navButtons }
         </div>
       </div>

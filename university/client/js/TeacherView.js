@@ -20,26 +20,26 @@ export default React.createClass({
                                 <img src={this.props.teacher.pic} alt="portrait"/>
                             </span>
                     </div> */}
-                    {/* <div className="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium">
+                    <div className="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium">
                         <dl className="page-header--rec-home__detail-item">
                             <dt>
-                                <p className="slds-text-heading--label slds-truncate" title="Field 1">Address</p>
+                                <p className="slds-text-heading--label slds-truncate" title="Field 1">University</p>
                             </dt>
                             <dd>
-                                <p className="slds-text-body--regular slds-truncate" title="">{teacher.address}<br/>{this.props.teacher.zip} {this.props.teacher.city}</p>
+                                <p className="slds-text-body--regular slds-truncate" title="">{teacher.university}</p>
                             </dd>
                         </dl>
                     </div>
                     <div className="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium">
                         <dl className="page-header--rec-home__detail-item">
                             <dt>
-                                <p className="slds-text-heading--label slds-truncate" title="Field 1">Title</p>
+                                <p className="slds-text-heading--label slds-truncate" title="Field 1">Department</p>
                             </dt>
                             <dd>
-                                <p className="slds-text-body--regular slds-truncate" title="">{teacher.title}</p>
+                                <p className="slds-text-body--regular slds-truncate" title="">{teacher.department}</p>
                             </dd>
                         </dl>
-                    </div> */}
+                    </div>
                 </div>
                 <TeacherCoursesCard teacher={teacher}/>
                 <TeacherPresentationCard teacher={teacher}/>

@@ -17,24 +17,15 @@ const assign = Object.assign || require('object.assign');
 class LoginForm extends Component {
   constructor(props) {
 		super(props);
-
+    
 		this.state = {
-			showTeacher: true
+			showTeacher: props.pos=="teacher"
 		};
 	}
   render() {
     return(
       <form className="form" onSubmit={this._onSubmit.bind(this)}>
         <ErrorMessage />
-        <div className="form__field-wrapper">
-          <label className="form__field-label" htmlFor="pos">Position</label>
-          <div className="form__field-input">
-          <select id="pos" value={this.props.data.pos} onChange={this._changePos.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" >
-            <option value="teacher">Teacher</option>
-            <option value="student">Student</option>
-          </select>
-          </div>
-        </div>
         {
           this.state.showTeacher?
             <div className="form__field-wrapper" id="teacher_form">
@@ -62,14 +53,6 @@ class LoginForm extends Component {
     );
   }
 
-  // Change the position in the app state
-  _changePos(evt) {
-    var newState = this._mergeWithCurrentState({
-      pos: evt.target.value
-    });
-    this.setState({showTeacher: !this.state.showTeacher});
-    this._emitChange(newState);
-  }
   // Change the Student ID in the app state
   _changeStdid(evt) {
     var newState = this._mergeWithCurrentState({
