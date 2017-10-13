@@ -72511,7 +72511,62 @@
 	        return _react2.default.createElement(
 	            'div',
 	            { className: 'slds-m-around--medium' },
-	            _react2.default.createElement('div', { className: 'slds-grid slds-wrap slds-m-bottom--large' }),
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'slds-grid slds-wrap slds-m-bottom--large' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium' },
+	                    _react2.default.createElement(
+	                        'dl',
+	                        { className: 'page-header--rec-home__detail-item' },
+	                        _react2.default.createElement(
+	                            'dt',
+	                            null,
+	                            _react2.default.createElement(
+	                                'p',
+	                                { className: 'slds-text-heading--label slds-truncate', title: 'Field 1' },
+	                                'University'
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'dd',
+	                            null,
+	                            _react2.default.createElement(
+	                                'p',
+	                                { className: 'slds-text-body--regular slds-truncate', title: '' },
+	                                teacher.university
+	                            )
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium' },
+	                    _react2.default.createElement(
+	                        'dl',
+	                        { className: 'page-header--rec-home__detail-item' },
+	                        _react2.default.createElement(
+	                            'dt',
+	                            null,
+	                            _react2.default.createElement(
+	                                'p',
+	                                { className: 'slds-text-heading--label slds-truncate', title: 'Field 1' },
+	                                'Department'
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'dd',
+	                            null,
+	                            _react2.default.createElement(
+	                                'p',
+	                                { className: 'slds-text-body--regular slds-truncate', title: '' },
+	                                teacher.department
+	                            )
+	                        )
+	                    )
+	                )
+	            ),
 	            _react2.default.createElement(_TeacherCoursesCard2.default, { teacher: teacher }),
 	            _react2.default.createElement(_TeacherPresentationCard2.default, { teacher: teacher })
 	        );
@@ -73349,6 +73404,7 @@
 	  return function (dispatch) {
 	    // Show the loading indicator, hide the last error
 	    dispatch(sendingRequest(true));
+	    console.log(data);
 	    // If no username or password was specified, throw a field-missing error
 	    if (data.pos == "teacher") {
 	      if (anyElementsEmpty({ data: data })) {
@@ -74162,7 +74218,7 @@
 								'Register'
 							)
 						),
-						_react2.default.createElement(_RegisterForm2.default, { data: formState, dispatch: dispatch, location: location, history: this.props.history, onSubmit: this._register, btnText: "Register", currentlySending: currentlySending })
+						_react2.default.createElement(_RegisterForm2.default, { data: formState, dispatch: dispatch, location: location, pos: this.props.pos, history: this.props.history, onSubmit: this._register, btnText: "Register", currentlySending: currentlySending })
 					)
 				);
 			}
@@ -74429,6 +74485,9 @@
 	    key: '_onSubmit',
 	    value: function _onSubmit(evt) {
 	      evt.preventDefault();
+	      this._mergeWithCurrentState({
+	        pos: this.props.pos
+	      });
 	      this.props.onSubmit(this.props.data);
 	    }
 	  }]);

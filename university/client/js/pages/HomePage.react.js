@@ -26,7 +26,6 @@ class HomePage extends Component {
 						<p>This application allows students to login and submit their homework. </p>
 						<p>Also it allows teachers to login and estimiate students' homework. </p>
 
-
 					</section>
 				</div>
 			</article>

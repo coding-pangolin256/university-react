@@ -132,6 +132,7 @@ export function register(data) {
   return (dispatch) => {
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
+    console.log(data);
     // If no username or password was specified, throw a field-missing error
     if(data.pos == "teacher")
     {

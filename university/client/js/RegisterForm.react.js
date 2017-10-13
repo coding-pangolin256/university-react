@@ -139,6 +139,9 @@ class RegisterForm extends Component {
   // onSubmit call the passed onSubmit function
   _onSubmit(evt) {
     evt.preventDefault();
+    this._mergeWithCurrentState({
+      pos: this.props.pos
+    });
     this.props.onSubmit(this.props.data);
   }
 }
