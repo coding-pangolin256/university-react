@@ -72983,7 +72983,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -73015,73 +73015,59 @@
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 	
 	var HomePage = function (_Component) {
-		_inherits(HomePage, _Component);
+	  _inherits(HomePage, _Component);
 	
-		function HomePage() {
-			_classCallCheck(this, HomePage);
+	  function HomePage() {
+	    _classCallCheck(this, HomePage);
 	
-			return _possibleConstructorReturn(this, (HomePage.__proto__ || Object.getPrototypeOf(HomePage)).apply(this, arguments));
-		}
+	    return _possibleConstructorReturn(this, (HomePage.__proto__ || Object.getPrototypeOf(HomePage)).apply(this, arguments));
+	  }
 	
-		_createClass(HomePage, [{
-			key: 'render',
-			value: function render() {
-				var dispatch = this.props.dispatch;
+	  _createClass(HomePage, [{
+	    key: 'render',
+	    value: function render() {
+	      var dispatch = this.props.dispatch;
 	
-				return _react2.default.createElement(
-					'article',
-					null,
-					_react2.default.createElement(
-						'div',
-						null,
-						_react2.default.createElement(
-							'section',
-							{ className: 'text-section' },
-							_react2.default.createElement(
-								'h1',
-								null,
-								'Welcome to Home Page!'
-							),
-							_react2.default.createElement(
-								'p',
-								null,
-								'This application allows students to login and submit their homework. '
-							),
-							_react2.default.createElement(
-								'p',
-								null,
-								'Also it allows teachers to login and estimiate students\' homework. '
-							),
-							_react2.default.createElement(
-								'div',
-								null,
-								_react2.default.createElement(
-									_reactRouter.Link,
-									{ to: '/login', className: 'btn btn--login' },
-									'Login'
-								),
-								_react2.default.createElement(
-									_reactRouter.Link,
-									{ to: '/register', className: 'btn btn--register' },
-									'Register'
-								)
-							)
-						)
-					)
-				);
-			}
-		}]);
+	      return _react2.default.createElement(
+	        'article',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'section',
+	            { className: 'text-section' },
+	            _react2.default.createElement(
+	              'h1',
+	              null,
+	              'Welcome to Home Page!'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'This application allows students to login and submit their homework. '
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Also it allows teachers to login and estimiate students\' homework. '
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
 	
-		return HomePage;
+	  return HomePage;
 	}(_react.Component);
 	
 	// Which props do we want to inject, given the global state?
 	
 	
 	function select(state) {
-		return {
-			data: state
-		};
+	  return {
+	    data: state
+	  };
 	}
 	
 	// Wrap the component to inject dispatch and state into it
