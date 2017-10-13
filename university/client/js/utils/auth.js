@@ -85,14 +85,16 @@ var auth = {
    * @param  {string}   password The password of the user
    * @param  {Function} callback Called after a user was registered on the remote server
    */
-  register(pos, stdid, email, name, password, callback) {
+  register(info, callback) {
     // Post a fake request
-    if(pos == "teacher")
+    if(info.pos == "teacher")
     {
       var data = {
-        'name': name,
-        'email': email,
-        'pwd': password
+        'university': info.university,
+        'department': info.department,
+        'name': info.name,
+        'email': info.email,
+        'pwd': info.password
       }
       
       TeacherService.createItem(data).then(response => {
@@ -110,9 +112,9 @@ var auth = {
     }
     else {
       var data = {
-        'id': stdid,
-        'name': name,
-        'pwd': password
+        'id': info.stdid,
+        'name': info.name,
+        'pwd': info.password
       }
       
       StudentService.createItem(data).then(response => {

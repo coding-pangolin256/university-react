@@ -618,7 +618,7 @@ a.hw-details:hover, a.hw-details:focus {
 }
 
 .text-section {
-	margin: 3em auto;
+	margin: 6em auto;
 }
 .form-page__wrapper {
 	display: -ms-flexbox;
@@ -696,7 +696,7 @@ a.hw-details:hover, a.hw-details:focus {
 
 .form__field-input {
   position: relative;
-  padding: 1.625em 16px;
+  padding: 1em 16px;
   width: 100%;
   color: #666;
   border: none;
