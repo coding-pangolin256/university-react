@@ -26,7 +26,7 @@ CREATE TABLE `chat` (
   `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `type` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
 
 /*Data for the table `chat` */
 
@@ -42,6 +42,34 @@ insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) value
 insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (10,10,'student',NULL,'asdf','2017-10-09 22:13:38',NULL);
 insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (11,10,'student',NULL,'asdf','2017-10-09 22:13:38',NULL);
 insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (12,10,'student',NULL,'asdf','2017-10-09 22:13:39',NULL);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (13,2,'teacher',42,'AdminLTE.min.css','2017-10-12 03:29:10',1);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (14,2,'teacher',42,'hello','2017-10-12 04:35:02',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (15,2,'teacher',42,'gerg','2017-10-12 04:42:07',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (16,2,'teacher',42,'oweiuroiuxcov','2017-10-12 04:42:16',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (17,2,'teacher',42,'zxvwef','2017-10-12 04:46:06',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (18,2,'teacher',42,'wefc','2017-10-12 09:39:19',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (19,2,'teacher',42,'ergvb','2017-10-12 09:40:01',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (20,2,'teacher',42,'xcvewf','2017-10-12 09:52:16',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (21,2,'teacher',42,'wefcvwef','2017-10-12 09:54:10',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (22,2,'teacher',42,'efsdf','2017-10-12 09:54:16',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (23,2,'teacher',42,'zxcvwetewr','2017-10-12 09:54:22',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (24,2,'teacher',42,'wurlsdfkdsgjweof','2017-10-12 09:54:30',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (25,2,'teacher',42,'Master Android App Development eBook Version 1.2.pdf','2017-10-12 10:34:55',1);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (26,2,'teacher',42,'hello','2017-10-12 10:35:08',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (27,2,'teacher',42,'ewoifjxcvwef','2017-10-12 10:35:16',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (28,2,'teacher',42,'c','2017-10-12 10:35:24',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (29,2,'teacher',42,'wefxvwef','2017-10-12 10:37:40',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (30,2,'teacher',42,'init.sql','2017-10-12 10:37:54',1);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (31,5,'teacher',44,'awefxcvwef','2017-10-12 10:38:25',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (32,2,'teacher',NULL,'weoifjkxcvewf','2017-10-12 10:44:10',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (33,2,'teacher',42,'wefzxvwef','2017-10-12 10:45:21',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (34,2,'teacher',42,'weoifnxvweif','2017-10-12 10:46:37',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (35,2,'teacher',42,'zzzzzzz','2017-10-12 10:46:45',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (36,2,'teacher',42,'asfefdd','2017-10-12 10:47:35',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (37,2,'teacher',42,'wwwwwwwwwwwwww','2017-10-12 10:49:17',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (38,2,'teacher',42,'treq','2017-10-12 10:50:14',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (39,2,'teacher',42,'woeifjxcv','2017-10-12 10:57:24',0);
+insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (40,2,'teacher',42,'woeifhjxcv','2017-10-12 11:13:27',0);
 
 /*Table structure for table `cj10244` */
 
@@ -426,40 +454,41 @@ insert  into `student`(`id`,`name`,`pwd`) values (33,'Todd Ruiz','todd');
 
 CREATE TABLE `teacher` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(50) NOT NULL,
   `name` varchar(30) NOT NULL,
+  `university` varchar(30) DEFAULT NULL,
+  `department` varchar(30) DEFAULT NULL,
+  `email` varchar(50) NOT NULL,
   `pwd` varchar(50) DEFAULT NULL,
   `allowed` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`email`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
 
 /*Data for the table `teacher` */
 
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (32,'abby.R@outlook.com','Abby Riley','abby',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (14,'ana.M@bulletmail.com','Ana Mitchell','ana',1);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (16,'bobby.C@gmail.com','Bobby Chambers','bobby',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (1,'brinley.S@mail.com','Brinley Sherman','brinley',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (2,'brown.D@gmail.com','Brown Davies','brown',2);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (20,'desmond.H@gmail.com','Desmond Hodges','desmond',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (38,'diana.K@gmail.com','Diana Kirby','diana',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (36,'gisselle.M@mail.com','Gisselle Medina','gissele',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (18,'kaia.R@gmail.com','Kaia Rosa','kaia',1);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (22,'kolten.G@outlook.com','Kolten Grimes','kolten',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (12,'leona.C@outlook.com','Leona Clemons','leona',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (28,'lerelei.J@bulletmail.com','Lorelei Joyner','lorelei',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (3,'libby.R@protonmail.com','Libby Robinson','libby',1);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (35,'maia.A@me.com','Maia Alexander','maia',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (10,'mason.S@bulletmail.com','Mason Saunders','mason',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (34,'reece.H@mail.com','Reece Harvey','reece',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (39,'remington.G@me.com','Remington Gomez','remington',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (33,'ryan.A@mail.com','Ryan Atkinson','ryan',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (29,'samuel.S@outlook.com','Samuel Smile','samuel',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (37,'sarah.M@outlook.com','Sarah Matthews','sarah',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (30,'sariyah.K@me.com','Sariyah Keller','sariyah',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (24,'skylar.C@outlook.com','Skylar Carver','skylar',NULL);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (5,'smith.B@mail.com','Smith Bill','smith',1);
-insert  into `teacher`(`id`,`email`,`name`,`pwd`,`allowed`) values (6,'terrance.M@gmail.com','Terrance Meyers','terrance',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (32,'Abby Riley',NULL,NULL,'abby.R@outlook.com','abby',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (14,'Ana Mitchell',NULL,NULL,'ana.M@bulletmail.com','ana',1);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (16,'Bobby Chambers',NULL,NULL,'bobby.C@gmail.com','bobby',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (1,'Brinley Sherman',NULL,NULL,'brinley.S@mail.com','brinley',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (2,'Brown Davies','Cambridge University','Data Analysis','brown.D@gmail.com','brown',2);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (20,'Desmond Hodges',NULL,NULL,'desmond.H@gmail.com','desmond',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (38,'Diana Kirby',NULL,NULL,'diana.K@gmail.com','diana',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (36,'Gisselle Medina',NULL,NULL,'gisselle.M@mail.com','gissele',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (18,'Kaia Rosa',NULL,NULL,'kaia.R@gmail.com','kaia',1);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (22,'Kolten Grimes',NULL,NULL,'kolten.G@outlook.com','kolten',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (12,'Leona Clemons',NULL,NULL,'leona.C@outlook.com','leona',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (28,'Lorelei Joyner',NULL,NULL,'lerelei.J@bulletmail.com','lorelei',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (3,'Libby Robinson',NULL,NULL,'libby.R@protonmail.com','libby',1);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (35,'Maia Alexander',NULL,NULL,'maia.A@me.com','maia',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (10,'Mason Saunders',NULL,NULL,'mason.S@bulletmail.com','mason',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (34,'Reece Harvey',NULL,NULL,'reece.H@mail.com','reece',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (39,'Remington Gomez',NULL,NULL,'remington.G@me.com','remington',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (33,'Ryan Atkinson',NULL,NULL,'ryan.A@mail.com','ryan',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (37,'Sarah Matthews',NULL,NULL,'sarah.M@outlook.com','sarah',1);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (30,'Sariyah Keller',NULL,NULL,'sariyah.K@me.com','sariyah',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (24,'Skylar Carver',NULL,NULL,'skylar.C@outlook.com','skylar',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (5,'Smith Bill',NULL,NULL,'smith.B@mail.com','smith',1);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (6,'Terrance Meyers',NULL,NULL,'terrance.M@gmail.com','terrance',NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
