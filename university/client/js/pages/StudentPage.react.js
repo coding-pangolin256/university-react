@@ -18,7 +18,7 @@ class StudentPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-		  currentView: 0,
+			currentView: parseInt(this.props.params.pageId),
 		};
 		this.element = <div/>
 		this.login = this.login.bind(this);

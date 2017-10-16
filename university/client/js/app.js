@@ -84,8 +84,12 @@ const Routesz = (store) => {
     <Route component={App}>
         <IndexRoute component={HomePage} />
         <Route>
-            <Route path="teacher" component={TeacherPage}/>
-            <Route path="student" component={StudentPage}/>
+            <Route path="login">
+              <Route path=":pageId" component={LoginPage}/>
+            </Route>
+            <Route path="register">
+              <Route path=":pageId" component={RegisterPage}/>
+            </Route>
         </Route>
     </Route>
   )

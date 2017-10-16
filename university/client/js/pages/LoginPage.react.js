@@ -17,6 +17,7 @@ class LoginPage extends Component {
 	render() {
 		const dispatch = this.props.dispatch;
 		const { formState, currentlySending } = this.props.data;
+		console.log(this.props.params);
     return (
 			<div className="form-page__wrapper">
 				<div className="form-page__form-wrapper">
@@ -25,7 +26,7 @@ class LoginPage extends Component {
 					</div>
 					{/* While the form is sending, show the loading indicator,
 						otherwise show "Log in" on the submit button */}
-		    	<Form data={formState} dispatch={dispatch} location={location} history={this.props.history} pos={this.props.pos} onSubmit={this._login} btnText={"Login"} currentlySending={currentlySending}/>
+		    	<Form data={formState} dispatch={dispatch} location={location} history={this.props.history} pos={this.props.params.pageId == "1"?"teacher":"student"} onSubmit={this._login} btnText={"Login"} currentlySending={currentlySending}/>
 				</div>
 			</div>
 		);

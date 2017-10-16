@@ -226,8 +226,16 @@
 	      _react2.default.createElement(
 	        _reactRouter.Route,
 	        null,
-	        _react2.default.createElement(_reactRouter.Route, { path: 'teacher', component: _TeacherPage2.default }),
-	        _react2.default.createElement(_reactRouter.Route, { path: 'student', component: _StudentPage2.default })
+	        _react2.default.createElement(
+	          _reactRouter.Route,
+	          { path: 'login' },
+	          _react2.default.createElement(_reactRouter.Route, { path: ':pageId', component: _LoginPage2.default })
+	        ),
+	        _react2.default.createElement(
+	          _reactRouter.Route,
+	          { path: 'register' },
+	          _react2.default.createElement(_reactRouter.Route, { path: ':pageId', component: _RegisterPage2.default })
+	        )
 	      )
 	    );
 	  };
@@ -79181,13 +79189,50 @@
 	var Nav = function (_Component) {
 	  _inherits(Nav, _Component);
 	
-	  function Nav() {
+	  function Nav(props) {
 	    _classCallCheck(this, Nav);
 	
-	    return _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this, props));
+	
+	    _this.state = {
+	      gotoAnotherPage: null
+	    };
+	    _this.teacherPage = _this.teacherPage.bind(_this);
+	    _this.studentPage = _this.studentPage.bind(_this);
+	    _this.homePage = _this.homePage.bind(_this);
+	    _this.loginPage = _this.loginPage.bind(_this);
+	    _this.registerPage = _this.registerPage.bind(_this);
+	    return _this;
 	  }
 	
 	  _createClass(Nav, [{
+	    key: 'teacherPage',
+	    value: function teacherPage() {
+	      this.setState({ gotoAnotherPage: 1 });
+	    }
+	  }, {
+	    key: 'studentPage',
+	    value: function studentPage() {
+	      this.setState({ gotoAnotherPage: 2 });
+	    }
+	  }, {
+	    key: 'homePage',
+	    value: function homePage() {
+	      this.setState({ gotoAnotherPage: null });
+	    }
+	  }, {
+	    key: 'loginPage',
+	    value: function loginPage() {
+	      _reactRouter.browserHistory.push('#/login/' + this.state.gotoAnotherPage);
+	      window.location.reload();
+	    }
+	  }, {
+	    key: 'registerPage',
+	    value: function registerPage() {
+	      _reactRouter.browserHistory.push('#/register/' + this.state.gotoAnotherPage);
+	      window.location.reload();
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      // Render either the Log In and register buttons, or the logout button
@@ -79203,15 +79248,32 @@
 	      ) : _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(
-	          _reactRouter.Link,
-	          { to: '/teacher', className: 'btn btn--login btn--nav' },
-	          'TEACHER'
-	        ),
-	        _react2.default.createElement(
-	          _reactRouter.Link,
-	          { to: '/student', className: 'btn btn--login btn--nav' },
-	          'STUDENT'
+	        this.state.gotoAnotherPage ? _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: "/login/" + this.state.gotoAnotherPage, className: 'btn btn--login btn--nav' },
+	            'LOGIN'
+	          ),
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: "/register/" + this.state.gotoAnotherPage, className: 'btn btn--login btn--nav' },
+	            'REGISTER'
+	          )
+	        ) : _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: '/login/1', className: 'btn btn--login btn--nav', onClick: this.teacherPage },
+	            'TEACHER'
+	          ),
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: '/login/2', className: 'btn btn--login btn--nav', onClick: this.studentPage },
+	            'STUDENT'
+	          )
 	        )
 	      );
 	
@@ -79223,7 +79285,7 @@
 	          { className: 'nav__wrapper' },
 	          _react2.default.createElement(
 	            _reactRouter.Link,
-	            { to: '/', className: 'nav__logo-wrapper' },
+	            { to: '/', className: 'nav__logo-wrapper', onClick: this.homePage },
 	            _react2.default.createElement(
 	              'h1',
 	              { className: 'nav__logo' },
@@ -79719,8 +79781,9 @@
 			var _this = _possibleConstructorReturn(this, (TeacherPage.__proto__ || Object.getPrototypeOf(TeacherPage)).call(this, props));
 	
 			_this.state = {
-				currentView: 0
+				currentView: parseInt(_this.props.params.pageId)
 			};
+			console.log(_this.props.params);
 			_this.element = _react2.default.createElement('div', null);
 			_this.login = _this.login.bind(_this);
 			_this.register = _this.register.bind(_this);
@@ -79870,6 +79933,7 @@
 				    formState = _props$data.formState,
 				    currentlySending = _props$data.currentlySending;
 	
+				console.log(this.props.params);
 				return _react2.default.createElement(
 					'div',
 					{ className: 'form-page__wrapper' },
@@ -79885,7 +79949,7 @@
 								'Login'
 							)
 						),
-						_react2.default.createElement(_Form2.default, { data: formState, dispatch: dispatch, location: location, history: this.props.history, pos: this.props.pos, onSubmit: this._login, btnText: "Login", currentlySending: currentlySending })
+						_react2.default.createElement(_Form2.default, { data: formState, dispatch: dispatch, location: location, history: this.props.history, pos: this.props.params.pageId == "1" ? "teacher" : "student", onSubmit: this._login, btnText: "Login", currentlySending: currentlySending })
 					)
 				);
 			}
@@ -80230,7 +80294,7 @@
 								'Register'
 							)
 						),
-						_react2.default.createElement(_RegisterForm2.default, { data: formState, dispatch: dispatch, location: location, pos: this.props.pos, history: this.props.history, onSubmit: this._register, btnText: "Register", currentlySending: currentlySending })
+						_react2.default.createElement(_RegisterForm2.default, { data: formState, dispatch: dispatch, location: location, pos: this.props.params.pageId == "1" ? "teacher" : "student", history: this.props.history, onSubmit: this._register, btnText: "Register", currentlySending: currentlySending })
 					)
 				);
 			}
@@ -80570,7 +80634,7 @@
 			var _this = _possibleConstructorReturn(this, (StudentPage.__proto__ || Object.getPrototypeOf(StudentPage)).call(this, props));
 	
 			_this.state = {
-				currentView: 0
+				currentView: parseInt(_this.props.params.pageId)
 			};
 			_this.element = _react2.default.createElement('div', null);
 			_this.login = _this.login.bind(_this);
