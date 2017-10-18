@@ -46,12 +46,9 @@ let findByCourse = (req, res, next) => {
 
 let createItem = (req, res, next) => {
     let enrollment = req.body;
-    let sql = `INSERT INTO enrollment (course_id, student_id) VALUES (?,?)`;
-    db.query(sql, [enrollment.course_id, enrollment.student_id])
+    let sql = `INSERT INTO course${enrollment.course_id} (student_id) VALUES (?,?)`;
+    db.query(sql, [enrollment.student_id])
         .then(result => {
-            let table_name = enrollment.course_code + enrollment.course_id;
-            let sql = `INSERT IGNORE INTO ${table_name} (std_id) VALUES (?)`;
-            db.query(sql, [enrollment.student_id]);
             res.send({result: "ok"})
         })
         .catch(next);

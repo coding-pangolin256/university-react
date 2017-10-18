@@ -17,7 +17,6 @@ class LoginPage extends Component {
 	render() {
 		const dispatch = this.props.dispatch;
 		const { formState, currentlySending } = this.props.data;
-		console.log(this.props.params);
     return (
 			<div className="form-page__wrapper">
 				<div className="form-page__form-wrapper">

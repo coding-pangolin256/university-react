@@ -10,6 +10,8 @@ import React, { Component } from 'react';
 import { changeForm } from './actions/AppActions';
 import LoadingButton from './LoadingButton.react';
 import ErrorMessage from './ErrorMessage.react';
+
+import * as UniversityService from './services/UniversityService';
 // Object.assign is not yet fully supported in all browsers, so we fallback to
 // a polyfill
 const assign = Object.assign || require('object.assign');
@@ -19,10 +21,19 @@ class LoginForm extends Component {
 		super(props);
     
 		this.state = {
-			showTeacher: props.pos=="teacher"
+      showTeacher: props.pos=="teacher",
+      universities: []
 		};
-	}
+  }
+  getUniversities()
+  {
+    UniversityService.findAll().then(universities => this.setState({universities}));
+  }
   render() {
+    let rows = [];
+    for(let i = 0; i < this.state.universities.length; i++)
+      rows.push(<option value = {this.state.universities[i]['id']}>{this.state.universities[i]['name']}</option>);
+
     return(
       <form className="form" onSubmit={this._onSubmit.bind(this)}>
         <ErrorMessage />
@@ -33,9 +44,15 @@ class LoginForm extends Component {
               <input className="form__field-input" type="text" id="email" value={this.props.data.email} onChange={this._changeEmail.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
             </div>
             :
+            <div>
             <div className="form__field-wrapper" id="student_form">
               <label className="form__field-label" htmlFor="stdid">Student ID</label>
               <input className="form__field-input" type="text" id="stdid" value={this.props.data.stdid} onChange={this._changeStdid.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
+            </div>
+            <div className="form__field-wrapper" id="student_form">
+              <label className="form__field-label" htmlFor="crsid">Course ID</label>
+              <input className="form__field-input" type="text" id="crsid" value={this.props.data.course_id} onChange={this._changeCourseid.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
+            </div>
             </div>
         }
         <div className="form__field-wrapper">
@@ -61,6 +78,14 @@ class LoginForm extends Component {
 
     this._emitChange(newState);
   }
+    // Change the Student ID in the app state
+    _changeCourseid(evt) {
+      var newState = this._mergeWithCurrentState({
+        course_id: evt.target.value
+      });
+  
+      this._emitChange(newState);
+    }
   // Change the email in the app state
   _changeEmail(evt) {
     var newState = this._mergeWithCurrentState({
@@ -100,11 +125,10 @@ class LoginForm extends Component {
   // onSubmit call the passed onSubmit function
   _onSubmit(evt) {
     evt.preventDefault();
-    if(this.props.data.pos == null)
-    {
-      this.props.data.pos = "teacher";
-    }
-    this.props.onSubmit(this.props.data.pos,this.props.data.stdid,this.props.data.email, this.props.data.password);
+    this._mergeWithCurrentState({
+      pos: this.props.pos
+    });
+    this.props.onSubmit(this.props.pos,this.props.data);
   }
 }
 

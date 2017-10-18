@@ -35,14 +35,15 @@ import { browserHistory } from 'react-router';
  * @param  {string} username The username of the user to be logged in
  * @param  {string} password The password of the user to be logged in
  */
-export function login(pos, stdid, email, password) {
+export function login(pos, data, password) {
   return (dispatch) => {
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
     // If no username or password was specified, throw a field-missing error
+    console.log(data);
     if(pos == "teacher")
     {
-      if (anyElementsEmpty({ email, password })) {
+      if (anyElementsEmpty({email: data.email, password: data.password})) {
         dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
         dispatch(sendingRequest(false));
         return;
@@ -50,7 +51,7 @@ export function login(pos, stdid, email, password) {
     }
     if(pos == "student")
     {
-      if (anyElementsEmpty({ stdid, password })) {
+      if (anyElementsEmpty({stdid: data.stdid, password: data.password, course_id: data.course_id})) {
         dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
         dispatch(sendingRequest(false));
         return;
@@ -66,7 +67,7 @@ export function login(pos, stdid, email, password) {
     //     return;
     //   }
       // Use auth.js to fake a request
-      auth.login(pos, pos == "teacher"? email:stdid, password, (success, err) => {
+      auth.login(pos, data, (success, err) => {
         // When the request is finished, hide the loading indicator
         dispatch(sendingRequest(false));
         dispatch(setAuthState(success));

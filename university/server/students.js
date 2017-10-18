@@ -8,7 +8,7 @@ let findAll = (req, res, next) => {
     let sql;
     if (name) {
         sql = `
-            SELECT id, name FROM student
+            SELECT id, name FROM course${student.course_id}student
             WHERE name LIKE ? ORDER BY name LIMIT 20`;
         params.push("%" + name + "%");
     } else {
@@ -21,7 +21,7 @@ let findAll = (req, res, next) => {
 
 let findById = (req, res, next) => {
     let id = req.params.id;
-    let sql = "SELECT * FROM student WHERE id=?";
+    let sql = `SELECT * FROM course${student.course_id}student WHERE id=?`;
     db.query(sql, [parseInt(id)])
         .then(students =>  res.json(students[0]))
         .catch(next);
@@ -29,16 +29,18 @@ let findById = (req, res, next) => {
 
 let findByData = (req, res, next) => {
     let student = req.body;
-    let sql = `SELECT * FROM student WHERE id=? AND pwd=?`;
-    db.query(sql, [student.id,student.pwd])
+    let sql = `SELECT * FROM course${student.course_id}student WHERE id=? AND pwd=?`;
+    db.query(sql, [student.id, student.pwd])
     .then(students =>  res.json(students[0]))
     .catch(next);
 };
 
 let createItem = (req, res, next) => {
     let student = req.body;
+    var course_id = student.course_id;
+    delete student.course_id;
     let sql = `
-        INSERT INTO student SET ?`;
+        INSERT INTO course${course_id}student SET ?`;
     db.query(sql, [student])
         .then(result => {
             res.json(result)
@@ -48,7 +50,7 @@ let createItem = (req, res, next) => {
 
 let updateItem = (req, res, next) => {
     let student = req.body;
-    let sql = `UPDATE student SET name=? WHERE id=?`;
+    let sql = `UPDATE course${student.course_id}student SET name=? WHERE id=?`;
     db.query(sql, [student.name, student.id])
         .then(() => res.send({result: 'ok'}))
         .catch(next);
@@ -56,7 +58,7 @@ let updateItem = (req, res, next) => {
 
 let deleteItem = (req, res, next) => {
     let studentId = req.params.id;
-    db.query('DELETE FROM student WHERE id=?', [studentId], true)
+    db.query('DELETE FROM course${student.course_id}student WHERE id=?', [studentId], true)
         .then(() =>res.send({result: 'ok'}))
         .catch(next);
 };

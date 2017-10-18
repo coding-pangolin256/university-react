@@ -54,15 +54,41 @@ let findById = (req, res, next) => {
 
 let createItem = (req, res, next) => {
     let course = req.body;
-    let sql = `INSERT INTO course (code, name, period_id, teacher_id)
-			   VALUES (?, ?, ?, ?, ?)`;
-    db.query(sql, [course.code, course.name, course.period_id, course.teacher_id])
+    let sql = `INSERT INTO course (name, period_id, teacher_id)
+			   VALUES (?, ?, ?)`;
+    db.query(sql, [course.name, course.period_id, course.teacher_id])
         .then(result => {
-            let sql = `CREATE TABLE ` + course.code + result.insertId + ` (
+            let sql = `CREATE TABLE ` + `course` + result.insertId + ` (
                 std_id int(0) NOT NULL,
                 PRIMARY KEY (std_id)
               )`;
-              db.query(sql);
+            db.query(sql);
+            sql = `CREATE TABLE ` + `course` + result.insertId + `hw` + ` (
+                id int(11) NOT NULL AUTO_INCREMENT,
+                title varchar(255) DEFAULT NULL,
+                details varchar(255) DEFAULT NULL,
+                course_id int(11) DEFAULT NULL,
+                PRIMARY KEY (id) USING BTREE
+              )`;
+            db.query(sql);
+            sql = `CREATE TABLE ` + `course` + result.insertId + `student` + ` (
+                id int(11) NOT NULL,
+                name varchar(30) NOT NULL,
+                pwd varchar(50) DEFAULT NULL,
+                PRIMARY KEY (id)
+              )`;
+            db.query(sql);
+            sql = `CREATE TABLE ` + `course` + result.insertId + `chat` + ` (
+                id int(11) NOT NULL AUTO_INCREMENT,
+                user_id int(11) DEFAULT NULL,
+                pos varchar(20) DEFAULT NULL,
+                course_id int(11) DEFAULT NULL,
+                text text,
+                time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                type tinyint(4) DEFAULT NULL,
+                PRIMARY KEY (id)
+              )`;
+            db.query(sql);
             res.send({id: result.insertId});
         })
         .catch(next);

@@ -28,7 +28,7 @@ export default React.createClass({
     },
 
     newEnrollmentSelectedHandler(course) {
-        EnrollmentService.createItem({student_id: this.props.student.id, course_id: course.id, course_code: course.code})
+        EnrollmentService.createItem({student_id: this.props.student.id, course_id: course.id})
             .then(() => {
                 this.getEnrollments(this.props.student.id);
                 this.setState({addingEnrollment:false});

@@ -148,7 +148,7 @@
 	
 	var _TeacherPage2 = _interopRequireDefault(_TeacherPage);
 	
-	var _StudentPage = __webpack_require__(615);
+	var _StudentPage = __webpack_require__(616);
 	
 	var _StudentPage2 = _interopRequireDefault(_StudentPage);
 	
@@ -160,11 +160,11 @@
 	
 	var _RegisterPage2 = _interopRequireDefault(_RegisterPage);
 	
-	var _NotFound = __webpack_require__(616);
+	var _NotFound = __webpack_require__(617);
 	
 	var _NotFound2 = _interopRequireDefault(_NotFound);
 	
-	var _App = __webpack_require__(617);
+	var _App = __webpack_require__(618);
 	
 	var _App2 = _interopRequireDefault(_App);
 	
@@ -30446,7 +30446,7 @@
 	   * @param  {string}   password The password of the user
 	   * @param  {Function} callback Called after a user was logged in on the remote server
 	   */
-	  login: function login(pos, name, password, callback) {
+	  login: function login(pos, data, callback) {
 	    // If there is a token in the sessionStorage, the user already is
 	    // authenticated
 	    if (this.loggedIn()) {
@@ -30456,7 +30456,7 @@
 	    // Post a fake request (see below)
 	
 	    if (pos == "student") {
-	      StudentService.findByData({ 'id': name, 'pwd': password }).then(function (response) {
+	      StudentService.findByData({ 'id': data.stdid, 'pwd': data.password, 'course_id': data.course_id }).then(function (response) {
 	        // If the user was authenticated successfully, save a random token to the
 	        // sessionStorage
 	        if (response != null) {
@@ -30474,7 +30474,7 @@
 	        }
 	      });
 	    } else {
-	      TeacherService.findByData({ 'email': name, 'pwd': password }).then(function (response) {
+	      TeacherService.findByData({ 'email': data.email, 'pwd': data.password }).then(function (response) {
 	        // If the user was authenticated successfully, save a random token to the
 	        // sessionStorage
 	        if (response != null && response.allowed) {
@@ -30520,6 +30520,7 @@
 	   */
 	  register: function register(info, callback) {
 	    // Post a fake request
+	    console.log(info);
 	    if (info.pos == "teacher") {
 	      var data = {
 	        'university': info.university,
@@ -30544,7 +30545,8 @@
 	      var data = {
 	        'id': info.stdid,
 	        'name': info.name,
-	        'pwd': info.password
+	        'pwd': info.password,
+	        'course_id': info.course_id
 	      };
 	
 	      StudentService.createItem(data).then(function (response) {
@@ -58978,11 +58980,14 @@
 	            return _this.setState({ teachers: teachers });
 	        });
 	    },
-	    codeChangeHandler: function codeChangeHandler(event) {
-	        var course = this.state.course;
-	        course.code = event.target.value;
-	        this.setState({ course: course });
-	    },
+	
+	
+	    // codeChangeHandler(event) {
+	    //     let course = this.state.course;
+	    //     course.code = event.target.value;
+	    //     this.setState({course});
+	    // },
+	
 	    nameChangeHandler: function nameChangeHandler(event) {
 	        var course = this.state.course;
 	        course.name = event.target.value;
@@ -59014,20 +59019,6 @@
 	            _react2.default.createElement(
 	                'div',
 	                { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-form-element' },
-	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
-	                        'Code'
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'slds-form-element__control' },
-	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', value: course.code, onChange: this.codeChangeHandler })
-	                    )
-	                ),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'slds-form-element' },
@@ -77773,7 +77764,7 @@
 	    newEnrollmentSelectedHandler: function newEnrollmentSelectedHandler(course) {
 	        var _this = this;
 	
-	        EnrollmentService.createItem({ student_id: this.props.student.id, course_id: course.id, course_code: course.code }).then(function () {
+	        EnrollmentService.createItem({ student_id: this.props.student.id, course_id: course.id }).then(function () {
 	            _this.getEnrollments(_this.props.student.id);
 	            _this.setState({ addingEnrollment: false });
 	        }).catch(function (error) {
@@ -78715,7 +78706,7 @@
 	                    _DataGrid2.default,
 	                    { data: this.state.courses, keyField: 'id' },
 	                    _react2.default.createElement('div', { header: 'Period', field: 'period_name', sortable: true }),
-	                    _react2.default.createElement('div', { header: 'Code', field: 'code', sortable: true, onLink: this.courseLinkHandler }),
+	                    _react2.default.createElement('div', { header: 'ID', field: 'id', sortable: true, onLink: this.courseLinkHandler }),
 	                    _react2.default.createElement('div', { header: 'Name', field: 'name', sortable: true, onLink: this.courseLinkHandler })
 	                )
 	            ),
@@ -79383,20 +79374,21 @@
 	 *    created in the second step
 	 */
 	
-	function login(pos, stdid, email, password) {
+	function login(pos, data, password) {
 	  return function (dispatch) {
 	    // Show the loading indicator, hide the last error
 	    dispatch(sendingRequest(true));
 	    // If no username or password was specified, throw a field-missing error
+	    console.log(data);
 	    if (pos == "teacher") {
-	      if (anyElementsEmpty({ email: email, password: password })) {
+	      if (anyElementsEmpty({ email: data.email, password: data.password })) {
 	        dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
 	        dispatch(sendingRequest(false));
 	        return;
 	      }
 	    }
 	    if (pos == "student") {
-	      if (anyElementsEmpty({ stdid: stdid, password: password })) {
+	      if (anyElementsEmpty({ stdid: data.stdid, password: data.password, course_id: data.course_id })) {
 	        dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
 	        dispatch(sendingRequest(false));
 	        return;
@@ -79412,7 +79404,7 @@
 	    //     return;
 	    //   }
 	    // Use auth.js to fake a request
-	    _auth2.default.login(pos, pos == "teacher" ? email : stdid, password, function (success, err) {
+	    _auth2.default.login(pos, data, function (success, err) {
 	      // When the request is finished, hide the loading indicator
 	      dispatch(sendingRequest(false));
 	      dispatch(setAuthState(success));
@@ -79933,7 +79925,6 @@
 				    formState = _props$data.formState,
 				    currentlySending = _props$data.currentlySending;
 	
-				console.log(this.props.params);
 				return _react2.default.createElement(
 					'div',
 					{ className: 'form-page__wrapper' },
@@ -80051,13 +80042,27 @@
 	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'email', value: this.props.data.email, onChange: this._changeEmail.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' })
 	        ) : _react2.default.createElement(
 	          'div',
-	          { className: 'form__field-wrapper', id: 'student_form' },
+	          null,
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'form__field-label', htmlFor: 'stdid' },
-	            'Student ID'
+	            'div',
+	            { className: 'form__field-wrapper', id: 'student_form' },
+	            _react2.default.createElement(
+	              'label',
+	              { className: 'form__field-label', htmlFor: 'stdid' },
+	              'Student ID'
+	            ),
+	            _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'stdid', value: this.props.data.stdid, onChange: this._changeStdid.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' })
 	          ),
-	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'stdid', value: this.props.data.stdid, onChange: this._changeStdid.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' })
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'form__field-wrapper', id: 'student_form' },
+	            _react2.default.createElement(
+	              'label',
+	              { className: 'form__field-label', htmlFor: 'crsid' },
+	              'Course ID'
+	            ),
+	            _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'crsid', value: this.props.data.course_id, onChange: this._changeCourseid.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' })
+	          )
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -80088,6 +80093,17 @@
 	    value: function _changeStdid(evt) {
 	      var newState = this._mergeWithCurrentState({
 	        stdid: evt.target.value
+	      });
+	
+	      this._emitChange(newState);
+	    }
+	    // Change the Student ID in the app state
+	
+	  }, {
+	    key: '_changeCourseid',
+	    value: function _changeCourseid(evt) {
+	      var newState = this._mergeWithCurrentState({
+	        course_id: evt.target.value
 	      });
 	
 	      this._emitChange(newState);
@@ -80149,10 +80165,10 @@
 	    key: '_onSubmit',
 	    value: function _onSubmit(evt) {
 	      evt.preventDefault();
-	      if (this.props.data.pos == null) {
-	        this.props.data.pos = "teacher";
-	      }
-	      this.props.onSubmit(this.props.data.pos, this.props.data.stdid, this.props.data.email, this.props.data.password);
+	      this._mergeWithCurrentState({
+	        pos: this.props.pos
+	      });
+	      this.props.onSubmit(this.props.pos, this.props.data);
 	    }
 	  }]);
 	
@@ -80349,6 +80365,12 @@
 	
 	var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
 	
+	var _UniversityService = __webpack_require__(615);
+	
+	var UniversityService = _interopRequireWildcard(_UniversityService);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -80376,15 +80398,33 @@
 	    var _this = _possibleConstructorReturn(this, (RegisterForm.__proto__ || Object.getPrototypeOf(RegisterForm)).call(this, props));
 	
 	    _this.state = {
-	      showTeacher: props.pos == "teacher"
+	      showTeacher: props.pos == "teacher",
+	      universities: []
 	    };
+	    _this.getUniversities();
 	    return _this;
 	  }
 	
 	  _createClass(RegisterForm, [{
+	    key: 'getUniversities',
+	    value: function getUniversities() {
+	      var _this2 = this;
+	
+	      UniversityService.findAll().then(function (universities) {
+	        return _this2.setState({ universities: universities });
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(
+	      var rows = [];
+	      for (var i = 0; i < this.state.universities.length; i++) {
+	        rows.push(_react2.default.createElement(
+	          'option',
+	          { value: this.state.universities[i]['id'] },
+	          this.state.universities[i]['name']
+	        ));
+	      }return _react2.default.createElement(
 	        'form',
 	        { className: 'form', onSubmit: this._onSubmit.bind(this) },
 	        _react2.default.createElement(_ErrorMessage2.default, null),
@@ -80399,7 +80439,11 @@
 	              { className: 'form__field-label', htmlFor: 'university' },
 	              'University'
 	            ),
-	            _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'university', value: this.props.data.university, onChange: this._changeUniversity.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' })
+	            _react2.default.createElement(
+	              'select',
+	              { className: 'form__field-input', id: 'university', value: this.props.data.university, onChange: this._changeUniversity.bind(this) },
+	              rows
+	            )
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -80423,13 +80467,27 @@
 	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'email', value: this.props.data.email, onChange: this._changeEmail.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' })
 	        ) : _react2.default.createElement(
 	          'div',
-	          { className: 'form__field-wrapper', id: 'student_form' },
+	          null,
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'form__field-label', htmlFor: 'stdid' },
-	            'Student ID'
+	            'div',
+	            { className: 'form__field-wrapper', id: 'student_form' },
+	            _react2.default.createElement(
+	              'label',
+	              { className: 'form__field-label', htmlFor: 'stdid' },
+	              'Student ID'
+	            ),
+	            _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'stdid', value: this.props.data.stdid, onChange: this._changeStdid.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' })
 	          ),
-	          _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'stdid', value: this.props.data.stdid, onChange: this._changeStdid.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' })
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'form__field-wrapper', id: 'student_form' },
+	            _react2.default.createElement(
+	              'label',
+	              { className: 'form__field-label', htmlFor: 'course_id' },
+	              'Course ID'
+	            ),
+	            _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'course_id', value: this.props.data.course_id, onChange: this._changeCourseid.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' })
+	          )
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -80504,6 +80562,15 @@
 	
 	      this._emitChange(newState);
 	    }
+	  }, {
+	    key: '_changeCourseid',
+	    value: function _changeCourseid(evt) {
+	      var newState = this._mergeWithCurrentState({
+	        course_id: evt.target.value
+	      });
+	
+	      this._emitChange(newState);
+	    }
 	    // Change the email in the app state
 	
 	  }, {
@@ -80564,6 +80631,7 @@
 	      this._mergeWithCurrentState({
 	        pos: this.props.pos
 	      });
+	      if (this.props.data.university == null) this.props.data.university = 1;
 	      this.props.onSubmit(this.props.data);
 	    }
 	  }]);
@@ -80581,6 +80649,45 @@
 
 /***/ }),
 /* 615 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.deleteItem = exports.updateItem = exports.createItem = exports.findById = exports.findAll = undefined;
+	
+	var _rest = __webpack_require__(347);
+	
+	var rest = _interopRequireWildcard(_rest);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	var url = "/universities";
+	
+	var findAll = exports.findAll = function findAll(queryParams) {
+	  return rest.get(url, queryParams);
+	};
+	
+	var findById = exports.findById = function findById(id) {
+	  return rest.get(url + "/" + id);
+	};
+	
+	var createItem = exports.createItem = function createItem(student) {
+	  return rest.post(url, student);
+	};
+	
+	var updateItem = exports.updateItem = function updateItem(student) {
+	  return rest.put(url, student);
+	};
+	
+	var deleteItem = exports.deleteItem = function deleteItem(id) {
+	  return rest.del(url + "/" + id);
+	};
+
+/***/ }),
+/* 616 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80723,7 +80830,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(StudentPage);
 
 /***/ }),
-/* 616 */
+/* 617 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80783,7 +80890,7 @@
 	exports.default = NotFound;
 
 /***/ }),
-/* 617 */
+/* 618 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
