@@ -43,9 +43,9 @@ insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) value
 insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (11,10,'student',NULL,'asdf','2017-10-09 22:13:38',NULL);
 insert  into `chat`(`id`,`user_id`,`pos`,`course_id`,`text`,`time`,`type`) values (12,10,'student',NULL,'asdf','2017-10-09 22:13:39',NULL);
 
-/*Table structure for table `cj10244` */
+/*Table structure for table `CJ10244` */
 
-CREATE TABLE `cj10244` (
+CREATE TABLE `CJ10244` (
   `std_id` int(11) NOT NULL,
   `24_hw` text,
   `24_score` double DEFAULT NULL,
@@ -56,14 +56,14 @@ CREATE TABLE `cj10244` (
   PRIMARY KEY (`std_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-/*Data for the table `cj10244` */
+/*Data for the table `CJ10244` */
 
-insert  into `cj10244`(`std_id`,`24_hw`,`24_score`,`1_hw`,`1_score`,`0_hw`,`0_score`) values (8,'bidSentence.txt',4,NULL,NULL,NULL,NULL);
-insert  into `cj10244`(`std_id`,`24_hw`,`24_score`,`1_hw`,`1_score`,`0_hw`,`0_score`) values (15,'globdata.ini',3,NULL,NULL,NULL,NULL);
+insert  into `CJ10244`(`std_id`,`24_hw`,`24_score`,`1_hw`,`1_score`,`0_hw`,`0_score`) values (8,'bidSentence.txt',4,NULL,NULL,NULL,NULL);
+insert  into `CJ10244`(`std_id`,`24_hw`,`24_score`,`1_hw`,`1_score`,`0_hw`,`0_score`) values (15,'globdata.ini',3,NULL,NULL,NULL,NULL);
 
-/*Table structure for table `cj142` */
+/*Table structure for table `CJ142` */
 
-CREATE TABLE `cj142` (
+CREATE TABLE `CJ142` (
   `std_id` int(11) NOT NULL,
   `21_hw` text,
   `21_score` float DEFAULT NULL,
@@ -72,11 +72,11 @@ CREATE TABLE `cj142` (
   PRIMARY KEY (`std_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-/*Data for the table `cj142` */
+/*Data for the table `CJ142` */
 
-insert  into `cj142`(`std_id`,`21_hw`,`21_score`,`22_hw`,`22_score`) values (10,'eula.1036.txt',NULL,'1.cpp',7);
-insert  into `cj142`(`std_id`,`21_hw`,`21_score`,`22_hw`,`22_score`) values (22,'vmware.log',8,'',NULL);
-insert  into `cj142`(`std_id`,`21_hw`,`21_score`,`22_hw`,`22_score`) values (30,NULL,NULL,NULL,NULL);
+insert  into `CJ142`(`std_id`,`21_hw`,`21_score`,`22_hw`,`22_score`) values (10,'eula.1036.txt',NULL,'1.cpp',7);
+insert  into `CJ142`(`std_id`,`21_hw`,`21_score`,`22_hw`,`22_score`) values (22,'vmware.log',8,'',NULL);
+insert  into `CJ142`(`std_id`,`21_hw`,`21_score`,`22_hw`,`22_score`) values (30,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `course` */
 
