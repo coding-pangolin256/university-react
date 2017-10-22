@@ -5,6 +5,9 @@ import * as ResultService from './services/ResultService';
 import DataGrid from './components/DataGrid';
 import StudentSearchBox from './StudentSearchBox';
 import ResultFormWindow from './ResultFormWindow';
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import json2csv from 'json2csv';
+import {CSVLink, CSVDownload} from 'react-csv';
 
 import {Icon} from './components/Icons';
 
@@ -61,10 +64,9 @@ export default React.createClass({
     scoreCancelHandler() {
         this.setState({estimatting:false});
     },
-
-    render() {
+    save_table()
+    {
         let cols = [];
-        
         
         // for(let index=0;index<keys.length;index++)
         // {
@@ -97,6 +99,52 @@ export default React.createClass({
                 
             }
         }
+        var uri = 'data:application/vnd.ms-excel;base64,'
+        , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+        , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+        , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+      
+        var ctx = {worksheet: name || 'Worksheet', cols}
+        window.location.href = uri + base64(format(template, ctx))
+     
+    },
+    render() {
+        let cols = [];
+        let data = [];
+        
+        // for(let index=0;index<keys.length;index++)
+        // {
+        //    cols.push(<div header={keys[index]} field={keys[index]}/>);
+        // }
+        console.log(this.state.results);
+        for( let i = 0; i<1&&this.state.results.length; i++)
+        {
+            let keys = Object.keys(this.state.results[i]);
+            for(let index = 0; index < keys.length; index ++)
+            {
+                if(keys[index] == "name")
+                {
+                    cols.push(<div header={keys[index]} field={keys[index]} onLink={this.studentLinkHandler}/>);    
+                }
+                else if(keys[index] == "std_id")
+                {
+                    continue;
+                }
+                else{
+                    if(keys[index].endsWith("_score"))
+                    {
+                        continue;
+                    }
+                    if(this.props.editable == true)
+                        cols.push(<div header={keys[index]} field={keys[index+1]} action="Details" onLink={this.resultLinkHandler}/>);
+                    else
+                        cols.push(<div header={keys[index]} field={keys[index+1]}/>);
+                }
+                
+            }
+        }
+        
+        
         // <div header={item} field={item}/>
 
         
@@ -110,16 +158,27 @@ export default React.createClass({
                         <div className="slds-media__body">
                             <h3 className="slds-text-heading--small slds-truncate">{this.props.title}</h3>
                         </div>
+                        {
+                            !this.props.editable?
+                        <ReactHTMLTableToExcel
+                            id="test-table-xls-button"
+                            className="slds-button slds-button--neutral"
+                            table="table-to-xls"
+                            filename="tablexls"
+                            sheet="tablexls"
+                            buttonText="Download as XLS"/>:null
+                        }
                     </div>
                 </header>
 
                 <section className="slds-card__body">
-                    <DataGrid data={this.state.results} keyField="std_id" actions={sessionStorage.pos=="teacher"?["View Student", "Delete"]:null} onAction={this.actionHandler}>
+                    <DataGrid table_id={this.props.editable?"":"table-to-xls"} data={this.state.results} actions={sessionStorage.pos=="teacher"&&this.props.editable?["View Student", "Delete"]:null} onAction={this.actionHandler}>
                         {/* <div header="Name" field="name" sortable={true} onLink={this.studentLinkHandler}/>
                         <div header="Student ID" field="std_id"/> */}
                         {cols}
                     </DataGrid>
                 </section>
+
                 {this.state.estimatting?<ResultFormWindow result={this.state.current} course={this.props.course} selected_hw={this.state.selected_hwId} onSaved={this.scoreSavedHandler} onCancel={this.scoreCancelHandler}/>:null}
             </div>
 

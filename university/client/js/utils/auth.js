@@ -12,7 +12,7 @@ var auth = {
    * @param  {string}   password The password of the user
    * @param  {Function} callback Called after a user was logged in on the remote server
    */
-  login(pos, name, password, callback) {
+  login(pos, data, callback) {
     // If there is a token in the sessionStorage, the user already is
     // authenticated
     if (this.loggedIn()) {
@@ -23,7 +23,7 @@ var auth = {
 
     if(pos == "student")
     {
-      StudentService.findByData({ 'id': name, 'pwd': password }).then(response => {
+      StudentService.findByData({ 'id': data.stdid, 'pwd': data.password, 'course_id': data.course_id }).then(response => {
         // If the user was authenticated successfully, save a random token to the
         // sessionStorage
         if (response != null) {
@@ -43,7 +43,7 @@ var auth = {
     }
     else
     {
-      TeacherService.findByData({ 'email': name, 'pwd': password }).then(response => {
+      TeacherService.findByData({ 'email': data.email, 'pwd': data.password }).then(response => {
         // If the user was authenticated successfully, save a random token to the
         // sessionStorage
         if (response != null && response.allowed) {
@@ -87,6 +87,7 @@ var auth = {
    */
   register(info, callback) {
     // Post a fake request
+    console.log(info);
     if(info.pos == "teacher")
     {
       var data = {
@@ -114,7 +115,8 @@ var auth = {
       var data = {
         'id': info.stdid,
         'name': info.name,
-        'pwd': info.password
+        'pwd': info.password,
+        'course_id': info.course_id
       }
       
       StudentService.createItem(data).then(response => {

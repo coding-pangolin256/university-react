@@ -8,6 +8,7 @@ var express = require('express'),
     presents = require('./server/presents'),
     enrollments = require('./server/enrollments'),
     teachers = require('./server/teachers'),
+    universities = require('./server/universities'),
     periods = require('./server/periods'),
     messages = require('./server/messages'),
     multer = require('multer'),
@@ -128,6 +129,12 @@ app.post('/teachers', teachers.createItem);
 app.post('/teacher', teachers.findByData);
 app.put('/teachers', teachers.updateItem);
 app.delete('/teachers/:id', teachers.deleteItem);
+
+app.get('/universities', universities.findAll);
+app.get('/universities/:id', universities.findById);
+app.post('/universities', universities.createItem);
+app.put('/universities', universities.updateItem);
+app.delete('/universities/:id', universities.deleteItem);
 
 app.get('/messages', messages.findAll);
 app.get('/messages/:id', messages.findById);

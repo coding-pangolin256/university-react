@@ -22,11 +22,11 @@ export default React.createClass({
         TeacherService.findAll().then(teachers => this.setState({teachers}));
     },
 
-    codeChangeHandler(event) {
-        let course = this.state.course;
-        course.code = event.target.value;
-        this.setState({course});
-    },
+    // codeChangeHandler(event) {
+    //     let course = this.state.course;
+    //     course.code = event.target.value;
+    //     this.setState({course});
+    // },
 
     nameChangeHandler(event) {
         let course = this.state.course;
@@ -58,12 +58,12 @@ export default React.createClass({
         return (
             <div className="slds-form--stacked slds-grid slds-wrap">
                 <div className="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2">
-                    <div className="slds-form-element">
+                    {/* <div className="slds-form-element">
                         <label className="slds-form-element__label" htmlFor="sample1">Code</label>
                         <div className="slds-form-element__control">
                             <input className="slds-input" type="text" value={course.code} onChange={this.codeChangeHandler}/>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="slds-form-element">
                         <label className="slds-form-element__label" htmlFor="sample1">Name</label>
                         <div className="slds-form-element__control">

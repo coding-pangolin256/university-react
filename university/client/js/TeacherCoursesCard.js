@@ -70,7 +70,7 @@ export default React.createClass({
                 <section className="slds-card__body">
                     <DataGrid data={this.state.courses} keyField="id">
                         <div header="Period" field="period_name" sortable={true}/>
-                        <div header="Code" field="code" sortable={true} onLink={this.courseLinkHandler}/>
+                        <div header="ID" field="id" sortable={true} onLink={this.courseLinkHandler}/>
                         <div header="Name" field="name" sortable={true} onLink={this.courseLinkHandler}/>
                     </DataGrid>
                 </section>

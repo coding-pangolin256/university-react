@@ -10,6 +10,9 @@ import React, { Component } from 'react';
 import { changeForm } from './actions/AppActions';
 import LoadingButton from './LoadingButton.react';
 import ErrorMessage from './ErrorMessage.react';
+
+import * as UniversityService from './services/UniversityService';
+
 // Object.assign is not yet fully supported in all browsers, so we fallback to
 // a polyfill
 const assign = Object.assign || require('object.assign');
@@ -19,10 +22,20 @@ class RegisterForm extends Component {
 		super(props);
 
 		this.state = {
-			showTeacher: props.pos=="teacher"
-		};
-	}
+      showTeacher: props.pos=="teacher",
+      universities: []
+    };
+    this.getUniversities();
+  }
+  getUniversities()
+  {
+    UniversityService.findAll().then(universities => this.setState({universities}));
+  }
   render() {
+    let rows = [];
+    for(let i=0;i<this.state.universities.length;i++)
+      rows.push(<option value = {this.state.universities[i]['id']}>{this.state.universities[i]['name']}</option>);
+      
     return(
       <form className="form" onSubmit={this._onSubmit.bind(this)}>
         <ErrorMessage />
@@ -31,7 +44,9 @@ class RegisterForm extends Component {
             <div>
               <div className="form__field-wrapper" id="teacher_form">
                 <label className="form__field-label" htmlFor="university">University</label>
-                <input className="form__field-input" type="text" id="university" value={this.props.data.university} onChange={this._changeUniversity.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
+                <select className="form__field-input" id="university" value={this.props.data.university} onChange={this._changeUniversity.bind(this)}>
+                  {rows}
+                </select>
               </div>
               <div className="form__field-wrapper" id="teacher_form">
                 <label className="form__field-label" htmlFor="email">Department</label>
@@ -47,9 +62,15 @@ class RegisterForm extends Component {
               <input className="form__field-input" type="text" id="email" value={this.props.data.email} onChange={this._changeEmail.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
             </div>
             :
+            <div>
             <div className="form__field-wrapper" id="student_form">
-            <label className="form__field-label" htmlFor="stdid">Student ID</label>
+              <label className="form__field-label" htmlFor="stdid">Student ID</label>
               <input className="form__field-input" type="text" id="stdid" value={this.props.data.stdid} onChange={this._changeStdid.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
+            </div>
+            <div className="form__field-wrapper" id="student_form">
+              <label className="form__field-label" htmlFor="course_id">Course ID</label>
+              <input className="form__field-input" type="text" id="course_id" value={this.props.data.course_id} onChange={this._changeCourseid.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
+            </div>
             </div>
         }
         <div className="form__field-wrapper">
@@ -100,6 +121,13 @@ class RegisterForm extends Component {
   
       this._emitChange(newState);
     }
+    _changeCourseid(evt) {
+      var newState = this._mergeWithCurrentState({
+        course_id: evt.target.value
+      });
+  
+      this._emitChange(newState);
+    }
     // Change the email in the app state
   _changeEmail(evt) {
       var newState = this._mergeWithCurrentState({
@@ -142,6 +170,8 @@ class RegisterForm extends Component {
     this._mergeWithCurrentState({
       pos: this.props.pos
     });
+    if(this.props.data.university == null)
+      this.props.data.university = 1;
     this.props.onSubmit(this.props.data);
   }
 }

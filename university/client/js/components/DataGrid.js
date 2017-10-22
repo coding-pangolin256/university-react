@@ -156,7 +156,6 @@ let Row = React.createClass({
         }
 
         if (this.props.actions) {
-                console.log(this.props.actions);
                 let actions = this.props.actions.map((action, index) => ({id: index, name: action}));
                 columns.push(
                     <td style={{width:"50px"}}>
@@ -186,7 +185,7 @@ export default React.createClass({
     },
 
     componentWillReceiveProps(props) {
-        this.setState({data:props.data});
+        this.setState({data:props.data, table_id:props.table_id});
     },
 
     sortHandler(field) {
@@ -235,7 +234,7 @@ export default React.createClass({
                                                     onClick={this.rowClickHandler}/>);
         }
         return (
-            <table className="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover" style={{marginTop:"-1px"}}>
+            <table id={this.props.table_id} className="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover" style={{marginTop:"-1px"}}>
                 <thead>
                 <tr className="slds-text-heading--label">
                     {headers}

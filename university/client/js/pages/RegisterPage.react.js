@@ -24,7 +24,7 @@ class RegisterPage extends Component {
 					</div>
 					{/* While the form is sending, show the loading indicator,
 						otherwise show "Register" on the submit button */}
-		    	<RegisterForm data={formState} dispatch={dispatch} location={location} pos={this.props.pos} history={this.props.history} onSubmit={this._register} btnText={"Register"} currentlySending={currentlySending}/>
+		    	<RegisterForm data={formState} dispatch={dispatch} location={location} pos={this.props.params.pageId == "1"?"teacher":"student"} history={this.props.history} onSubmit={this._register} btnText={"Register"} currentlySending={currentlySending}/>
 				</div>
 			</div>
 		);
