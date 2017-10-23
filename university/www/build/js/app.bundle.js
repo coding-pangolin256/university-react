@@ -136,35 +136,39 @@
 	
 	var _TeacherFormWrapper2 = _interopRequireDefault(_TeacherFormWrapper);
 	
+	var _UniversityHome = __webpack_require__(603);
+	
+	var _UniversityHome2 = _interopRequireDefault(_UniversityHome);
+	
 	var _ChatHome = __webpack_require__(533);
 	
 	var _ChatHome2 = _interopRequireDefault(_ChatHome);
 	
-	var _HomePage = __webpack_require__(603);
+	var _HomePage = __webpack_require__(608);
 	
 	var _HomePage2 = _interopRequireDefault(_HomePage);
 	
-	var _TeacherPage = __webpack_require__(609);
+	var _TeacherPage = __webpack_require__(614);
 	
 	var _TeacherPage2 = _interopRequireDefault(_TeacherPage);
 	
-	var _StudentPage = __webpack_require__(616);
+	var _StudentPage = __webpack_require__(620);
 	
 	var _StudentPage2 = _interopRequireDefault(_StudentPage);
 	
-	var _LoginPage = __webpack_require__(610);
+	var _LoginPage = __webpack_require__(615);
 	
 	var _LoginPage2 = _interopRequireDefault(_LoginPage);
 	
-	var _RegisterPage = __webpack_require__(613);
+	var _RegisterPage = __webpack_require__(618);
 	
 	var _RegisterPage2 = _interopRequireDefault(_RegisterPage);
 	
-	var _NotFound = __webpack_require__(617);
+	var _NotFound = __webpack_require__(621);
 	
 	var _NotFound2 = _interopRequireDefault(_NotFound);
 	
-	var _App = __webpack_require__(618);
+	var _App = __webpack_require__(622);
 	
 	var _App2 = _interopRequireDefault(_App);
 	
@@ -269,7 +273,7 @@
 	        _react2.default.createElement(_reactRouter.Route, { path: ':teacherId', component: _TeacherView2.default }),
 	        _react2.default.createElement(_reactRouter.Route, { path: ':teacherId/edit', component: _TeacherFormWrapper2.default })
 	      ),
-	      _react2.default.createElement(_reactRouter.Route, { path: 'chat', component: _ChatHome2.default })
+	      _react2.default.createElement(_reactRouter.Route, { path: 'universities', component: _UniversityHome2.default })
 	    );
 	  };
 	
@@ -41427,6 +41431,16 @@
 	                            _react2.default.createElement(_Icons.Icon, { name: 'user', theme: null }),
 	                            'Teachers'
 	                        )
+	                    ) : "",
+	                    sessionStorage.permission == 2 ? _react2.default.createElement(
+	                        'li',
+	                        { className: 'slds-list__item' },
+	                        _react2.default.createElement(
+	                            'a',
+	                            { href: '#universities' },
+	                            _react2.default.createElement(_Icons.Icon, { name: 'social', theme: null }),
+	                            'Universities'
+	                        )
 	                    ) : ""
 	                )
 	            ),
@@ -79049,6 +79063,361 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _UniversityService = __webpack_require__(604);
+	
+	var UniversityService = _interopRequireWildcard(_UniversityService);
+	
+	var _PageHeader = __webpack_require__(373);
+	
+	var _UniversityList = __webpack_require__(605);
+	
+	var _UniversityList2 = _interopRequireDefault(_UniversityList);
+	
+	var _UniversityFormWindow = __webpack_require__(606);
+	
+	var _UniversityFormWindow2 = _interopRequireDefault(_UniversityFormWindow);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'UniversityHome',
+	    getInitialState: function getInitialState() {
+	        return { universities: [] };
+	    },
+	    componentDidMount: function componentDidMount() {
+	        var _this = this;
+	
+	        UniversityService.findAll().then(function (universities) {
+	            return _this.setState({ universities: universities });
+	        });
+	    },
+	    newHandler: function newHandler() {
+	        this.setState({ addingUniversity: true });
+	    },
+	    savedHandler: function savedHandler(university) {
+	        var _this2 = this;
+	
+	        this.setState({ addingUniversity: false });
+	        UniversityService.findAll().then(function (universities) {
+	            return _this2.setState({ universities: universities });
+	        });
+	    },
+	    cancelHandler: function cancelHandler() {
+	        this.setState({ addingUniversity: false });
+	    },
+	    approveHandler: function approveHandler(data) {
+	        var _this3 = this;
+	
+	        data.allowed = 1;
+	        UniversityService.updateItem(data);
+	        UniversityService.findAll().then(function (universities) {
+	            return _this3.setState({ universities: universities });
+	        });
+	    },
+	    deleteHandler: function deleteHandler(data) {
+	        var _this4 = this;
+	
+	        UniversityService.deleteItem(data.code);
+	        UniversityService.findAll().then(function (universities) {
+	            return _this4.setState({ universities: universities });
+	        });
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(_PageHeader.HomeHeader, { type: 'Universities',
+	                title: 'Recent Universities',
+	                newLabel: 'New University',
+	                actions: [{ value: "new", label: "New University" }],
+	                itemCount: this.state.universities.length,
+	                views: [{ id: 1, name: "Recent Universities" }],
+	                viewId: '1',
+	                onNew: this.newHandler }),
+	            _react2.default.createElement(_UniversityList2.default, { universities: this.state.universities, onDelete: this.deleteHandler }),
+	            this.state.addingUniversity ? _react2.default.createElement(_UniversityFormWindow2.default, { onSaved: this.savedHandler, onCancel: this.cancelHandler }) : null
+	        );
+	    }
+	});
+
+/***/ }),
+/* 604 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.deleteItem = exports.updateItem = exports.createItem = exports.findById = exports.findAll = undefined;
+	
+	var _rest = __webpack_require__(347);
+	
+	var rest = _interopRequireWildcard(_rest);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	var url = "/universities";
+	
+	var findAll = exports.findAll = function findAll(queryParams) {
+	  return rest.get(url, queryParams);
+	};
+	
+	var findById = exports.findById = function findById(id) {
+	  return rest.get(url + "/" + id);
+	};
+	
+	var createItem = exports.createItem = function createItem(student) {
+	  return rest.post(url, student);
+	};
+	
+	var updateItem = exports.updateItem = function updateItem(student) {
+	  return rest.put(url, student);
+	};
+	
+	var deleteItem = exports.deleteItem = function deleteItem(id) {
+	  return rest.del(url + "/" + id);
+	};
+
+/***/ }),
+/* 605 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _DataGrid = __webpack_require__(492);
+	
+	var _DataGrid2 = _interopRequireDefault(_DataGrid);
+	
+	var _TeacherService = __webpack_require__(348);
+	
+	var UniversityService = _interopRequireWildcard(_TeacherService);
+	
+	var _Icons = __webpack_require__(364);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'UniversityList',
+	    linkHandler: function linkHandler(university) {
+	        window.location.hash = "#university/" + university.id;
+	    },
+	    actionHandler: function actionHandler(data, value, label) {
+	        if (value === 0) {
+	            this.linkHandler(data);
+	        } else if (value === 1) {
+	            this.props.onDelete(data);
+	        }
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            _DataGrid2.default,
+	            { data: this.props.universities, actions: ["View", "Delete"], onAction: this.actionHandler },
+	            _react2.default.createElement('div', { header: 'Representation Code', field: 'code', onLink: this.linkHandler }),
+	            _react2.default.createElement('div', { header: 'University Name', field: 'name' })
+	        );
+	    }
+	});
+
+/***/ }),
+/* 606 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _UniversityForm = __webpack_require__(607);
+	
+	var _UniversityForm2 = _interopRequireDefault(_UniversityForm);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'UniversityFormWindow',
+	    saveHandler: function saveHandler() {
+	        this.refs.form.save();
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	                'div',
+	                { 'aria-hidden': 'false', role: 'dialog', className: 'slds-modal slds-fade-in-open' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-modal__container' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-modal__header' },
+	                        _react2.default.createElement(
+	                            'h2',
+	                            { className: 'slds-text-heading--medium' },
+	                            'New University'
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'slds-button slds-modal__close' },
+	                            _react2.default.createElement('svg', { 'aria-hidden': 'true', className: 'slds-button__icon slds-button__icon--inverse slds-button__icon--large' }),
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'slds-assistive-text' },
+	                                'Close'
+	                            )
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-modal__content' },
+	                        _react2.default.createElement(_UniversityForm2.default, { ref: 'form', onSaved: this.props.onSaved })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-modal__footer' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'slds-button slds-button--neutral', onClick: this.props.onCancel },
+	                            'Cancel'
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'slds-button slds-button--neutral slds-button--brand', onClick: this.saveHandler },
+	                            'Save'
+	                        )
+	                    )
+	                )
+	            ),
+	            _react2.default.createElement('div', { className: 'slds-modal-backdrop slds-modal-backdrop--open' })
+	        );
+	    }
+	});
+
+/***/ }),
+/* 607 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactAddonsLinkedStateMixin = __webpack_require__(582);
+	
+	var _reactAddonsLinkedStateMixin2 = _interopRequireDefault(_reactAddonsLinkedStateMixin);
+	
+	var _UniversityService = __webpack_require__(604);
+	
+	var UniversityService = _interopRequireWildcard(_UniversityService);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'UniversityForm',
+	
+	
+	    mixins: [_reactAddonsLinkedStateMixin2.default],
+	
+	    getInitialState: function getInitialState() {
+	        return this.props.university || {};
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(props) {
+	        var university = props.university;
+	        this.setState(_extends({}, university));
+	    },
+	    save: function save() {
+	        var _this = this;
+	
+	        var saveItem = this.state.id ? UniversityService.updateItem : UniversityService.createItem;
+	        saveItem(this.state).then(function (savedUniversity) {
+	            if (_this.props.onSaved) _this.props.onSaved(savedUniversity);
+	        });
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'slds-form--stacked slds-grid slds-wrap' },
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-form-element' },
+	                    _react2.default.createElement(
+	                        'label',
+	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
+	                        'Name'
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-form-element__control' },
+	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('name') })
+	                    )
+	                )
+	            ),
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-form-element' },
+	                    _react2.default.createElement(
+	                        'label',
+	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
+	                        'Representation Code'
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-form-element__control' },
+	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('code') })
+	                    )
+	                )
+	            )
+	        );
+	    }
+	});
+
+/***/ }),
+/* 608 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
@@ -79060,7 +79429,7 @@
 	
 	var _reactRouter = __webpack_require__(216);
 	
-	var _Nav = __webpack_require__(604);
+	var _Nav = __webpack_require__(609);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	
@@ -79140,7 +79509,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(HomePage);
 
 /***/ }),
-/* 604 */
+/* 609 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79157,9 +79526,9 @@
 	
 	var _reactRouter = __webpack_require__(216);
 	
-	var _AppActions = __webpack_require__(605);
+	var _AppActions = __webpack_require__(610);
 	
-	var _LoadingButton = __webpack_require__(607);
+	var _LoadingButton = __webpack_require__(612);
 	
 	var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
 	
@@ -79305,7 +79674,7 @@
 	exports.default = Nav;
 
 /***/ }),
-/* 605 */
+/* 610 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79326,7 +79695,7 @@
 	
 	var _AppConstants = __webpack_require__(279);
 	
-	var _MessageConstants = __webpack_require__(606);
+	var _MessageConstants = __webpack_require__(611);
 	
 	var errorMessages = _interopRequireWildcard(_MessageConstants);
 	
@@ -79610,7 +79979,7 @@
 	}
 
 /***/ }),
-/* 606 */
+/* 611 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -79635,7 +80004,7 @@
 	var GENERAL_ERROR = exports.GENERAL_ERROR = 'Something went wrong, please try again';
 
 /***/ }),
-/* 607 */
+/* 612 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79648,7 +80017,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _LoadingIndicator = __webpack_require__(608);
+	var _LoadingIndicator = __webpack_require__(613);
 	
 	var _LoadingIndicator2 = _interopRequireDefault(_LoadingIndicator);
 	
@@ -79671,7 +80040,7 @@
 	exports.default = LoadingButton;
 
 /***/ }),
-/* 608 */
+/* 613 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -79719,7 +80088,7 @@
 	exports.default = LoadingIndicator;
 
 /***/ }),
-/* 609 */
+/* 614 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79736,17 +80105,17 @@
 	
 	var _reactRouter = __webpack_require__(216);
 	
-	var _Nav = __webpack_require__(604);
+	var _Nav = __webpack_require__(609);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	
 	var _reactRedux = __webpack_require__(199);
 	
-	var _LoginPage = __webpack_require__(610);
+	var _LoginPage = __webpack_require__(615);
 	
 	var _LoginPage2 = _interopRequireDefault(_LoginPage);
 	
-	var _RegisterPage = __webpack_require__(613);
+	var _RegisterPage = __webpack_require__(618);
 	
 	var _RegisterPage2 = _interopRequireDefault(_RegisterPage);
 	
@@ -79863,7 +80232,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(TeacherPage);
 
 /***/ }),
-/* 610 */
+/* 615 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79880,7 +80249,7 @@
 	
 	var _reactRedux = __webpack_require__(199);
 	
-	var _Form = __webpack_require__(611);
+	var _Form = __webpack_require__(616);
 	
 	var _Form2 = _interopRequireDefault(_Form);
 	
@@ -79888,9 +80257,9 @@
 	
 	var _auth2 = _interopRequireDefault(_auth);
 	
-	var _AppActions = __webpack_require__(605);
+	var _AppActions = __webpack_require__(610);
 	
-	var _LoadingIndicator = __webpack_require__(608);
+	var _LoadingIndicator = __webpack_require__(613);
 	
 	var _LoadingIndicator2 = _interopRequireDefault(_LoadingIndicator);
 	
@@ -79967,7 +80336,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(LoginPage);
 
 /***/ }),
-/* 611 */
+/* 616 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79982,15 +80351,21 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _AppActions = __webpack_require__(605);
+	var _AppActions = __webpack_require__(610);
 	
-	var _LoadingButton = __webpack_require__(607);
+	var _LoadingButton = __webpack_require__(612);
 	
 	var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
 	
-	var _ErrorMessage = __webpack_require__(612);
+	var _ErrorMessage = __webpack_require__(617);
 	
 	var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
+	
+	var _UniversityService = __webpack_require__(604);
+	
+	var UniversityService = _interopRequireWildcard(_UniversityService);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -80019,15 +80394,32 @@
 	    var _this = _possibleConstructorReturn(this, (LoginForm.__proto__ || Object.getPrototypeOf(LoginForm)).call(this, props));
 	
 	    _this.state = {
-	      showTeacher: props.pos == "teacher"
+	      showTeacher: props.pos == "teacher",
+	      universities: []
 	    };
 	    return _this;
 	  }
 	
 	  _createClass(LoginForm, [{
+	    key: 'getUniversities',
+	    value: function getUniversities() {
+	      var _this2 = this;
+	
+	      UniversityService.findAll().then(function (universities) {
+	        return _this2.setState({ universities: universities });
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(
+	      var rows = [];
+	      for (var i = 0; i < this.state.universities.length; i++) {
+	        rows.push(_react2.default.createElement(
+	          'option',
+	          { value: this.state.universities[i]['id'] },
+	          this.state.universities[i]['name']
+	        ));
+	      }return _react2.default.createElement(
 	        'form',
 	        { className: 'form', onSubmit: this._onSubmit.bind(this) },
 	        _react2.default.createElement(_ErrorMessage2.default, null),
@@ -80184,7 +80576,7 @@
 	exports.default = LoginForm;
 
 /***/ }),
-/* 612 */
+/* 617 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80237,7 +80629,7 @@
 	exports.default = ErrorMessage;
 
 /***/ }),
-/* 613 */
+/* 618 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80254,13 +80646,13 @@
 	
 	var _reactRedux = __webpack_require__(199);
 	
-	var _RegisterForm = __webpack_require__(614);
+	var _RegisterForm = __webpack_require__(619);
 	
 	var _RegisterForm2 = _interopRequireDefault(_RegisterForm);
 	
-	var _AppActions = __webpack_require__(605);
+	var _AppActions = __webpack_require__(610);
 	
-	var _LoadingIndicator = __webpack_require__(608);
+	var _LoadingIndicator = __webpack_require__(613);
 	
 	var _LoadingIndicator2 = _interopRequireDefault(_LoadingIndicator);
 	
@@ -80340,7 +80732,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(RegisterPage);
 
 /***/ }),
-/* 614 */
+/* 619 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80355,17 +80747,17 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _AppActions = __webpack_require__(605);
+	var _AppActions = __webpack_require__(610);
 	
-	var _LoadingButton = __webpack_require__(607);
+	var _LoadingButton = __webpack_require__(612);
 	
 	var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
 	
-	var _ErrorMessage = __webpack_require__(612);
+	var _ErrorMessage = __webpack_require__(617);
 	
 	var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
 	
-	var _UniversityService = __webpack_require__(615);
+	var _UniversityService = __webpack_require__(604);
 	
 	var UniversityService = _interopRequireWildcard(_UniversityService);
 	
@@ -80648,46 +81040,7 @@
 	exports.default = RegisterForm;
 
 /***/ }),
-/* 615 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.deleteItem = exports.updateItem = exports.createItem = exports.findById = exports.findAll = undefined;
-	
-	var _rest = __webpack_require__(347);
-	
-	var rest = _interopRequireWildcard(_rest);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	var url = "/universities";
-	
-	var findAll = exports.findAll = function findAll(queryParams) {
-	  return rest.get(url, queryParams);
-	};
-	
-	var findById = exports.findById = function findById(id) {
-	  return rest.get(url + "/" + id);
-	};
-	
-	var createItem = exports.createItem = function createItem(student) {
-	  return rest.post(url, student);
-	};
-	
-	var updateItem = exports.updateItem = function updateItem(student) {
-	  return rest.put(url, student);
-	};
-	
-	var deleteItem = exports.deleteItem = function deleteItem(id) {
-	  return rest.del(url + "/" + id);
-	};
-
-/***/ }),
-/* 616 */
+/* 620 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80704,17 +81057,17 @@
 	
 	var _reactRouter = __webpack_require__(216);
 	
-	var _Nav = __webpack_require__(604);
+	var _Nav = __webpack_require__(609);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	
 	var _reactRedux = __webpack_require__(199);
 	
-	var _LoginPage = __webpack_require__(610);
+	var _LoginPage = __webpack_require__(615);
 	
 	var _LoginPage2 = _interopRequireDefault(_LoginPage);
 	
-	var _RegisterPage = __webpack_require__(613);
+	var _RegisterPage = __webpack_require__(618);
 	
 	var _RegisterPage2 = _interopRequireDefault(_RegisterPage);
 	
@@ -80830,7 +81183,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(StudentPage);
 
 /***/ }),
-/* 617 */
+/* 621 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80890,7 +81243,7 @@
 	exports.default = NotFound;
 
 /***/ }),
-/* 618 */
+/* 622 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80905,7 +81258,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Nav = __webpack_require__(604);
+	var _Nav = __webpack_require__(609);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	
