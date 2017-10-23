@@ -4,8 +4,10 @@ let db = require('./pghelper');
 
 let findAll = (req, res, next) => {
     let name = req.query.name;
-    let sql = `SELECT id, name, email, allowed, university, department, IF ( allowed, 'Approved', 'Not') approved
-        FROM teacher ORDER BY name`;
+    let sql = `SELECT t.id, t.name, t.email, t.allowed, u.name AS university, t.department, IF ( allowed, 'Approved', 'Not') approved
+        FROM teacher as t 
+        INNER JOIN university as u ON t.university=u.code
+        ORDER BY name`;
     db.query(sql)
         .then(result => res.json(result))
         .catch(next);
@@ -13,8 +15,9 @@ let findAll = (req, res, next) => {
 
 let findById = (req, res, next) => {
     let id = req.params.id;
-    let sql = `SELECT id, name, email, university, department, allowed
-        FROM teacher WHERE id=?`;
+    let sql = `SELECT t.id, t.name, t.email, t.allowed, u.name AS university, t.department
+        FROM teacher as t 
+        INNER JOIN university as u ON t.university=u.code WHERE id=?`;
     db.query(sql, [parseInt(id)])
         .then(teachers =>  res.json(teachers[0]))
         .catch(next);

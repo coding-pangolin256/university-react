@@ -80416,7 +80416,7 @@
 	      for (var i = 0; i < this.state.universities.length; i++) {
 	        rows.push(_react2.default.createElement(
 	          'option',
-	          { value: this.state.universities[i]['id'] },
+	          { value: this.state.universities[i]['code'] },
 	          this.state.universities[i]['name']
 	        ));
 	      }return _react2.default.createElement(
@@ -80813,7 +80813,7 @@
 	      for (var i = 0; i < this.state.universities.length; i++) {
 	        rows.push(_react2.default.createElement(
 	          'option',
-	          { value: this.state.universities[i]['id'] },
+	          { value: this.state.universities[i]['code'] },
 	          this.state.universities[i]['name']
 	        ));
 	      }return _react2.default.createElement(
