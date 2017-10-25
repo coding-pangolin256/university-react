@@ -9,7 +9,7 @@ import ComboBox from './components/ComboBox';
 export default React.createClass({
 
     getInitialState() {
-        return {course:{ teacher_id : this.props.tid}, periods:[], teachers:[]};
+        return {course:{ teacher_id : this.props.tid, university_id: this.props.uid}, periods:[], teachers:[]};
     },
 
     componentWillReceiveProps(props) {

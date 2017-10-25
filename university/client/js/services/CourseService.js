@@ -6,7 +6,7 @@ export let findAll = queryParams => rest.get(url, queryParams);
 
 export let findById = id => rest.get(url + "/" + id);
 
-export let findByTeacher = (id, queryParams) => rest.get("/teachers/" + id + url, queryParams);
+export let findByTeacher = teacher => rest.post("/teacher_courses/", teacher);
 
 export let createItem = student => rest.post(url, student);
 

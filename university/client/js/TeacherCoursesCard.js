@@ -13,11 +13,11 @@ export default React.createClass({
     },
 
     componentWillReceiveProps(props) {
-        this.getCourses(props.teacher.id);
+        this.getCourses({teacher_id: props.teacher.id, university_id: props.teacher.university_id});
     },
 
     viewAllHandler(event) {
-        this.getCourses(this.props.teacher.id);
+        this.getCourses({teacher_id: this.props.teacher.id, university_id: this.props.teacher.university_id});
         event.preventDefault();
     },
 
@@ -28,7 +28,7 @@ export default React.createClass({
     },
 
     courseLinkHandler(course) {
-        window.location.hash = "#course/" + course.id;
+        window.location.hash = "#course/" + course.code;
     },
 
     newCourseHandler() {
@@ -41,7 +41,7 @@ export default React.createClass({
 
     newCourseSavedHandler(course) {
         this.setState({addingCourse:false});
-        this.getCourses(this.props.teacher.id);
+        this.getCourses({teacher_id: this.props.teacher.id, university_id: this.props.teacher.university_id});
     },
 
     render() {
@@ -70,12 +70,12 @@ export default React.createClass({
                 <section className="slds-card__body">
                     <DataGrid data={this.state.courses} keyField="id">
                         <div header="Period" field="period_name" sortable={true}/>
-                        <div header="ID" field="id" sortable={true} onLink={this.courseLinkHandler}/>
+                        {/* <div header="ID" field="id" sortable={true} onLink={this.courseLinkHandler}/> */}
                         <div header="Name" field="name" sortable={true} onLink={this.courseLinkHandler}/>
                     </DataGrid>
                 </section>
 
-                {this.state.addingCourse?<CourseFormWindow tid={this.props.teacher.id} onSaved={this.newCourseSavedHandler} onCancel={this.newCourseCancelHandler}/>:null}
+                {this.state.addingCourse?<CourseFormWindow tid={this.props.teacher.id} uid={this.props.teacher.university_id} onSaved={this.newCourseSavedHandler} onCancel={this.newCourseCancelHandler}/>:null}
             </div>
         );
     }

@@ -21,7 +21,7 @@ export default React.createClass({
                             </button>
                         </div>
                         <div className="slds-modal__content" style={{overflow:"visible"}}>
-                            <CourseForm ref="form" tid={this.props.tid} onSaved={this.props.onSaved}/>
+                            <CourseForm ref="form" tid={this.props.tid} uid={this.props.uid} onSaved={this.props.onSaved}/>
                         </div>
 
                         <div className="slds-modal__footer">

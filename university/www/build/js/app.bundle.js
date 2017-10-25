@@ -42111,8 +42111,8 @@
 	  return rest.get(url + "/" + id);
 	};
 	
-	var findByTeacher = exports.findByTeacher = function findByTeacher(id, queryParams) {
-	  return rest.get("/teachers/" + id + url, queryParams);
+	var findByTeacher = exports.findByTeacher = function findByTeacher(teacher) {
+	  return rest.post("/teacher_courses/", teacher);
 	};
 	
 	var createItem = exports.createItem = function createItem(student) {
@@ -58918,7 +58918,7 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'slds-modal__content', style: { overflow: "visible" } },
-	                        _react2.default.createElement(_CourseForm2.default, { ref: 'form', tid: this.props.tid, onSaved: this.props.onSaved })
+	                        _react2.default.createElement(_CourseForm2.default, { ref: 'form', tid: this.props.tid, uid: this.props.uid, onSaved: this.props.onSaved })
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
@@ -58978,7 +58978,7 @@
 	exports.default = _react2.default.createClass({
 	    displayName: 'CourseForm',
 	    getInitialState: function getInitialState() {
-	        return { course: { teacher_id: this.props.tid }, periods: [], teachers: [] };
+	        return { course: { teacher_id: this.props.tid, university_id: this.props.uid }, periods: [], teachers: [] };
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(props) {
 	        var course = props.course;
@@ -78636,10 +78636,10 @@
 	        return { courses: [] };
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(props) {
-	        this.getCourses(props.teacher.id);
+	        this.getCourses({ teacher_id: props.teacher.id, university_id: props.teacher.university_id });
 	    },
 	    viewAllHandler: function viewAllHandler(event) {
-	        this.getCourses(this.props.teacher.id);
+	        this.getCourses({ teacher_id: this.props.teacher.id, university_id: this.props.teacher.university_id });
 	        event.preventDefault();
 	    },
 	    getCourses: function getCourses(teacherId, queryParams) {
@@ -78652,7 +78652,7 @@
 	        }
 	    },
 	    courseLinkHandler: function courseLinkHandler(course) {
-	        window.location.hash = "#course/" + course.id;
+	        window.location.hash = "#course/" + course.code;
 	    },
 	    newCourseHandler: function newCourseHandler() {
 	        this.setState({ addingCourse: true });
@@ -78662,7 +78662,7 @@
 	    },
 	    newCourseSavedHandler: function newCourseSavedHandler(course) {
 	        this.setState({ addingCourse: false });
-	        this.getCourses(this.props.teacher.id);
+	        this.getCourses({ teacher_id: this.props.teacher.id, university_id: this.props.teacher.university_id });
 	    },
 	    render: function render() {
 	        return _react2.default.createElement(
@@ -78720,11 +78720,10 @@
 	                    _DataGrid2.default,
 	                    { data: this.state.courses, keyField: 'id' },
 	                    _react2.default.createElement('div', { header: 'Period', field: 'period_name', sortable: true }),
-	                    _react2.default.createElement('div', { header: 'ID', field: 'id', sortable: true, onLink: this.courseLinkHandler }),
 	                    _react2.default.createElement('div', { header: 'Name', field: 'name', sortable: true, onLink: this.courseLinkHandler })
 	                )
 	            ),
-	            this.state.addingCourse ? _react2.default.createElement(_CourseFormWindow2.default, { tid: this.props.teacher.id, onSaved: this.newCourseSavedHandler, onCancel: this.newCourseCancelHandler }) : null
+	            this.state.addingCourse ? _react2.default.createElement(_CourseFormWindow2.default, { tid: this.props.teacher.id, uid: this.props.teacher.university_id, onSaved: this.newCourseSavedHandler, onCancel: this.newCourseCancelHandler }) : null
 	        );
 	    }
 	});
