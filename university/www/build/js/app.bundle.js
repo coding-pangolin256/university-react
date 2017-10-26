@@ -59212,12 +59212,12 @@
 	        });
 	    },
 	    deleteHandler: function deleteHandler() {
-	        CourseService.deleteItem(this.state.course.id).then(function () {
+	        CourseService.deleteItem(this.state.course.code).then(function () {
 	            return window.location.hash = "courses";
 	        });
 	    },
 	    editHandler: function editHandler() {
-	        window.location.hash = "#course/" + this.state.course.id + "/edit";
+	        window.location.hash = "#course/" + this.state.course.code + "/edit";
 	    },
 	    render: function render() {
 	        return _react2.default.createElement(
@@ -59371,6 +59371,7 @@
 	        return { results: [] };
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(props) {
+	        console.log(props.course);
 	        this.getResults(props.course);
 	    },
 	    getResults: function getResults(courseId) {
@@ -59383,7 +59384,8 @@
 	        }
 	    },
 	    studentLinkHandler: function studentLinkHandler(result) {
-	        window.location.hash = "#student/" + result.std_id;
+	        console.log(result);
+	        window.location.hash = "#student/" + this.props.course.university_id + result.std_id;
 	    },
 	    actionHandler: function actionHandler(data, index, value, label) {
 	        var _this2 = this;
@@ -65768,7 +65770,7 @@
 	        return { homeworks: [] };
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(props) {
-	        this.getHomeworks(props.course.id);
+	        this.getHomeworks(props.course.code);
 	    },
 	    getHomeworks: function getHomeworks(courseId) {
 	        var _this = this;
@@ -65780,7 +65782,6 @@
 	        }
 	    },
 	    homeworkLinkHandler: function homeworkLinkHandler(homework) {
-	        console.log('qwef');
 	        window.location.hash = "#homework/" + homework.id;
 	    },
 	    actionHandler: function actionHandler(data, index, value, label) {
@@ -65818,7 +65819,7 @@
 	    },
 	    newHomeworkSavedHandler: function newHomeworkSavedHandler(Homework) {
 	        this.setState({ addingHomework: false });
-	        this.getHomeworks(this.props.course.id);
+	        this.getHomeworks(this.props.course.code);
 	    },
 	    homeworkSubmittedHandler: function homeworkSubmittedHandler() {
 	        this.setState({ submitting: false });

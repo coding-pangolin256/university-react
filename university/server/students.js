@@ -21,8 +21,11 @@ let findAll = (req, res, next) => {
 
 let findById = (req, res, next) => {
     let id = req.params.id;
-    let sql = `SELECT * FROM course${student.course_id}student WHERE id=?`;
-    db.query(sql, [parseInt(id)])
+    var search = id.search(/\d/);
+    var university_id = id.slice(0,search);
+    var student_id = id.slice(search);
+    let sql = `SELECT * FROM ${university_id}_student WHERE id=?`;
+    db.query(sql, [student_id])
         .then(students =>  res.json(students[0]))
         .catch(next);
 };

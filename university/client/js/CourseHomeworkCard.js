@@ -17,7 +17,7 @@ export default React.createClass({
     },
 
     componentWillReceiveProps(props) {
-        this.getHomeworks(props.course.id);
+        this.getHomeworks(props.course.code);
     },
 
     getHomeworks(courseId) {
@@ -27,8 +27,7 @@ export default React.createClass({
     },
 
     homeworkLinkHandler(homework) {
-        console.log('qwef');
-        window.location.hash = "#homework/" + homework.id ;
+        window.location.hash = "#homework/" + this.props.course.code + homework.id ;
     },
 
     actionHandler(data, index, value, label) {
@@ -65,7 +64,7 @@ export default React.createClass({
 
     newHomeworkSavedHandler(Homework) {
         this.setState({addingHomework:false});
-        this.getHomeworks(this.props.course.id);
+        this.getHomeworks(this.props.course.code);
     },
     homeworkSubmittedHandler() {
         this.setState({submitting:false});

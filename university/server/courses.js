@@ -6,14 +6,13 @@ let findAll = (req, res, next) => {
     let universityId = req.query.universityId;
     let table_name = universityId + `_course`;
     let sql = `
-        SELECT c.id, c.code, c.name, c.teacher_id, t.name as teacher_name,
+        SELECT c.id, c.code, c.name, c.teacher_id, c.university_id, t.name as teacher_name,
             c.period_id, p.name as period_name,
             count(e.student_id) as student_count
         FROM ${table_name} as c
         INNER JOIN teacher as t ON c.teacher_id=t.id
         INNER JOIN period as p ON c.period_id=p.id
         LEFT OUTER JOIN enrollment as e ON c.id=e.course_id
-        ${universityId ? 'WHERE c.period_id = ?' : ''}
         GROUP BY c.id, t.name, p.name
         ORDER BY period_id DESC, code`;
     db.query(sql, universityId ? [universityId] : [])
@@ -26,7 +25,7 @@ let findByTeacher = (req, res, next) => {
     let universityId = req.body.university_id;
     let table_name = universityId + '_course';
     let sql = `
-        SELECT c.id, c.code, c.name, c.teacher_id, t.name as teacher_name,
+        SELECT c.id, c.code, c.name, c.teacher_id, c.university_id, t.name as teacher_name,
             c.period_id, p.name as period_name,
             count(e.student_id) as student_count
         FROM ${table_name} as c
@@ -47,7 +46,7 @@ let findById = (req, res, next) => {
     var university_id = id.slice(0,search);
     var course_id = id.slice(search+6);
     let sql = `
-        SELECT c.id, c.code, c.name, teacher_id, t.name as teacher_name,
+        SELECT c.id, c.code, c.name, c.university_id, c.teacher_id, t.name as teacher_name,
             c.period_id, p.name as period_name
         FROM ${university_id}_course as c
         INNER JOIN teacher as t ON c.teacher_id=t.id
@@ -61,9 +60,9 @@ let findById = (req, res, next) => {
 let createItem = (req, res, next) => {
     let course = req.body;
     let table_name = course.university_id+'_course';
-    let sql = `INSERT INTO ${table_name} (name, period_id, teacher_id)
-			   VALUES (?, ?, ?)`;
-    db.query(sql, [course.name, course.period_id, course.teacher_id])
+    let sql = `INSERT INTO ${table_name} (name, period_id, teacher_id, university_id)
+			   VALUES (?, ?, ?, ?)`;
+    db.query(sql, [course.name, course.period_id, course.teacher_id, course.university_id])
         .then(result => {
             let sql = `SELECT * FROM period WHERE id=?`;
             db.query(sql, [course.period_id]).then(periods => {

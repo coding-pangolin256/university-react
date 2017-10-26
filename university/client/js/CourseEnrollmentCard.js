@@ -18,6 +18,7 @@ export default React.createClass({
     },
 
     componentWillReceiveProps(props) {
+        console.log(props.course);
         this.getResults(props.course);
     },
 
@@ -28,7 +29,8 @@ export default React.createClass({
     },
 
     studentLinkHandler(result) {
-        window.location.hash = "#student/" + result.std_id;
+        console.log(result);
+        window.location.hash = "#student/" + this.props.course.university_id + result.std_id;
     },
 
     actionHandler(data, index, value, label) {
