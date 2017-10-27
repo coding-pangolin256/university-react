@@ -27,7 +27,7 @@ export default React.createClass({
     },
 
     homeworkLinkHandler(homework) {
-        window.location.hash = "#homework/" + this.props.course.code + homework.id ;
+        window.location.hash = "#homework/" + this.props.course.code + "/" + homework.id ;
     },
 
     actionHandler(data, index, value, label) {

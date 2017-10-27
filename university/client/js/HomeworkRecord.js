@@ -15,6 +15,7 @@ export default React.createClass({
     },
 
     componentDidMount() {
+        console.log(params);
         this.getHomework(this.props.params.homeworkId);
     },
 

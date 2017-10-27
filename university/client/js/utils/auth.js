@@ -23,7 +23,7 @@ var auth = {
 
     if(pos == "student")
     {
-      StudentService.findByData({ 'id': data.stdid, 'pwd': data.password, 'course_id': data.course_id }).then(response => {
+      StudentService.findByData({ 'id': data.stdid, 'pwd': data.password, 'university_id': data.university_id }).then(response => {
         // If the user was authenticated successfully, save a random token to the
         // sessionStorage
         if (response != null) {

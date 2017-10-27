@@ -23,7 +23,8 @@ class LoginForm extends Component {
 		this.state = {
       showTeacher: props.pos=="teacher",
       universities: []
-		};
+    };
+    this.getUniversities();
   }
   getUniversities()
   {
@@ -50,8 +51,10 @@ class LoginForm extends Component {
               <input className="form__field-input" type="text" id="stdid" value={this.props.data.stdid} onChange={this._changeStdid.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
             </div>
             <div className="form__field-wrapper" id="student_form">
-              <label className="form__field-label" htmlFor="crsid">Course ID</label>
-              <input className="form__field-input" type="text" id="crsid" value={this.props.data.course_id} onChange={this._changeCourseid.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
+              <label className="form__field-label" htmlFor="university">University</label>
+              <select className="form__field-input" id="university" value={this.props.data.university} onChange={this._changeUniversity.bind(this)}>
+                {rows}
+              </select>
             </div>
             </div>
         }
@@ -79,9 +82,9 @@ class LoginForm extends Component {
     this._emitChange(newState);
   }
     // Change the Student ID in the app state
-    _changeCourseid(evt) {
+    _changeUniversity(evt) {
       var newState = this._mergeWithCurrentState({
-        course_id: evt.target.value
+        university_id: evt.target.value
       });
   
       this._emitChange(newState);

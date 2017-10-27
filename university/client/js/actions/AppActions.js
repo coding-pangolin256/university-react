@@ -51,7 +51,7 @@ export function login(pos, data, password) {
     }
     if(pos == "student")
     {
-      if (anyElementsEmpty({stdid: data.stdid, password: data.password, course_id: data.course_id})) {
+      if (anyElementsEmpty({stdid: data.stdid, password: data.password, university_id: data.university_id})) {
         dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
         dispatch(sendingRequest(false));
         return;
@@ -74,7 +74,10 @@ export function login(pos, data, password) {
 
         if (success === true) {
           // If the login worked, forward the user to the whiteboard and clear the form
-          forwardTo('#/'+sessionStorage.pos+'/'+sessionStorage.token);
+          if(pos == "teacher")    
+            forwardTo('#/'+sessionStorage.pos+'/'+sessionStorage.token);
+          else
+            forwardTo('#/'+sessionStorage.pos+'/'+data.university_id+'_'+sessionStorage.token);
           window.location.reload();
           dispatch(changeForm({
             stdid: "",

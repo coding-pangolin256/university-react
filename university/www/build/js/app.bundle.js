@@ -30460,7 +30460,7 @@
 	    // Post a fake request (see below)
 	
 	    if (pos == "student") {
-	      StudentService.findByData({ 'id': data.stdid, 'pwd': data.password, 'course_id': data.course_id }).then(function (response) {
+	      StudentService.findByData({ 'id': data.stdid, 'pwd': data.password, 'university_id': data.university_id }).then(function (response) {
 	        // If the user was authenticated successfully, save a random token to the
 	        // sessionStorage
 	        if (response != null) {
@@ -65782,7 +65782,7 @@
 	        }
 	    },
 	    homeworkLinkHandler: function homeworkLinkHandler(homework) {
-	        window.location.hash = "#homework/" + homework.id;
+	        window.location.hash = "#homework/" + this.props.course.code + "/" + homework.id;
 	    },
 	    actionHandler: function actionHandler(data, index, value, label) {
 	        var _this2 = this;
@@ -72877,6 +72877,7 @@
 	        return { homework: {} };
 	    },
 	    componentDidMount: function componentDidMount() {
+	        console.log(params);
 	        this.getHomework(this.props.params.homeworkId);
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(props) {
@@ -79757,7 +79758,7 @@
 	      }
 	    }
 	    if (pos == "student") {
-	      if (anyElementsEmpty({ stdid: data.stdid, password: data.password, course_id: data.course_id })) {
+	      if (anyElementsEmpty({ stdid: data.stdid, password: data.password, university_id: data.university_id })) {
 	        dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
 	        dispatch(sendingRequest(false));
 	        return;
@@ -79780,7 +79781,7 @@
 	
 	      if (success === true) {
 	        // If the login worked, forward the user to the whiteboard and clear the form
-	        forwardTo('#/' + sessionStorage.pos + '/' + sessionStorage.token);
+	        if (pos == "teacher") forwardTo('#/' + sessionStorage.pos + '/' + sessionStorage.token);else forwardTo('#/' + sessionStorage.pos + '/' + data.university_id + '_' + sessionStorage.token);
 	        window.location.reload();
 	        dispatch(changeForm({
 	          stdid: "",
@@ -80397,6 +80398,7 @@
 	      showTeacher: props.pos == "teacher",
 	      universities: []
 	    };
+	    _this.getUniversities();
 	    return _this;
 	  }
 	
@@ -80450,10 +80452,14 @@
 	            { className: 'form__field-wrapper', id: 'student_form' },
 	            _react2.default.createElement(
 	              'label',
-	              { className: 'form__field-label', htmlFor: 'crsid' },
-	              'Course ID'
+	              { className: 'form__field-label', htmlFor: 'university' },
+	              'University'
 	            ),
-	            _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'crsid', value: this.props.data.course_id, onChange: this._changeCourseid.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' })
+	            _react2.default.createElement(
+	              'select',
+	              { className: 'form__field-input', id: 'university', value: this.props.data.university, onChange: this._changeUniversity.bind(this) },
+	              rows
+	            )
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -80492,10 +80498,10 @@
 	    // Change the Student ID in the app state
 	
 	  }, {
-	    key: '_changeCourseid',
-	    value: function _changeCourseid(evt) {
+	    key: '_changeUniversity',
+	    value: function _changeUniversity(evt) {
 	      var newState = this._mergeWithCurrentState({
-	        course_id: evt.target.value
+	        university_id: evt.target.value
 	      });
 	
 	      this._emitChange(newState);
