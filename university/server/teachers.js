@@ -15,7 +15,7 @@ let findAll = (req, res, next) => {
 
 let findById = (req, res, next) => {
     let id = req.params.id;
-    let sql = `SELECT t.id, t.name, t.email, t.allowed, u.name AS university, t.department, t.university AS university_id
+    let sql = `SELECT t.id, t.name AS name, t.email, t.allowed, u.name AS university, t.department, t.university AS university_id
         FROM teacher as t 
         INNER JOIN university as u ON t.university=u.code WHERE id=?`;
     db.query(sql, [parseInt(id)])

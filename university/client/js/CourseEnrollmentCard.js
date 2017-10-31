@@ -18,7 +18,6 @@ export default React.createClass({
     },
 
     componentWillReceiveProps(props) {
-        console.log(props.course);
         this.getResults(props.course);
     },
 
@@ -29,7 +28,6 @@ export default React.createClass({
     },
 
     studentLinkHandler(result) {
-        console.log(result);
         window.location.hash = "#student/" + this.props.course.university_id + result.std_id;
     },
 
@@ -49,7 +47,6 @@ export default React.createClass({
     },
     
     resultLinkHandler(result) {
-        console.log(result);
         this.setState({estimatting:true, current: result.result, selected_hwId: result.homeworkId});
     },
 
@@ -84,7 +81,7 @@ export default React.createClass({
                 {
                     cols.push(<div header={keys[index]} field={keys[index]} sortable={true} onLink={this.studentLinkHandler}/>);    
                 }
-                else if(keys[index] == "std_id")
+                else if(keys[index] == "student_id")
                 {
                     continue;
                 }
@@ -118,7 +115,6 @@ export default React.createClass({
         // {
         //    cols.push(<div header={keys[index]} field={keys[index]}/>);
         // }
-        console.log(this.state.results);
         for( let i = 0; i<1&&this.state.results.length; i++)
         {
             let keys = Object.keys(this.state.results[i]);
@@ -128,7 +124,7 @@ export default React.createClass({
                 {
                     cols.push(<div header={keys[index]} field={keys[index]} onLink={this.studentLinkHandler}/>);    
                 }
-                else if(keys[index] == "std_id")
+                else if(keys[index] == "student_id")
                 {
                     continue;
                 }

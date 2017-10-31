@@ -29,6 +29,7 @@ var auth = {
         if (response != null) {
           sessionStorage.token = response.id;
           sessionStorage.permission = 0;
+          sessionStorage.university = data.university_id;
           sessionStorage.pos = "student";
           callback(true);
         } else {
@@ -49,6 +50,7 @@ var auth = {
         if (response != null && response.allowed) {
           sessionStorage.token = response.id;
           sessionStorage.pos = "teacher";
+          sessionStorage.university = response.university;
           sessionStorage.permission = response.allowed;
           callback(true);
         } else {

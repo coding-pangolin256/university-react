@@ -4,9 +4,12 @@ let db = require('./pghelper');
 
 let findByStudent = (req, res, next) => {
 
-    let studentId = req.params.id;
+    let Id = req.params.id;
     let periodId = req.query.periodId;
 
+    var search = Id.search(/\d/);
+    var university_id = Id.slice(0,search);
+    var studentId = Id.slice(search);
     let params = [studentId];
     if (periodId) params.push(periodId);
 
@@ -14,8 +17,8 @@ let findByStudent = (req, res, next) => {
         SELECT e.id, e.student_id, e.course_id, c.code, c.name as course_name,
             c.teacher_id, t.name as teacher_name,
             c.period_id, p.name as period_name
-        FROM enrollment as e
-        INNER JOIN course AS c ON e.course_id=c.id
+        FROM ${university_id}enrollment as e
+        INNER JOIN ${university_id}course AS c ON e.course_id=c.id
         INNER JOIN teacher AS t ON c.teacher_id = t.id
         INNER JOIN period AS p ON c.period_id = p.id
         WHERE student_id=? ${periodId ? "AND period_id=?" : ""}
@@ -46,9 +49,17 @@ let findByCourse = (req, res, next) => {
 
 let createItem = (req, res, next) => {
     let enrollment = req.body;
-    let sql = `INSERT INTO course${enrollment.course_id} (student_id) VALUES (?,?)`;
-    db.query(sql, [enrollment.student_id])
+    var course_code = enrollment.course_code;
+    var search = course_code.search(/\d/);
+    var university_id = course_code.slice(0,search);
+    var course_id = course_code.slice(search+6);
+    var search = enrollment.student_id.search(/\d/);
+    var student_id = enrollment.student_id.slice(search);
+    let sql = `INSERT INTO ${university_id}_enrollment (student_id, course_id) VALUES (?,?)`;
+    db.query(sql, [student_id, course_id])
         .then(result => {
+            let sql = `INSERT INTO ${course_code}_students (student_id) VALUES (?)`;
+            db.query(sql, [student_id]);
             res.send({result: "ok"})
         })
         .catch(next);

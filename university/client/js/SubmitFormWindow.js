@@ -35,7 +35,7 @@ export default React.createClass({
             console.log('upload success!');
         })
         uploader.on('submitted', id => {
-            this.setState({homework: assign(this.props.homework,({std_id: sessionStorage.token, path: uploader.methods.getFile(id).name}))});
+            this.setState({homework: assign(this.props.homework,({student_id: sessionStorage.token, path: uploader.methods.getFile(id).name, course_code: this.props.course}))});
         })
     },
 

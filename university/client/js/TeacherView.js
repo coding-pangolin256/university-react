@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 
 import TeacherCoursesCard from './TeacherCoursesCard';
-import TeacherPresentationCard from './TeacherPresentationCard'
 import TeacherList from './TeacherList'
 
 import {HomeHeader} from './components/PageHeader';
@@ -42,7 +41,6 @@ export default React.createClass({
                     </div>
                 </div>
                 <TeacherCoursesCard teacher={teacher}/>
-                <TeacherPresentationCard teacher={teacher}/>
             </div>
         );
     }

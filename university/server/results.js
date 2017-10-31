@@ -19,14 +19,14 @@ let findByCourse = (req, res, next) => {
     let table_name = course.code + '_students';
     let path_field = course.id + '_hw';
     let score_field = course.id + '_score';
-    var search = course.code.search(/\d/)
+    var search = course.code.search(/\d/);
     var university_id = course.code.slice(0,search);
     let student_table = university_id + '_student';
     let sql = `
         SELECT s.name as name, r.*
         FROM ${table_name} r
-        LEFT JOIN ${student_table} as s ON r.std_id = s.id
-        ORDER BY r.std_id`;
+        LEFT JOIN ${student_table} as s ON r.student_id = s.id
+        ORDER BY r.student_id`;
     db.query(sql)
         .then(results =>  {
             res.json(results);
@@ -49,16 +49,16 @@ let findById = (req, res, next) => {
 
 let createItem = (req, res, next) => {
     let homework = req.body;
-    let table_name = homework.course_code + homework.course_id;
+    let table_name = homework.course_code + '_students';
     let path_field = homework.id + '_hw';
     let score_field = homework.id + '_score';
-    // let sql = `IF EXISTS (SELECT * FROM ${table_name} WHERE std_id=${homework.std_id})
-    //                 UPDATE ${table_name} SET ${path_field} = '${homework.path}' WHERE std_id=${homework.std_id}
+    // let sql = `IF EXISTS (SELECT * FROM ${table_name} WHERE student_id=${homework.student_id})
+    //                 UPDATE ${table_name} SET ${path_field} = '${homework.path}' WHERE student_id=${homework.student_id}
     //             ELSE
-    //                 INSERT INTO ${table_name} (std_id, ${path_field})    VALUES (?, ?)`;
-    let sql = `INSERT INTO ${table_name} (std_id, ${path_field}) VALUES (?, ?)
+    //                 INSERT INTO ${table_name} (student_id, ${path_field})    VALUES (?, ?)`;
+    let sql = `INSERT INTO ${table_name} (student_id, ${path_field}) VALUES (?, ?)
     ON DUPLICATE KEY UPDATE ${path_field} = '${homework.path}'`;
-    db.query(sql, [homework.std_id, homework.path])
+    db.query(sql, [homework.student_id, homework.path])
         .then(result => {
             res.json(result);
         })
@@ -70,7 +70,7 @@ let updateItem = (req, res, next) => {
     let table_name = result.course_code + result.course_id;
     let path_field = result.homework_id + '_hw';
     let score_field = result.homework_id + '_score';
-    let sql = `UPDATE ${table_name} SET ${score_field}=? WHERE std_id=?`;
+    let sql = `UPDATE ${table_name} SET ${score_field}=? WHERE student_id=?`;
     db.query(sql, [result.score, result.id])
         .then(() => res.send({result: 'ok'}))
         .catch(next);

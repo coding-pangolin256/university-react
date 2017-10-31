@@ -42,7 +42,7 @@ let findByTeacher = (req, res, next) => {
 
 let findById = (req, res, next) => {
     let id = req.params.id;
-    var search = id.search(/\d/)
+    var search = id.search(/\d/);
     var university_id = id.slice(0,search);
     var course_id = id.slice(search+6);
     let sql = `

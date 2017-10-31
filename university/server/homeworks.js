@@ -39,7 +39,7 @@ let findByHomework = (req, res, next) => {
     let sql = `
         SELECT r.id, r.std_id, ${path_field}, ${score_field}, s.name as student_name
         FROM ${table_name} as r
-        LEFT JOIN student as s ON r.std_id = s.id
+        LEFT JOIN student as s ON r.student_id = s.id
         ORDER BY r.id`;
     db.query(sql)
         .then(homeworks =>  res.json(homeworks))

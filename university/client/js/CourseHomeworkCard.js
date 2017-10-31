@@ -113,7 +113,7 @@ export default React.createClass({
                 </section>
 
                 {this.state.addingHomework?<HomeworkFormWindow cid={this.props.course.id} ccode={this.props.course.code} onSaved={this.newHomeworkSavedHandler} onCancel={this.newHomeworkCancelHandler}/>:null}
-                {this.state.submitting?<SubmitFormWindow homework={this.state.current} onSaved={this.homeworkSubmittedHandler} onCancel={this.homeworkSubmitCancelHandler}/>:null}
+                {this.state.submitting?<SubmitFormWindow homework={this.state.current} course={this.props.course.code} onSaved={this.homeworkSubmittedHandler} onCancel={this.homeworkSubmitCancelHandler}/>:null}
             </div>
 
         );

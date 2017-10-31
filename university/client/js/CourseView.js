@@ -2,6 +2,7 @@ import React from 'react';
 
 import CourseEnrollmentCard from "./CourseEnrollmentCard";
 import CourseHomeworkCard from "./CourseHomeworkCard";
+import TeacherPresentationCard from './TeacherPresentationCard'
 import ChatHome from './ChatHome';
 
 export default React.createClass({
@@ -25,11 +26,12 @@ export default React.createClass({
             </div>
             {sessionStorage.pos=="teacher"?<CourseEnrollmentCard course={course} editable={true} title="Students" icon="lead"/>:null}
             <CourseHomeworkCard course={course}/>
+            <TeacherPresentationCard course={course}/>
             <CourseEnrollmentCard course={course} title="Embedded Excel" icon="metrics"/>
             </div>
-            <div className="slds-size--1-of-5 slds-medium-size--1-of-5">
+            {/* <div className="slds-size--1-of-5 slds-medium-size--1-of-5">
                 <ChatHome course={course}/>
-            </div>
+            </div> */}
         </div>
         );
     }

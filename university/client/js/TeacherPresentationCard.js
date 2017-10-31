@@ -29,7 +29,7 @@ export default React.createClass({
         uploader.on('complete', (id, name, response) => {
             // handle completed upload
             PresentationService.createItem(this.state.present)
-            .then(() => this.getPresents(this.props.teacher.id))
+            .then(() => this.getPresents(this.props.course.id))
             .catch((error) => {
                 let event = new CustomEvent('notify', {detail:'You already uploaded this file'});
                 document.dispatchEvent(event);
@@ -37,22 +37,22 @@ export default React.createClass({
             console.log('upload success!');
         })
         uploader.on('submitted', id => {
-           this.setState({present: {teacher_id: this.props.teacher.id, path: uploader.methods.getFile(id).name, size: uploader.methods.getFile(id).size}});
+           this.setState({present: {path: uploader.methods.getFile(id).name, size: uploader.methods.getFile(id).size}});
         })
     },
 
     componentWillReceiveProps(props) {
-        this.getPresents(props.teacher.id);
+        this.getPresents(props.course.code);
     },
 
     viewAllHandler(event) {
-        this.getPresents(this.props.teacher.id);
+        this.getPresents(this.props.course.code);
         event.preventDefault();
     },
 
-    getPresents(teacherId) {
-        if (teacherId) {
-            PresentationService.findAll({teacherId}).then(presents => this.setState({presents}));
+    getPresents(courseId) {
+        if (courseId) {
+            PresentationService.findAll({courseId}).then(presents => this.setState({presents}));
         }
     },
 
@@ -81,7 +81,7 @@ export default React.createClass({
     {
         PresentationService.deleteItem(present.id);
         PresentationService.deleteFile({filename: present.path});
-        this.getPresents(this.props.teacher.id);
+        this.getPresents(this.props.course.code);
     },
 
     newPresentHandler() {
@@ -99,7 +99,7 @@ export default React.createClass({
 
     actionHandler(data, index, value, label) {
         switch(label) {
-            case "Download File":
+            case "Download":
                 this.presentLinkHandler(data);
                 break;
             case "Delete":
@@ -125,6 +125,8 @@ export default React.createClass({
                         </div>
                     </div>
                     <div className="slds-no-flex">
+                        {
+                        sessionStorage.pos=="teacher"?
                         <div className="slds-button-group">
                         {/* <ReactUploadFile options={options} 
                                             chooseFileButton={<button className="slds-button slds-button--icon-border-filled">
@@ -139,12 +141,14 @@ export default React.createClass({
                             <button className="slds-button slds-button--neutral slds-button--small" onClick={this.uploadFiles}>
                                 Upload
                             </button>
-                        </div>
+                        </div>:
+                        ''
+                        }
                     </div>
                 </header>
 
                 <section className="slds-card__body">
-                    <DataGrid data={this.state.presents} keyField="id" actions={sessionStorage.pos=="teacher"?["Download File", "Delete"]:["Download File"]} onAction={this.actionHandler}>
+                    <DataGrid data={this.state.presents} keyField="id" actions={sessionStorage.pos=="teacher"?["Download", "Delete"]:["Download"]} onAction={this.actionHandler}>
                         <div header="File Name" field="path" sortable={true} onLink={this.presentLinkHandler}/>
                         <div header="Description" field="description" sortable={true}/>
                         <div header="Size" field="size" sortable={true} format="size"/>

@@ -15,7 +15,7 @@ export default React.createClass({
     },
 
     componentWillReceiveProps(props) {
-        this.getEnrollments(props.student.id);
+        this.getEnrollments(props.student);
 
     },
 
@@ -28,9 +28,9 @@ export default React.createClass({
     },
 
     newEnrollmentSelectedHandler(course) {
-        EnrollmentService.createItem({student_id: this.props.student.id, course_id: course.id})
+        EnrollmentService.createItem({student_id: this.props.student, course_code: course})
             .then(() => {
-                this.getEnrollments(this.props.student.id);
+                this.getEnrollments(this.props.student);
                 this.setState({addingEnrollment:false});
             })
             .catch((error) => {
@@ -40,17 +40,17 @@ export default React.createClass({
     },
 
     viewAllHandler(event) {
-        this.getEnrollments(this.props.student.id, "all");
+        this.getEnrollments(this.props.student, "all");
         event.preventDefault();
     },
 
     viewCurrentHandler(event) {
-        this.getEnrollments(this.props.student.id, "current");
+        this.getEnrollments(this.props.student, "current");
         event.preventDefault();
     },
 
     courseLinkHandler(enrollment) {
-        window.location.hash = "#course/" + enrollment.course_id;
+        window.location.hash = "#course/" + enrollment.code;
     },
 
     teacherLinkHandler(enrollment) {
@@ -67,7 +67,7 @@ export default React.createClass({
                 break;
             case 2:
                 EnrollmentService.deleteItem(data.id)
-                    .then(() => this.getEnrollments(this.props.student.id));
+                    .then(() => this.getEnrollments(this.props.student));
                 break;
         }
     },
@@ -112,7 +112,6 @@ export default React.createClass({
 
                 <section className="slds-card__body">
                     <DataGrid data={this.state.enrollments} keyField="id" actions={sessionStorage.pos=="teacher"?["View Course", "View Teacher", "Delete"]:["View Course", "Delete"]} onAction={this.actionHandler}>
-                        <div header="Code" field="code" onLink={this.courseLinkHandler}/>
                         <div header="Name" field="course_name" onLink={this.courseLinkHandler}/>
                         <div header="Period" field="period_name"/>
                         {/* <div header="Teacher" field="teacher_name" onLink={this.teacherLinkHandler}/> */}

@@ -28,12 +28,23 @@ class LoginForm extends Component {
   }
   getUniversities()
   {
-    UniversityService.findAll().then(universities => this.setState({universities}));
+    UniversityService.findAll().then(universities => {
+      this.setState({universities});
+      assign(this.props.data, {university_id: universities[0]['code']});
+    });
+    //this.props.data.university_id = this.state.universities[0]['code'];
   }
   render() {
     let rows = [];
     for(let i = 0; i < this.state.universities.length; i++)
-      rows.push(<option value = {this.state.universities[i]['code']}>{this.state.universities[i]['name']}</option>);
+    {  
+      if(i == 0)
+      {
+        rows.push(<option value = {this.state.universities[i]['code']}>{this.state.universities[i]['name']}</option>);
+      }
+      else
+        rows.push(<option value = {this.state.universities[i]['code']}>{this.state.universities[i]['name']}</option>);
+    }
 
     return(
       <form className="form" onSubmit={this._onSubmit.bind(this)}>
@@ -52,7 +63,7 @@ class LoginForm extends Component {
             </div>
             <div className="form__field-wrapper" id="student_form">
               <label className="form__field-label" htmlFor="university">University</label>
-              <select className="form__field-input" id="university" value={this.props.data.university} onChange={this._changeUniversity.bind(this)}>
+              <select className="form__field-input" id="university" value={this.props.data.university_id} onChange={this._changeUniversity.bind(this)}>
                 {rows}
               </select>
             </div>
