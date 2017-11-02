@@ -18,6 +18,7 @@ export default React.createClass({
 
     save() {
         let saveItem = this.state.id ? TeacherService.updateItem : TeacherService.createItem;
+        console.log(this.state);
         saveItem(this.state).then(savedTeacher => {
             if (this.props.onSaved) this.props.onSaved(savedTeacher);
         });

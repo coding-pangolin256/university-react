@@ -67,7 +67,7 @@ let createItem = (req, res, next) => {
 
 let updateItem = (req, res, next) => {
     let result = req.body;
-    let table_name = result.course_code + result.course_id;
+    let table_name = result.course_code + '_students';
     let path_field = result.homework_id + '_hw';
     let score_field = result.homework_id + '_score';
     let sql = `UPDATE ${table_name} SET ${score_field}=? WHERE student_id=?`;

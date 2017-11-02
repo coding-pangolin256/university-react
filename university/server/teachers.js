@@ -45,7 +45,7 @@ let createItem = (req, res, next) => {
 let updateItem = (req, res, next) => {
     let teacher = req.body;
     let sql = `UPDATE teacher SET name=?, email=?, university=?, department=?, allowed=? WHERE id=?`;
-    db.query(sql, [teacher.name, teacher.email, teacher.allowed, teacher.university, teacher.department, teacher.id])
+    db.query(sql, [teacher.name, teacher.email, teacher.university_id, teacher.department, teacher.allowed, teacher.id])
         .then(() => res.send({result: 'ok'}))
         .catch(next);
 };

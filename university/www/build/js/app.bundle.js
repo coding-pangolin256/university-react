@@ -59183,6 +59183,8 @@
 	
 	var _PageHeader = __webpack_require__(373);
 	
+	var _reactRouter = __webpack_require__(216);
+	
 	var _CourseView = __webpack_require__(498);
 	
 	var _CourseView2 = _interopRequireDefault(_CourseView);
@@ -59215,7 +59217,7 @@
 	    },
 	    deleteHandler: function deleteHandler() {
 	        CourseService.deleteItem(this.state.course.code).then(function () {
-	            return window.location.hash = "courses";
+	            return _reactRouter.browserHistory.goBack();
 	        });
 	    },
 	    editHandler: function editHandler() {
@@ -59385,7 +59387,7 @@
 	        }
 	    },
 	    studentLinkHandler: function studentLinkHandler(result) {
-	        window.location.hash = "#student/" + this.props.course.university_id + result.std_id;
+	        window.location.hash = "#student/" + this.props.course.university_id + result.student_id;
 	    },
 	    actionHandler: function actionHandler(data, index, value, label) {
 	        var _this2 = this;
@@ -59693,7 +59695,7 @@
 	        result.homework_id = this.props.homeworkId;
 	        result.path = this.props.result[result.homework_id + '_hw'];
 	        result.score = this.props.result[result.homework_id + '_score'];
-	        result.id = this.props.result.std_id;
+	        result.id = this.props.result.student_id;
 	        return { result: result, src_code: "" };
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(props) {
@@ -76960,7 +76962,7 @@
 	        this.refs.form.save();
 	    },
 	    savedHandler: function savedHandler() {
-	        window.location.hash = "#course/" + this.props.course.id;
+	        window.location.hash = "#course/" + this.props.course.code;
 	    },
 	    render: function render() {
 	        return _react2.default.createElement(
@@ -78670,6 +78672,7 @@
 	        var _this = this;
 	
 	        var saveItem = this.state.id ? TeacherService.updateItem : TeacherService.createItem;
+	        console.log(this.state);
 	        saveItem(this.state).then(function (savedTeacher) {
 	            if (_this.props.onSaved) _this.props.onSaved(savedTeacher);
 	        });

@@ -68,8 +68,8 @@ let createItem = (req, res, next) => {
             db.query(sql, [course.period_id]).then(periods => {
                 let secret_code = course.university_id + periods[0]['year'] + periods[0]['semester'] + result.insertId;
                 sql = `CREATE TABLE ` + secret_code +`_students`+ ` (
-                    std_id int(0) NOT NULL,
-                    PRIMARY KEY (std_id)
+                    student_id int(0) NOT NULL,
+                    PRIMARY KEY (student_id)
                   )`;
                 db.query(sql);
                 sql = `CREATE TABLE ` + secret_code + `_homework` + ` (
@@ -109,7 +109,8 @@ let createItem = (req, res, next) => {
 
 let updateItem = (req, res, next) => {
     let course = req.body;
-    let sql = `UPDATE course SET code=?, name=?, period_id=?, teacher_id=? WHERE id=?`;
+    let table_name = course.university_id + '_course';
+    let sql = `UPDATE ${table_name} SET code=?, name=?, period_id=?, teacher_id=? WHERE id=?`;
     db.query(sql, [course.code, course.name, course.period_id, course.teacher_id, course.id])
         .then(() => res.send({result: 'ok'}))
         .catch(next);
@@ -117,8 +118,21 @@ let updateItem = (req, res, next) => {
 
 let deleteItem = (req, res, next) => {
     let courseId = req.params.id;
-    db.query('DELETE FROM course WHERE id=?', [courseId], true)
-        .then(() => res.send({result: 'ok'}))
+    var search = courseId.search(/\d/);
+    var university_id = courseId.slice(0,search);
+    var course_id = courseId.slice(search+6);
+    db.query(`DELETE FROM ${university_id}_course WHERE id=?`, [course_id], true)
+        .then(() => {
+            let sql = `DROP TABLE IF EXISTS ` + courseId +`_students`;
+            db.query(sql);
+            sql = `DROP TABLE IF EXISTS ` + courseId + `_homework`;
+            db.query(sql);
+            sql = `DROP TABLE IF EXISTS ` + courseId + `_material`;
+            db.query(sql);
+            sql = `DROP TABLE IF EXISTS ` + courseId + `_chat`;
+            db.query(sql);
+            res.send({result: 'ok'});
+        })
         .catch(next);
 };
 

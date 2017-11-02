@@ -28,7 +28,7 @@ export default React.createClass({
     },
 
     studentLinkHandler(result) {
-        window.location.hash = "#student/" + this.props.course.university_id + result.std_id;
+        window.location.hash = "#student/" + this.props.course.university_id + result.student_id;
     },
 
     actionHandler(data, index, value, label) {
@@ -172,7 +172,7 @@ export default React.createClass({
                 <section className="slds-card__body">
                     <DataGrid table_id={this.props.editable?"":"table-to-xls"} data={this.state.results} actions={sessionStorage.pos=="teacher"&&this.props.editable?["View Student", "Delete"]:null} onAction={this.actionHandler}>
                         {/* <div header="Name" field="name" sortable={true} onLink={this.studentLinkHandler}/>
-                        <div header="Student ID" field="std_id"/> */}
+                        <div header="Student ID" field="student_id"/> */}
                         {cols}
                     </DataGrid>
                 </section>
