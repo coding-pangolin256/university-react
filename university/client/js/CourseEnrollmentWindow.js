@@ -10,12 +10,12 @@ import ComboBox from './components/ComboBox';
 export default React.createClass({
 
     getInitialState() {
-        return {courses:[], periodId:settings.currentPeriod};
+        return {courses:[], periodId:settings.currentPeriod, course_code:''};
     },
 
     componentDidMount() {
-        CourseService.findAll({periodId: this.state.periodId}).then(courses => this.setState({courses}));
-        PeriodService.findAll().then(periods => this.setState({periods}));
+        // CourseService.findAll({periodId: this.state.periodId}).then(courses => this.setState({courses}));
+        // PeriodService.findAll().then(periods => this.setState({periods}));
     },
 
     rowClickHandler(data) {
@@ -24,13 +24,18 @@ export default React.createClass({
 
     addHandler() {
         if (this.props.onSelected) {
-            this.props.onSelected(this.selectedItem);
+            //this.props.onSelected(this.selectedItem);
+            this.props.onSelected(this.state.course_code);
         }
     },
 
     changeHandler(index, periodId, label) {
         this.setState({periodId});
         CourseService.findAll({periodId}).then(courses => this.setState({courses}));
+    },
+    changeCodeHandler(data)
+    {
+        this.setState({course_code: data.target.value});
     },
 
     render() {
@@ -39,7 +44,7 @@ export default React.createClass({
                 <div aria-hidden="false" role="dialog" className="slds-modal slds-fade-in-open">
                     <div className="slds-modal__container">
                         <div className="slds-modal__header" style={{borderBottom:"solid 1px #d8dde6"}}>
-                            <ComboBox data={this.state.periods} value={this.state.periodId} onChange={this.changeHandler}/>
+                            {/* <ComboBox data={this.state.periods} value={this.state.periodId} onChange={this.changeHandler}/> */}
                             <button className="slds-button slds-modal__close">
                                 <svg aria-hidden="true" className="slds-button__icon slds-button__icon--inverse slds-button__icon--large">
                                 </svg>
@@ -47,7 +52,13 @@ export default React.createClass({
                             </button>
                         </div>
                         <div className="slds-modal__content" style={{padding: 0}}>
-                            <CourseList ref="form" courses={this.state.courses} ignoreLinks={true} onRowClick={this.rowClickHandler}/>
+                            {/* <CourseList ref="form" courses={this.state.courses} ignoreLinks={true} onRowClick={this.rowClickHandler}/> */}
+                            <div className="slds-form-element">
+                                <label className="slds-form-element__label" htmlFor="sample1">Course Code</label>
+                                <div className="slds-form-element__control">
+                                    <input className="slds-input" type="text" value={this.props.course_code} onChange={this.changeCodeHandler}/>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="slds-modal__footer" style={{borderTop:"solid 1px #d8dde6"}}>

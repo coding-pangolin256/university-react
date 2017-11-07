@@ -3,12 +3,11 @@
 let db = require('./pghelper');
 
 let findAll = (req, res, next) => {
-    let teacherId = req.query.teacherId;
+    let courseId = req.query.courseId;
     let sql = `
         SELECT *
-        FROM lecture
-        ${teacherId ? 'WHERE teacher_id = ?' : ''}`;
-    db.query(sql, teacherId ? [teacherId] : [])
+        FROM ${courseId}_material`;
+    db.query(sql)
         .then(result => res.json(result))
         .catch(next);
 };

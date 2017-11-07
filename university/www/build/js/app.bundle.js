@@ -88,47 +88,47 @@
 	
 	var _CourseView2 = _interopRequireDefault(_CourseView);
 	
-	var _CourseFormWrapper = __webpack_require__(537);
+	var _CourseFormWrapper = __webpack_require__(576);
 	
 	var _CourseFormWrapper2 = _interopRequireDefault(_CourseFormWrapper);
 	
-	var _HomeworkRecord = __webpack_require__(538);
+	var _HomeworkRecord = __webpack_require__(577);
 	
 	var _HomeworkRecord2 = _interopRequireDefault(_HomeworkRecord);
 	
-	var _HomeworkView = __webpack_require__(539);
+	var _HomeworkView = __webpack_require__(578);
 	
 	var _HomeworkView2 = _interopRequireDefault(_HomeworkView);
 	
-	var _HomeworkFormWrapper = __webpack_require__(577);
+	var _HomeworkFormWrapper = __webpack_require__(580);
 	
 	var _HomeworkFormWrapper2 = _interopRequireDefault(_HomeworkFormWrapper);
 	
-	var _StudentHome = __webpack_require__(578);
+	var _StudentHome = __webpack_require__(581);
 	
 	var _StudentHome2 = _interopRequireDefault(_StudentHome);
 	
-	var _StudentRecord = __webpack_require__(586);
+	var _StudentRecord = __webpack_require__(589);
 	
 	var _StudentRecord2 = _interopRequireDefault(_StudentRecord);
 	
-	var _StudentView = __webpack_require__(587);
+	var _StudentView = __webpack_require__(590);
 	
 	var _StudentView2 = _interopRequireDefault(_StudentView);
 	
-	var _StudentFormWrapper = __webpack_require__(591);
+	var _StudentFormWrapper = __webpack_require__(594);
 	
 	var _StudentFormWrapper2 = _interopRequireDefault(_StudentFormWrapper);
 	
-	var _TeacherHome = __webpack_require__(592);
+	var _TeacherHome = __webpack_require__(595);
 	
 	var _TeacherHome2 = _interopRequireDefault(_TeacherHome);
 	
-	var _TeacherRecord = __webpack_require__(596);
+	var _TeacherRecord = __webpack_require__(599);
 	
 	var _TeacherRecord2 = _interopRequireDefault(_TeacherRecord);
 	
-	var _TeacherView = __webpack_require__(597);
+	var _TeacherView = __webpack_require__(600);
 	
 	var _TeacherView2 = _interopRequireDefault(_TeacherView);
 	
@@ -136,35 +136,39 @@
 	
 	var _TeacherFormWrapper2 = _interopRequireDefault(_TeacherFormWrapper);
 	
-	var _ChatHome = __webpack_require__(533);
+	var _UniversityHome = __webpack_require__(603);
+	
+	var _UniversityHome2 = _interopRequireDefault(_UniversityHome);
+	
+	var _ChatHome = __webpack_require__(572);
 	
 	var _ChatHome2 = _interopRequireDefault(_ChatHome);
 	
-	var _HomePage = __webpack_require__(603);
+	var _HomePage = __webpack_require__(608);
 	
 	var _HomePage2 = _interopRequireDefault(_HomePage);
 	
-	var _TeacherPage = __webpack_require__(609);
+	var _TeacherPage = __webpack_require__(614);
 	
 	var _TeacherPage2 = _interopRequireDefault(_TeacherPage);
 	
-	var _StudentPage = __webpack_require__(616);
+	var _StudentPage = __webpack_require__(620);
 	
 	var _StudentPage2 = _interopRequireDefault(_StudentPage);
 	
-	var _LoginPage = __webpack_require__(610);
+	var _LoginPage = __webpack_require__(615);
 	
 	var _LoginPage2 = _interopRequireDefault(_LoginPage);
 	
-	var _RegisterPage = __webpack_require__(613);
+	var _RegisterPage = __webpack_require__(618);
 	
 	var _RegisterPage2 = _interopRequireDefault(_RegisterPage);
 	
-	var _NotFound = __webpack_require__(617);
+	var _NotFound = __webpack_require__(621);
 	
 	var _NotFound2 = _interopRequireDefault(_NotFound);
 	
-	var _App = __webpack_require__(618);
+	var _App = __webpack_require__(622);
 	
 	var _App2 = _interopRequireDefault(_App);
 	
@@ -269,7 +273,7 @@
 	        _react2.default.createElement(_reactRouter.Route, { path: ':teacherId', component: _TeacherView2.default }),
 	        _react2.default.createElement(_reactRouter.Route, { path: ':teacherId/edit', component: _TeacherFormWrapper2.default })
 	      ),
-	      _react2.default.createElement(_reactRouter.Route, { path: 'chat', component: _ChatHome2.default })
+	      _react2.default.createElement(_reactRouter.Route, { path: 'universities', component: _UniversityHome2.default })
 	    );
 	  };
 	
@@ -30456,12 +30460,13 @@
 	    // Post a fake request (see below)
 	
 	    if (pos == "student") {
-	      StudentService.findByData({ 'id': data.stdid, 'pwd': data.password, 'course_id': data.course_id }).then(function (response) {
+	      StudentService.findByData({ 'id': data.stdid, 'pwd': data.password, 'university_id': data.university_id }).then(function (response) {
 	        // If the user was authenticated successfully, save a random token to the
 	        // sessionStorage
 	        if (response != null) {
 	          sessionStorage.token = response.id;
 	          sessionStorage.permission = 0;
+	          sessionStorage.university = data.university_id;
 	          sessionStorage.pos = "student";
 	          callback(true);
 	        } else {
@@ -30480,6 +30485,7 @@
 	        if (response != null && response.allowed) {
 	          sessionStorage.token = response.id;
 	          sessionStorage.pos = "teacher";
+	          sessionStorage.university = response.university;
 	          sessionStorage.permission = response.allowed;
 	          callback(true);
 	        } else {
@@ -41413,7 +41419,7 @@
 	                        { className: 'slds-list__item' },
 	                        _react2.default.createElement(
 	                            'a',
-	                            { href: "#" + sessionStorage.pos + "/" + sessionStorage.token },
+	                            { href: "#" + sessionStorage.pos + "/" + (sessionStorage.pos == "student" ? sessionStorage.university + '_' : '') + sessionStorage.token },
 	                            _react2.default.createElement(_Icons.Icon, { name: 'home', theme: null }),
 	                            'Home'
 	                        )
@@ -41426,6 +41432,16 @@
 	                            { href: '#teachers' },
 	                            _react2.default.createElement(_Icons.Icon, { name: 'user', theme: null }),
 	                            'Teachers'
+	                        )
+	                    ) : "",
+	                    sessionStorage.permission == 2 ? _react2.default.createElement(
+	                        'li',
+	                        { className: 'slds-list__item' },
+	                        _react2.default.createElement(
+	                            'a',
+	                            { href: '#universities' },
+	                            _react2.default.createElement(_Icons.Icon, { name: 'social', theme: null }),
+	                            'Universities'
 	                        )
 	                    ) : ""
 	                )
@@ -42097,8 +42113,8 @@
 	  return rest.get(url + "/" + id);
 	};
 	
-	var findByTeacher = exports.findByTeacher = function findByTeacher(id, queryParams) {
-	  return rest.get("/teachers/" + id + url, queryParams);
+	var findByTeacher = exports.findByTeacher = function findByTeacher(teacher) {
+	  return rest.post("/teacher_courses/", teacher);
 	};
 	
 	var createItem = exports.createItem = function createItem(student) {
@@ -42149,7 +42165,7 @@
 	    value: true
 	});
 	exports.default = {
-	    currentPeriod: 7
+	    currentPeriod: 2
 	};
 
 /***/ }),
@@ -58904,7 +58920,7 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'slds-modal__content', style: { overflow: "visible" } },
-	                        _react2.default.createElement(_CourseForm2.default, { ref: 'form', tid: this.props.tid, onSaved: this.props.onSaved })
+	                        _react2.default.createElement(_CourseForm2.default, { ref: 'form', tid: this.props.tid, uid: this.props.uid, onSaved: this.props.onSaved })
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
@@ -58964,7 +58980,7 @@
 	exports.default = _react2.default.createClass({
 	    displayName: 'CourseForm',
 	    getInitialState: function getInitialState() {
-	        return { course: { teacher_id: this.props.tid }, periods: [], teachers: [] };
+	        return { course: { teacher_id: this.props.tid, university_id: this.props.uid }, periods: [], teachers: [] };
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(props) {
 	        var course = props.course;
@@ -59167,6 +59183,8 @@
 	
 	var _PageHeader = __webpack_require__(373);
 	
+	var _reactRouter = __webpack_require__(216);
+	
 	var _CourseView = __webpack_require__(498);
 	
 	var _CourseView2 = _interopRequireDefault(_CourseView);
@@ -59198,12 +59216,12 @@
 	        });
 	    },
 	    deleteHandler: function deleteHandler() {
-	        CourseService.deleteItem(this.state.course.id).then(function () {
-	            return window.location.hash = "courses";
+	        CourseService.deleteItem(this.state.course.code).then(function () {
+	            return _reactRouter.browserHistory.goBack();
 	        });
 	    },
 	    editHandler: function editHandler() {
-	        window.location.hash = "#course/" + this.state.course.id + "/edit";
+	        window.location.hash = "#course/" + this.state.course.code + "/edit";
 	    },
 	    render: function render() {
 	        return _react2.default.createElement(
@@ -59246,7 +59264,11 @@
 	
 	var _CourseHomeworkCard2 = _interopRequireDefault(_CourseHomeworkCard);
 	
-	var _ChatHome = __webpack_require__(533);
+	var _TeacherPresentationCard = __webpack_require__(533);
+	
+	var _TeacherPresentationCard2 = _interopRequireDefault(_TeacherPresentationCard);
+	
+	var _ChatHome = __webpack_require__(572);
 	
 	var _ChatHome2 = _interopRequireDefault(_ChatHome);
 	
@@ -59294,12 +59316,8 @@
 	                ),
 	                sessionStorage.pos == "teacher" ? _react2.default.createElement(_CourseEnrollmentCard2.default, { course: course, editable: true, title: "Students", icon: "lead" }) : null,
 	                _react2.default.createElement(_CourseHomeworkCard2.default, { course: course }),
+	                _react2.default.createElement(_TeacherPresentationCard2.default, { course: course }),
 	                _react2.default.createElement(_CourseEnrollmentCard2.default, { course: course, title: "Embedded Excel", icon: "metrics" })
-	            ),
-	            _react2.default.createElement(
-	                "div",
-	                { className: "slds-size--1-of-5 slds-medium-size--1-of-5" },
-	                _react2.default.createElement(_ChatHome2.default, { course: course })
 	            )
 	        );
 	    }
@@ -59369,7 +59387,7 @@
 	        }
 	    },
 	    studentLinkHandler: function studentLinkHandler(result) {
-	        window.location.hash = "#student/" + result.std_id;
+	        window.location.hash = "#student/" + this.props.course.university_id + result.student_id;
 	    },
 	    actionHandler: function actionHandler(data, index, value, label) {
 	        var _this2 = this;
@@ -59389,7 +59407,6 @@
 	        }
 	    },
 	    resultLinkHandler: function resultLinkHandler(result) {
-	        console.log(result);
 	        this.setState({ estimatting: true, current: result.result, selected_hwId: result.homeworkId });
 	    },
 	    resultDeleteHandler: function resultDeleteHandler(result) {
@@ -59419,7 +59436,7 @@
 	            for (var index = 0; index < keys.length; index++) {
 	                if (keys[index] == "name") {
 	                    cols.push(_react2.default.createElement('div', { header: keys[index], field: keys[index], sortable: true, onLink: this.studentLinkHandler }));
-	                } else if (keys[index] == "std_id") {
+	                } else if (keys[index] == "student_id") {
 	                    continue;
 	                } else {
 	                    if (keys[index].endsWith("_score")) {
@@ -59451,13 +59468,12 @@
 	        // {
 	        //    cols.push(<div header={keys[index]} field={keys[index]}/>);
 	        // }
-	        console.log(this.state.results);
 	        for (var i = 0; i < 1 && this.state.results.length; i++) {
 	            var keys = Object.keys(this.state.results[i]);
 	            for (var index = 0; index < keys.length; index++) {
 	                if (keys[index] == "name") {
 	                    cols.push(_react2.default.createElement('div', { header: keys[index], field: keys[index], onLink: this.studentLinkHandler }));
-	                } else if (keys[index] == "std_id") {
+	                } else if (keys[index] == "student_id") {
 	                    continue;
 	                } else {
 	                    if (keys[index].endsWith("_score")) {
@@ -59679,7 +59695,7 @@
 	        result.homework_id = this.props.homeworkId;
 	        result.path = this.props.result[result.homework_id + '_hw'];
 	        result.score = this.props.result[result.homework_id + '_score'];
-	        result.id = this.props.result.std_id;
+	        result.id = this.props.result.student_id;
 	        return { result: result, src_code: "" };
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(props) {
@@ -65754,7 +65770,7 @@
 	        return { homeworks: [] };
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(props) {
-	        this.getHomeworks(props.course.id);
+	        this.getHomeworks(props.course.code);
 	    },
 	    getHomeworks: function getHomeworks(courseId) {
 	        var _this = this;
@@ -65766,8 +65782,7 @@
 	        }
 	    },
 	    homeworkLinkHandler: function homeworkLinkHandler(homework) {
-	        console.log('qwef');
-	        window.location.hash = "#homework/" + homework.id;
+	        window.location.hash = "#homework/" + this.props.course.code + "/" + homework.id;
 	    },
 	    actionHandler: function actionHandler(data, index, value, label) {
 	        var _this2 = this;
@@ -65804,7 +65819,7 @@
 	    },
 	    newHomeworkSavedHandler: function newHomeworkSavedHandler(Homework) {
 	        this.setState({ addingHomework: false });
-	        this.getHomeworks(this.props.course.id);
+	        this.getHomeworks(this.props.course.code);
 	    },
 	    homeworkSubmittedHandler: function homeworkSubmittedHandler() {
 	        this.setState({ submitting: false });
@@ -65872,7 +65887,7 @@
 	                )
 	            ),
 	            this.state.addingHomework ? _react2.default.createElement(_HomeworkFormWindow2.default, { cid: this.props.course.id, ccode: this.props.course.code, onSaved: this.newHomeworkSavedHandler, onCancel: this.newHomeworkCancelHandler }) : null,
-	            this.state.submitting ? _react2.default.createElement(_SubmitFormWindow2.default, { homework: this.state.current, onSaved: this.homeworkSubmittedHandler, onCancel: this.homeworkSubmitCancelHandler }) : null
+	            this.state.submitting ? _react2.default.createElement(_SubmitFormWindow2.default, { homework: this.state.current, course: this.props.course.code, onSaved: this.homeworkSubmittedHandler, onCancel: this.homeworkSubmitCancelHandler }) : null
 	        );
 	    }
 	});
@@ -66174,7 +66189,7 @@
 	            console.log('upload success!');
 	        });
 	        uploader.on('submitted', function (id) {
-	            _this.setState({ homework: assign(_this.props.homework, { std_id: sessionStorage.token, path: uploader.methods.getFile(id).name }) });
+	            _this.setState({ homework: assign(_this.props.homework, { student_id: sessionStorage.token, path: uploader.methods.getFile(id).name, course_code: _this.props.course }) });
 	        });
 	    },
 	    saveHandler: function saveHandler() {
@@ -72456,151 +72471,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ChatService = __webpack_require__(534);
+	var _PresentationService = __webpack_require__(534);
 	
-	var ChatService = _interopRequireWildcard(_ChatService);
-	
-	var _MessageCard = __webpack_require__(535);
-	
-	var _MessageCard2 = _interopRequireDefault(_MessageCard);
-	
-	var _PageHeader = __webpack_require__(373);
-	
-	var _ChatBox = __webpack_require__(536);
-	
-	var _ChatBox2 = _interopRequireDefault(_ChatBox);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = _react2.default.createClass({
-	    displayName: 'ChatHome',
-	    getInitialState: function getInitialState() {
-	        return { msgs: [], msg_len: 0 };
-	    },
-	    componentDidMount: function componentDidMount() {
-	        this.getMessages();
-	        var intervalId = setInterval(this.getMessages, 3000);
-	        // store intervalId in the state so it can be accessed later:
-	        this.setState({ intervalId: intervalId });
-	    },
-	    componentWillUnmount: function componentWillUnmount() {
-	        // use intervalId from the state to clear the interval
-	        clearInterval(this.state.intervalId);
-	    },
-	    componentDidUpdate: function componentDidUpdate() {
-	        if (this.state.msg_len != this.state.msgs.length) {
-	            var objDiv = document.getElementById("cht_box");
-	            objDiv.scrollTop = objDiv.scrollHeight;
-	            this.setState({ msg_len: this.state.msgs.length });
-	        }
-	    },
-	    getMessages: function getMessages() {
-	        var _this = this;
-	
-	        fetch(window.location.protocol + 'messages').then(function (response) {
-	            return response.json();
-	        }).then(function (data) {
-	            _this.setState({ msgs: data });
-	        });
-	    },
-	    deleteHandler: function deleteHandler(msg) {
-	        ChatService.deleteItem(this.state.msg.id).then(function () {
-	            return window.location.hash = "chat";
-	        });
-	    },
-	    editHandler: function editHandler(msg) {
-	        window.location.hash = "#chat/" + msg.id + "/edit";
-	    },
-	    sendHandler: function sendHandler(msg, type) {
-	        var _this2 = this;
-	
-	        ChatService.createItem({ user_id: sessionStorage.token, pos: sessionStorage.pos, text: msg, type: type, course_id: this.props.course.id }).then(function () {
-	            _this2.getMessages();
-	        });
-	    },
-	    render: function render() {
-	        var rows = [];
-	        rows = this.state.msgs.map(function (item) {
-	            return _react2.default.createElement(_MessageCard2.default, { data: item });
-	        });
-	        // for (let i = 0 ; i < this.state.msgs.length; i++) {
-	        //     rows.push(<MessageCard data={this.state.msgs[i]}/>);
-	        // }
-	        return _react2.default.createElement(
-	            'div',
-	            { className: 'slds-card' },
-	            _react2.default.createElement(
-	                'div',
-	                { className: 'slds-m-around--medium slds-scrollable--y', id: 'cht_box' },
-	                rows
-	            ),
-	            _react2.default.createElement(_ChatBox2.default, { onSend: this.sendHandler })
-	        );
-	    }
-	});
-
-/***/ }),
-/* 534 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.deleteItem = exports.updateItem = exports.createItem = exports.findByData = exports.findById = exports.findAll = undefined;
-	
-	var _rest = __webpack_require__(347);
-	
-	var rest = _interopRequireWildcard(_rest);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	var url = "/messages";
-	
-	var findAll = exports.findAll = function findAll(queryParams) {
-	  return rest.get(url, queryParams);
-	};
-	
-	var findById = exports.findById = function findById(id) {
-	  return rest.get(url + "/" + id);
-	};
-	
-	var findByData = exports.findByData = function findByData(student) {
-	  return rest.post('/message', student);
-	};
-	
-	var createItem = exports.createItem = function createItem(student) {
-	  return rest.post(url, student);
-	};
-	
-	var updateItem = exports.updateItem = function updateItem(student) {
-	  return rest.put(url, student);
-	};
-	
-	var deleteItem = exports.deleteItem = function deleteItem(id) {
-	  return rest.del(url + "/" + id);
-	};
-
-/***/ }),
-/* 535 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _CourseService = __webpack_require__(370);
-	
-	var CourseService = _interopRequireWildcard(_CourseService);
+	var PresentationService = _interopRequireWildcard(_PresentationService);
 	
 	var _DataGrid = __webpack_require__(492);
 	
@@ -72608,90 +72481,9 @@
 	
 	var _Icons = __webpack_require__(364);
 	
-	var _CourseFormWindow = __webpack_require__(494);
+	var _reactUploadFile = __webpack_require__(535);
 	
-	var _CourseFormWindow2 = _interopRequireDefault(_CourseFormWindow);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = _react2.default.createClass({
-	    displayName: 'MessageCard',
-	    attachLinkHandler: function attachLinkHandler(event) {
-	        var link = document.createElement('a');
-	        link.download = this.props.data.text;
-	        link.href = window.location.protocol + '/upload/' + link.download;
-	        var clickEvent = document.createEvent("MouseEvent");
-	        clickEvent.initEvent("click", true, true);
-	
-	        link.dispatchEvent(clickEvent);
-	        event.preventDefault();
-	        // PresentationService.downFile({filename: present.path}).then(downloaded => {
-	
-	        //     // fileDownload(downloaded, present.path);
-	        //     // writeFile(present.path, downloaded, function (err) {
-	        //     //     if (err) return console.log(err)
-	        //     //     console.log('file is written')
-	        //     //   })
-	        //     var link = document.createElement('a');
-	        //     link.download = present.path;
-	        //     link.href = 'http://localhost:5000/upload/'+present.path;
-	        // });
-	    },
-	    render: function render() {
-	        return _react2.default.createElement(
-	            'div',
-	            null,
-	            _react2.default.createElement(
-	                'section',
-	                { className: 'slds-card__body' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-media__body ' },
-	                    _react2.default.createElement(
-	                        'small',
-	                        null,
-	                        this.props.data.pos == "teacher" ? 'Professor ' + this.props.data.user_name : null
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'span',
-	                    { className: 'slds-input' },
-	                    !this.props.data.type ? this.props.data.text : _react2.default.createElement(
-	                        'a',
-	                        { href: '#', className: 'slds-badge', onClick: this.attachLinkHandler },
-	                        this.props.data.text
-	                    )
-	                )
-	            )
-	        );
-	    }
-	});
-
-/***/ }),
-/* 536 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _StudentService = __webpack_require__(346);
-	
-	var StudentService = _interopRequireWildcard(_StudentService);
-	
-	var _Icons = __webpack_require__(364);
-	
-	var _SearchBox = __webpack_require__(366);
-	
-	var _SearchBox2 = _interopRequireDefault(_SearchBox);
+	var _reactUploadFile2 = _interopRequireDefault(_reactUploadFile);
 	
 	var _fileInput = __webpack_require__(524);
 	
@@ -72705,6 +72497,9 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var fileDownload = __webpack_require__(571);
+	
+	
 	var uploader = new _fineUploaderWrappers2.default({
 	    options: {
 	        request: {
@@ -72715,419 +72510,92 @@
 	});
 	
 	exports.default = _react2.default.createClass({
-	    displayName: 'ChatBox',
+	    displayName: 'TeacherPresentationCard',
 	    getInitialState: function getInitialState() {
-	        return { searchKey: "" };
-	    },
-	    handleKeyPress: function handleKeyPress(target) {
-	        if (target.charCode == 13) {
-	            if (this.state.searchKey != "") {
-	                this.props.onSend(this.state.searchKey, 0);
-	                this.setState({ searchKey: "" });
-	            }
-	            if (this.state.attachment) {
-	                uploader.methods.uploadStoredFiles();
-	            }
-	        }
-	    },
-	
-	    changeHandler: function changeHandler(event) {
-	        var inputKey = event.target.value;
-	        this.setState({ searchKey: inputKey });
+	        return { presents: [] };
 	    },
 	    componentDidMount: function componentDidMount() {
 	        var _this = this;
 	
 	        uploader.on('complete', function (id, name, response) {
 	            // handle completed upload
-	            _this.props.onSend(_this.state.attachment, 1);
-	            _this.setState({ attachment: "" });
+	            PresentationService.createItem(_this.state.present).then(function () {
+	                return _this.getPresents(_this.props.course.id);
+	            }).catch(function (error) {
+	                var event = new CustomEvent('notify', { detail: 'You already uploaded this file' });
+	                document.dispatchEvent(event);
+	            });
+	            console.log('upload success!');
 	        });
 	        uploader.on('submitted', function (id) {
-	            _this.setState({ attachment: uploader.methods.getFile(id).name });
+	            _this.setState({ present: { path: uploader.methods.getFile(id).name, size: uploader.methods.getFile(id).size } });
 	        });
-	    },
-	    render: function render() {
-	        return _react2.default.createElement(
-	            'div',
-	            { className: 'slds-form-element' },
-	            _react2.default.createElement(
-	                'div',
-	                { className: 'slds-form-element__control' },
-	                _react2.default.createElement('input', { className: 'slds-input', type: 'text',
-	                    placeholder: this.props.placeholder || 'Enter your message...',
-	                    value: this.state.searchKey,
-	                    style: { minWidth: "200px", marginTop: "1px" },
-	                    onChange: this.changeHandler,
-	                    onKeyPress: this.handleKeyPress }),
-	                _react2.default.createElement(
-	                    _fileInput2.default,
-	                    { accept: '*', uploader: uploader },
-	                    _react2.default.createElement(
-	                        'span',
-	                        { 'class': 'icon ion-upload' },
-	                        _react2.default.createElement(_Icons.Icon, { name: 'link' })
-	                    )
-	                ),
-	                '\xA0',
-	                _react2.default.createElement(
-	                    'span',
-	                    { className: 'slds-badge' },
-	                    this.state.attachment ? this.state.attachment : ""
-	                )
-	            )
-	        );
-	    }
-	});
-
-/***/ }),
-/* 537 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _CourseForm = __webpack_require__(495);
-	
-	var _CourseForm2 = _interopRequireDefault(_CourseForm);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = _react2.default.createClass({
-	    displayName: 'CourseFormWrapper',
-	    saveHandler: function saveHandler() {
-	        this.refs.form.save();
-	    },
-	    savedHandler: function savedHandler() {
-	        window.location.hash = "#course/" + this.props.course.id;
-	    },
-	    render: function render() {
-	        return _react2.default.createElement(
-	            'div',
-	            { className: 'slds-m-around--medium' },
-	            _react2.default.createElement(_CourseForm2.default, { ref: 'form', course: this.props.course, onSaved: this.savedHandler }),
-	            _react2.default.createElement(
-	                'button',
-	                { className: 'slds-button slds-button--neutral slds-button--brand slds-m-around--small', onClick: this.saveHandler },
-	                'Save'
-	            )
-	        );
-	    }
-	});
-
-/***/ }),
-/* 538 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _moment = __webpack_require__(374);
-	
-	var _moment2 = _interopRequireDefault(_moment);
-	
-	var _HomeworkService = __webpack_require__(520);
-	
-	var HomeworkService = _interopRequireWildcard(_HomeworkService);
-	
-	var _PageHeader = __webpack_require__(373);
-	
-	var _HomeworkView = __webpack_require__(539);
-	
-	var _HomeworkView2 = _interopRequireDefault(_HomeworkView);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// import HomeworkEnrollmentCard from './HomeworkEnrollmentCard';
-	
-	exports.default = _react2.default.createClass({
-	    displayName: 'HomeworkRecord',
-	    getInitialState: function getInitialState() {
-	        return { homework: {} };
-	    },
-	    componentDidMount: function componentDidMount() {
-	        this.getHomework(this.props.params.homeworkId);
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(props) {
-	        this.getHomework(props.params.homeworkId);
+	        this.getPresents(props.course.code);
 	    },
-	    getHomework: function getHomework(id) {
-	        var _this = this;
-	
-	        HomeworkService.findById(id).then(function (homework) {
-	            return _this.setState({ homework: homework });
-	        });
+	    viewAllHandler: function viewAllHandler(event) {
+	        this.getPresents(this.props.course.code);
+	        event.preventDefault();
 	    },
-	    deleteHandler: function deleteHandler() {
-	        HomeworkService.deleteItem(this.state.homework.id).then(function () {
-	            return window.location.hash = "homeworks";
-	        });
-	    },
-	    editHandler: function editHandler() {
-	        window.location.hash = "#homework/" + this.state.homework.id + "/edit";
-	    },
-	    render: function render() {
-	        return _react2.default.createElement(
-	            'div',
-	            null,
-	            _react2.default.createElement(
-	                _PageHeader.RecordHeader,
-	                { type: 'Homework',
-	                    icon: 'report',
-	                    title: this.state.homework.title,
-	                    onEdit: sessionStorage.pos == "teacher" ? this.editHandler : null,
-	                    onDelete: sessionStorage.pos == "teacher" ? this.deleteHandler : null },
-	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Details', value: this.state.homework.details })
-	            ),
-	            _react2.default.cloneElement(this.props.children, { homework: this.state.homework })
-	        );
-	    }
-	});
-
-/***/ }),
-/* 539 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
+	    getPresents: function getPresents(courseId) {
+	        var _this2 = this;
 	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _HomeworkResultCard = __webpack_require__(540);
-	
-	var _HomeworkResultCard2 = _interopRequireDefault(_HomeworkResultCard);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = _react2.default.createClass({
-	    displayName: "HomeworkView",
-	    render: function render() {
-	        var homework = this.props.homework;
-	        return _react2.default.createElement(
-	            "div",
-	            { className: "slds-m-around--medium" },
-	            _react2.default.createElement(
-	                "div",
-	                { className: "slds-grid slds-wrap slds-m-bottom--large" },
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium" },
-	                    _react2.default.createElement(
-	                        "dl",
-	                        { className: "page-header--rec-home__detail-item" },
-	                        _react2.default.createElement(
-	                            "dt",
-	                            null,
-	                            _react2.default.createElement(
-	                                "p",
-	                                { className: "slds-text-heading--label slds-truncate", title: "Field 1" },
-	                                "Course"
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            "dd",
-	                            null,
-	                            _react2.default.createElement(
-	                                "p",
-	                                { className: "slds-text-body--regular slds-truncate", title: "course_name" },
-	                                homework.course_name
-	                            )
-	                        )
-	                    )
-	                )
-	            )
-	        );
-	    }
-	});
-
-/***/ }),
-/* 540 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _ResultService = __webpack_require__(500);
-	
-	var ResultService = _interopRequireWildcard(_ResultService);
-	
-	var _DataGrid = __webpack_require__(492);
-	
-	var _DataGrid2 = _interopRequireDefault(_DataGrid);
-	
-	var _StudentSearchBox = __webpack_require__(365);
-	
-	var _StudentSearchBox2 = _interopRequireDefault(_StudentSearchBox);
-	
-	var _ResultFormWindow = __webpack_require__(501);
-	
-	var _ResultFormWindow2 = _interopRequireDefault(_ResultFormWindow);
-	
-	var _Icons = __webpack_require__(364);
-	
-	var _reactUploadFile = __webpack_require__(541);
-	
-	var _reactUploadFile2 = _interopRequireDefault(_reactUploadFile);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var assign = Object.assign || __webpack_require__(349);
-	
-	exports.default = _react2.default.createClass({
-	    displayName: 'HomeworkResultCard',
-	    getInitialState: function getInitialState() {
-	        return { results: [], submitting: false, estimatting: false, current: null };
-	    },
-	    componentWillReceiveProps: function componentWillReceiveProps(props) {
-	        this.getResults(props.homework);
-	    },
-	    getResults: function getResults(homework) {
-	        var _this = this;
-	
-	        if (homework) {
-	            ResultService.findByHomework(homework).then(function (results) {
-	                return _this.setState({ results: results });
+	        if (courseId) {
+	            PresentationService.findAll({ courseId: courseId }).then(function (presents) {
+	                return _this2.setState({ presents: presents });
 	            });
 	        }
 	    },
-	    resultLinkHandler: function resultLinkHandler(result) {
-	        this.setState({ estimatting: true, current: result });
-	    },
-	    resultDeleteHandler: function resultDeleteHandler(result) {
-	        var _this2 = this;
+	    presentLinkHandler: function presentLinkHandler(present) {
+	        var link = document.createElement('a');
+	        link.download = present.path;
+	        link.href = window.location.protocol + '/upload/' + present.path;
+	        var clickEvent = document.createEvent("MouseEvent");
+	        clickEvent.initEvent("click", true, true);
 	
-	        ResultService.deleteFile(result.path).then(function () {
-	            return _this2.getResults(_this2.props.homework);
-	        });
+	        link.dispatchEvent(clickEvent);
+	        // PresentationService.downFile({filename: present.path}).then(downloaded => {
+	
+	        //     // fileDownload(downloaded, present.path);
+	        //     // writeFile(present.path, downloaded, function (err) {
+	        //     //     if (err) return console.log(err)
+	        //     //     console.log('file is written')
+	        //     //   })
+	        //     var link = document.createElement('a');
+	        //     link.download = present.path;
+	        //     link.href = 'http://localhost:5000/upload/'+present.path;
+	        // });
 	    },
-	    studentLinkHandler: function studentLinkHandler(result) {
-	        window.location.hash = "#student/" + result.id;
+	    presentDeleteHandler: function presentDeleteHandler(present) {
+	        PresentationService.deleteItem(present.id);
+	        PresentationService.deleteFile({ filename: present.path });
+	        this.getPresents(this.props.course.code);
+	    },
+	    newPresentHandler: function newPresentHandler() {
+	        this.setState({ addingPresent: true });
+	    },
+	    newPresentCancelHandler: function newPresentCancelHandler() {
+	        this.setState({ addingPresent: false });
+	    },
+	    newPresentSavedHandler: function newPresentSavedHandler(present) {
+	        this.setState({ addingPresent: false });
+	        this.getPresents(this.props.teacher.id);
 	    },
 	    actionHandler: function actionHandler(data, index, value, label) {
-	        var _this3 = this;
-	
-	        switch (index) {
-	            case 0:
-	                this.resultLinkHandler(data);
+	        switch (label) {
+	            case "Download":
+	                this.presentLinkHandler(data);
 	                break;
-	            case 1:
-	                ResultService.deleteItem(data.id).then(function () {
-	                    return _this3.getResults(_this3.props.homework);
-	                });
+	            case "Delete":
+	                this.presentDeleteHandler(data);
 	                break;
 	        }
 	    },
-	    submitHomeworkHandler: function submitHomeworkHandler() {
-	        this.setState({ submitting: true });
-	    },
-	    scoreSavedHandler: function scoreSavedHandler() {
-	        this.setState({ estimatting: false });
-	        this.getResults(this.props.homework);
-	    },
-	    scoreCancelHandler: function scoreCancelHandler() {
-	        this.setState({ estimatting: false });
+	    uploadFiles: function uploadFiles() {
+	        uploader.methods.uploadStoredFiles();
 	    },
 	    render: function render() {
-	        var _this4 = this;
-	
-	        var options = {
-	            baseUrl: '/upload',
-	            query: function query(files) {
-	                var l = files.length;
-	                var queryObj = {};
-	                for (var i = l - 1; i >= 0; --i) {
-	                    queryObj[i] = files[i].name;
-	                }
-	                return queryObj;
-	            },
-	            body: {
-	                purpose: 'save'
-	            },
-	            //   body: (files) => {
-	            //     const l = files.length;
-	            //     const queryObj = {};
-	            //     for(let i = l-1; i >= 0; --i) {
-	            //       queryObj[i] = files[i].name;
-	            //     }
-	            //     return queryObj;
-	            //   },
-	            dataType: 'json',
-	            multiple: false,
-	            numberLimit: 1,
-	            accept: '*',
-	            // fileFieldName: 'file',
-	            fileFieldName: function fileFieldName(file) {
-	                return file.name;
-	            },
-	            withCredentials: false,
-	            requestHeaders: {
-	                'method': 'POST'
-	            },
-	            beforeChoose: function beforeChoose() {
-	                return true;
-	            },
-	            didChoose: function didChoose(files) {
-	                console.log('you choose', typeof files == 'string' ? files : files[0].name);
-	            },
-	            beforeUpload: function beforeUpload(files) {
-	                _this4.setState({ homework: assign(_this4.props.homework, { std_id: sessionStorage.token, path: files[0].name }) });
-	                if (typeof files === 'string') return true;
-	                if (files[0].size < 1024 * 1024 * 20) {
-	
-	                    return true;
-	                }
-	                return false;
-	            },
-	            didUpload: function didUpload(files) {
-	                console.log('you just uploaded', typeof files === 'string' ? files : files[0].name);
-	            },
-	            uploading: function uploading(progress) {
-	                console.log('loading...', progress.loaded / progress.total + '%');
-	            },
-	            uploadSuccess: function uploadSuccess(resp) {
-	                ResultService.createItem(_this4.state.homework).then(function () {
-	                    return _this4.getResults(_this4.props.homework);
-	                }).catch(function (error) {
-	                    var event = new CustomEvent('notify', { detail: 'You already submitted to this homework' });
-	                    document.dispatchEvent(event);
-	                });
-	                console.log('upload success!');
-	            },
-	            uploadError: function uploadError(err) {
-	                alert(err.message);
-	            }
-	        };
-	
 	        return _react2.default.createElement(
 	            'div',
 	            { className: 'slds-card' },
@@ -73148,74 +72616,113 @@
 	                        _react2.default.createElement(
 	                            'h3',
 	                            { className: 'slds-text-heading--small slds-truncate' },
-	                            'Results'
+	                            'Presentations'
 	                        )
 	                    )
 	                ),
-	                sessionStorage.pos == "student" ? _react2.default.createElement(
+	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'slds-no-flex' },
-	                    _react2.default.createElement(
+	                    sessionStorage.pos == "teacher" ? _react2.default.createElement(
 	                        'div',
 	                        { className: 'slds-button-group' },
-	                        _react2.default.createElement(_reactUploadFile2.default, { options: options,
-	                            chooseFileButton: _react2.default.createElement(
-	                                'button',
-	                                { className: 'slds-button slds-button--icon-border-filled' },
-	                                _react2.default.createElement(_Icons.ButtonIcon, { name: 'add' })
-	                            ),
-	                            uploadFileButton: _react2.default.createElement(
-	                                'button',
-	                                { className: 'slds-button slds-button--neutral slds-button--small' },
-	                                'Submit'
-	                            ) }),
 	                        _react2.default.createElement(
-	                            'button',
-	                            { className: 'slds-button slds-button--icon-border-filled' },
-	                            _react2.default.createElement(_Icons.ButtonIcon, { name: 'down' }),
+	                            _fileInput2.default,
+	                            { accept: '.c,.cpp,.java,.js,.txt', uploader: uploader },
 	                            _react2.default.createElement(
 	                                'span',
-	                                { className: 'slds-assistive-text' },
-	                                'Show More'
+	                                { 'class': 'icon ion-upload' },
+	                                _react2.default.createElement(_Icons.Icon, { name: 'link' })
 	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'slds-button slds-button--neutral slds-button--small', onClick: this.uploadFiles },
+	                            'Upload'
 	                        )
-	                    )
-	                ) : null
+	                    ) : ''
+	                )
 	            ),
 	            _react2.default.createElement(
 	                'section',
 	                { className: 'slds-card__body' },
 	                _react2.default.createElement(
 	                    _DataGrid2.default,
-	                    { data: this.state.results, keyField: 'id', actions: sessionStorage.pos == "teacher" ? ["View Details", "Delete"] : null, onAction: this.actionHandler },
-	                    _react2.default.createElement('div', { header: 'Student Name', field: 'student_name', sortable: true, onLink: this.studentLinkHandler }),
-	                    _react2.default.createElement('div', { header: 'Score', field: 'score', sortable: true }),
-	                    sessionStorage.pos == "teacher" ? _react2.default.createElement('div', { header: 'View details', field: 'details', action: 'Details', onLink: this.resultLinkHandler }) : "",
-	                    sessionStorage.pos == "teacher" ? _react2.default.createElement('div', { header: 'Delete file', field: 'delete', action: 'Delete', onLink: this.resultDeleteHandler }) : ""
+	                    { data: this.state.presents, keyField: 'id', actions: sessionStorage.pos == "teacher" ? ["Download", "Delete"] : ["Download"], onAction: this.actionHandler },
+	                    _react2.default.createElement('div', { header: 'File Name', field: 'path', sortable: true, onLink: this.presentLinkHandler }),
+	                    _react2.default.createElement('div', { header: 'Description', field: 'description', sortable: true }),
+	                    _react2.default.createElement('div', { header: 'Size', field: 'size', sortable: true, format: 'size' }),
+	                    _react2.default.createElement('div', { header: 'Uploaded Time', field: 'uploaded_time', sortable: true, format: 'datatime' })
 	                )
-	            ),
-	            this.state.estimatting ? _react2.default.createElement(_ResultFormWindow2.default, { result: this.state.current, homework: this.props.homework, onSaved: this.scoreSavedHandler, onCancel: this.scoreCancelHandler }) : null
+	            )
 	        );
 	    }
 	});
 
 /***/ }),
-/* 541 */
+/* 534 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	!function(e,t){ true?module.exports=t(__webpack_require__(542)):"function"==typeof define&&define.amd?define(["react"],t):"object"==typeof exports?exports["react-upload-file"]=t(require("react")):e["react-upload-file"]=t(e.React)}(this,function(e){return function(e){function t(n){if(o[n])return o[n].exports;var r=o[n]={exports:{},id:n,loaded:!1};return e[n].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var o={};return t.m=e,t.c=o,t.p="",t(0)}([function(e,t,o){e.exports=o(1)},function(e,t,o){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function r(e){if(Array.isArray(e)){for(var t=0,o=Array(e.length);t<e.length;t++)o[t]=e[t];return o}return Array.from(e)}function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function s(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function p(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var a=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var o=arguments[t];for(var n in o)Object.prototype.hasOwnProperty.call(o,n)&&(e[n]=o[n])}return e},u="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},l=function(){function e(e,t){for(var o=0;o<t.length;o++){var n=t[o];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,o,n){return o&&e(t.prototype,o),n&&e(t,n),t}}(),f=o(2),c=n(f),d=function(e){function t(e){i(this,t);var o=s(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));o.state={xhrList:[],currentXHRId:0},o.commonChooseFile=function(e){if("ajax-upload-file-input"!==e.target.name){var t=o.beforeChoose();if(t!==!0&&void 0!==t)return;o.input.click()}},o.commonChangeFile=function(e){o.files=o.input.files,o.didChoose(o.files),o.props.uploadFileButton||o.commonUploadFile(e)},o.commonUploadFile=function(e){if(!o.files||!o.files.length)return!1;if(!o.baseUrl)throw new Error("baseUrl missed in options");var t=e===!0||o.beforeUpload(o.files);if(!t)return!1;var n=new FormData;n=o.appendFieldsToFormData(n);for(var i=u(o.fileFieldName),s=0===o.numberLimit?o.files.length:Math.min(o.files.length,o.numberLimit),p=s-1;p>=0;p--)if("function"===i){var a=o.files[p],l=o.fileFieldName(a);n.append(l,a)}else if("string"===i){var f=o.files[p];n.append(o.fileFieldName,f)}else{var c=o.files[p];n.append(c.name,c)}var d=o.baseUrl,y="function"==typeof o.query?o.query(o.files):o.query,m=d.indexOf("?"),b=void 0;m>-1&&(b=d.substring(m),d=d.substring(0,m)),y&&!function(){b&&console.warn("Your url contains query string, which will be ignored when options.query is set.");var e=[];Object.keys(y).forEach(function(t){return e.push(t+"="+y[t])}),b="?"+e.join("&")}(),b=b||"";var h=""+d+b,T=new XMLHttpRequest;T.open("post",h,!0),T.withCredentials=o.withCredentials;var v=o.requestHeaders;v&&Object.keys(v).forEach(function(e){return T.setRequestHeader(e,v[e])}),o.timeout&&(T.timeout=o.timeout,T.addEventListener("timeout",function(){o.uploadError({type:"408",message:"Request Timeout"})}),setTimeout(function(){},o.timeout)),T.addEventListener("load",function(){o.input.value="";var e="json"===o.dataType?JSON.parse(T.responseText):T.responseText;o.uploadSuccess(e)}),T.addEventListener("error",function(){var e="json"===o.dataType?JSON.parse(T.responseText):T.responseText;o.uploadError({type:e.type,message:e.message})}),T.addEventListener("progress",function(e){o.uploading(e)});var P=o.state.xhrList.length-1;return T.addEventListener("abort",function(){o.onAbort(P)}),T.send(n),o.setState({currentXHRId:P,xhrList:[].concat(r(o.state.xhrList),[T])}),o.didUpload(o.files,o.state.currentXHRId),!0},o.appendFieldsToFormData=function(e){var t="function"==typeof o.body?o.body():o.body;return t&&Object.keys(t).forEach(function(o){e.append(o,t[o])}),e},o.processFile=function(e){o.files=e(o.files)},o.manuallyChooseFile=function(){o.commonChooseFile()},o.manuallyUploadFile=function(e){o.files=e&&e.length?e:o.files,o.commonUploadFile(!0)},o.abort=function(e){e?o.state.xhrList[e].abort():o.state.xhrList[o.state.currentXHRId].abort()};var n=function(){},p=a({dataType:"json",timeout:0,numberLimit:0,userAgent:window.navigator.userAgent,multiple:!1,withCredentials:!1,beforeChoose:n,didChoose:n,beforeUpload:n,didUpload:n,uploading:n,uploadSuccess:n,uploadError:n,uploadFail:n,onAbort:n},e.options),l=parseInt(p.timeout,10);p.timeout=Number.isInteger(l)&&l>0?l:0;var f=p.dataType&&p.dataType.toLowerCase();return p.dataType="json"!==f&&"text",Object.keys(p).forEach(function(e){o[e]=p[e]}),o}return p(t,e),l(t,[{key:"componentDidMount",value:function(){this.input=document.querySelector("[name=ajax-upload-file-input]")}},{key:"render",value:function(){var e={accept:this.props.options.accept,multiple:this.props.options.multiple},t=c.default.cloneElement(this.props.chooseFileButton,{onClick:this.commonChooseFile},[c.default.createElement("input",a({type:"file",name:"ajax-upload-file-input",style:{display:"none"},onChange:this.commonChangeFile},e,{key:"file-button"}))]),o=this.props.uploadFileButton&&c.default.cloneElement(this.props.uploadFileButton,{onClick:this.commonUploadFile});return c.default.createElement("div",{style:{display:"inline-block"}},t,o)}}]),t}(f.Component);d.propTypes={options:f.PropTypes.shape({baseUrl:f.PropTypes.string.isRequired,query:f.PropTypes.oneOfType([f.PropTypes.object,f.PropTypes.func]),body:f.PropTypes.oneOfType([f.PropTypes.object,f.PropTypes.func]),dataType:f.PropTypes.string,timeout:f.PropTypes.number,numberLimit:f.PropTypes.oneOfType([f.PropTypes.number,f.PropTypes.func]),fileFieldName:f.PropTypes.oneOfType([f.PropTypes.string,f.PropTypes.func]),withCredentials:f.PropTypes.bool,requestHeaders:f.PropTypes.object,accept:f.PropTypes.string,multiple:f.PropTypes.bool,userAgent:f.PropTypes.string,beforeChoose:f.PropTypes.func,didChoose:f.PropTypes.func,beforeUpload:f.PropTypes.func,didUpload:f.PropTypes.func,uploading:f.PropTypes.func,uploadSuccess:f.PropTypes.func,uploadError:f.PropTypes.func,uploadFail:f.PropTypes.func,onAbort:f.PropTypes.func}).isRequired,style:f.PropTypes.object,className:f.PropTypes.string,chooseFileButton:f.PropTypes.element.isRequired,uploadFileButton:f.PropTypes.element},d.defaultProps={chooseFileButton:c.default.createElement("button",null)},t.default=d},function(t,o){t.exports=e}])});
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.deleteItem = exports.updateItem = exports.deleteFile = exports.downFile = exports.createItem = exports.findById = exports.findAll = undefined;
+	
+	var _rest = __webpack_require__(347);
+	
+	var rest = _interopRequireWildcard(_rest);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	var url = "/presents";
+	
+	var findAll = exports.findAll = function findAll(queryParams) {
+	  return rest.get(url, queryParams);
+	};
+	
+	var findById = exports.findById = function findById(id) {
+	  return rest.get(url + "/" + id);
+	};
+	
+	var createItem = exports.createItem = function createItem(student) {
+	  return rest.post(url, student);
+	};
+	
+	var downFile = exports.downFile = function downFile(filename) {
+	  return rest.post("/download", filename);
+	};
+	
+	var deleteFile = exports.deleteFile = function deleteFile(filename) {
+	  return rest.post("/deletefile", filename);
+	};
+	
+	var updateItem = exports.updateItem = function updateItem(student) {
+	  return rest.put(url, student);
+	};
+	
+	var deleteItem = exports.deleteItem = function deleteItem(id) {
+	  return rest.del(url + "/" + id);
+	};
 
 /***/ }),
-/* 542 */
+/* 535 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	!function(e,t){ true?module.exports=t(__webpack_require__(536)):"function"==typeof define&&define.amd?define(["react"],t):"object"==typeof exports?exports["react-upload-file"]=t(require("react")):e["react-upload-file"]=t(e.React)}(this,function(e){return function(e){function t(n){if(o[n])return o[n].exports;var r=o[n]={exports:{},id:n,loaded:!1};return e[n].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var o={};return t.m=e,t.c=o,t.p="",t(0)}([function(e,t,o){e.exports=o(1)},function(e,t,o){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function r(e){if(Array.isArray(e)){for(var t=0,o=Array(e.length);t<e.length;t++)o[t]=e[t];return o}return Array.from(e)}function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function s(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function p(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var a=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var o=arguments[t];for(var n in o)Object.prototype.hasOwnProperty.call(o,n)&&(e[n]=o[n])}return e},u="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},l=function(){function e(e,t){for(var o=0;o<t.length;o++){var n=t[o];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,o,n){return o&&e(t.prototype,o),n&&e(t,n),t}}(),f=o(2),c=n(f),d=function(e){function t(e){i(this,t);var o=s(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));o.state={xhrList:[],currentXHRId:0},o.commonChooseFile=function(e){if("ajax-upload-file-input"!==e.target.name){var t=o.beforeChoose();if(t!==!0&&void 0!==t)return;o.input.click()}},o.commonChangeFile=function(e){o.files=o.input.files,o.didChoose(o.files),o.props.uploadFileButton||o.commonUploadFile(e)},o.commonUploadFile=function(e){if(!o.files||!o.files.length)return!1;if(!o.baseUrl)throw new Error("baseUrl missed in options");var t=e===!0||o.beforeUpload(o.files);if(!t)return!1;var n=new FormData;n=o.appendFieldsToFormData(n);for(var i=u(o.fileFieldName),s=0===o.numberLimit?o.files.length:Math.min(o.files.length,o.numberLimit),p=s-1;p>=0;p--)if("function"===i){var a=o.files[p],l=o.fileFieldName(a);n.append(l,a)}else if("string"===i){var f=o.files[p];n.append(o.fileFieldName,f)}else{var c=o.files[p];n.append(c.name,c)}var d=o.baseUrl,y="function"==typeof o.query?o.query(o.files):o.query,m=d.indexOf("?"),b=void 0;m>-1&&(b=d.substring(m),d=d.substring(0,m)),y&&!function(){b&&console.warn("Your url contains query string, which will be ignored when options.query is set.");var e=[];Object.keys(y).forEach(function(t){return e.push(t+"="+y[t])}),b="?"+e.join("&")}(),b=b||"";var h=""+d+b,T=new XMLHttpRequest;T.open("post",h,!0),T.withCredentials=o.withCredentials;var v=o.requestHeaders;v&&Object.keys(v).forEach(function(e){return T.setRequestHeader(e,v[e])}),o.timeout&&(T.timeout=o.timeout,T.addEventListener("timeout",function(){o.uploadError({type:"408",message:"Request Timeout"})}),setTimeout(function(){},o.timeout)),T.addEventListener("load",function(){o.input.value="";var e="json"===o.dataType?JSON.parse(T.responseText):T.responseText;o.uploadSuccess(e)}),T.addEventListener("error",function(){var e="json"===o.dataType?JSON.parse(T.responseText):T.responseText;o.uploadError({type:e.type,message:e.message})}),T.addEventListener("progress",function(e){o.uploading(e)});var P=o.state.xhrList.length-1;return T.addEventListener("abort",function(){o.onAbort(P)}),T.send(n),o.setState({currentXHRId:P,xhrList:[].concat(r(o.state.xhrList),[T])}),o.didUpload(o.files,o.state.currentXHRId),!0},o.appendFieldsToFormData=function(e){var t="function"==typeof o.body?o.body():o.body;return t&&Object.keys(t).forEach(function(o){e.append(o,t[o])}),e},o.processFile=function(e){o.files=e(o.files)},o.manuallyChooseFile=function(){o.commonChooseFile()},o.manuallyUploadFile=function(e){o.files=e&&e.length?e:o.files,o.commonUploadFile(!0)},o.abort=function(e){e?o.state.xhrList[e].abort():o.state.xhrList[o.state.currentXHRId].abort()};var n=function(){},p=a({dataType:"json",timeout:0,numberLimit:0,userAgent:window.navigator.userAgent,multiple:!1,withCredentials:!1,beforeChoose:n,didChoose:n,beforeUpload:n,didUpload:n,uploading:n,uploadSuccess:n,uploadError:n,uploadFail:n,onAbort:n},e.options),l=parseInt(p.timeout,10);p.timeout=Number.isInteger(l)&&l>0?l:0;var f=p.dataType&&p.dataType.toLowerCase();return p.dataType="json"!==f&&"text",Object.keys(p).forEach(function(e){o[e]=p[e]}),o}return p(t,e),l(t,[{key:"componentDidMount",value:function(){this.input=document.querySelector("[name=ajax-upload-file-input]")}},{key:"render",value:function(){var e={accept:this.props.options.accept,multiple:this.props.options.multiple},t=c.default.cloneElement(this.props.chooseFileButton,{onClick:this.commonChooseFile},[c.default.createElement("input",a({type:"file",name:"ajax-upload-file-input",style:{display:"none"},onChange:this.commonChangeFile},e,{key:"file-button"}))]),o=this.props.uploadFileButton&&c.default.cloneElement(this.props.uploadFileButton,{onClick:this.commonUploadFile});return c.default.createElement("div",{style:{display:"inline-block"}},t,o)}}]),t}(f.Component);d.propTypes={options:f.PropTypes.shape({baseUrl:f.PropTypes.string.isRequired,query:f.PropTypes.oneOfType([f.PropTypes.object,f.PropTypes.func]),body:f.PropTypes.oneOfType([f.PropTypes.object,f.PropTypes.func]),dataType:f.PropTypes.string,timeout:f.PropTypes.number,numberLimit:f.PropTypes.oneOfType([f.PropTypes.number,f.PropTypes.func]),fileFieldName:f.PropTypes.oneOfType([f.PropTypes.string,f.PropTypes.func]),withCredentials:f.PropTypes.bool,requestHeaders:f.PropTypes.object,accept:f.PropTypes.string,multiple:f.PropTypes.bool,userAgent:f.PropTypes.string,beforeChoose:f.PropTypes.func,didChoose:f.PropTypes.func,beforeUpload:f.PropTypes.func,didUpload:f.PropTypes.func,uploading:f.PropTypes.func,uploadSuccess:f.PropTypes.func,uploadError:f.PropTypes.func,uploadFail:f.PropTypes.func,onAbort:f.PropTypes.func}).isRequired,style:f.PropTypes.object,className:f.PropTypes.string,chooseFileButton:f.PropTypes.element.isRequired,uploadFileButton:f.PropTypes.element},d.defaultProps={chooseFileButton:c.default.createElement("button",null)},t.default=d},function(t,o){t.exports=e}])});
+
+/***/ }),
+/* 536 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(543);
+	module.exports = __webpack_require__(537);
 
 
 /***/ }),
-/* 543 */
+/* 537 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -73230,24 +72737,24 @@
 	
 	var _assign = __webpack_require__(166);
 	
-	var ReactBaseClasses = __webpack_require__(544);
-	var ReactChildren = __webpack_require__(553);
-	var ReactDOMFactories = __webpack_require__(561);
-	var ReactElement = __webpack_require__(555);
-	var ReactPropTypes = __webpack_require__(567);
-	var ReactVersion = __webpack_require__(569);
+	var ReactBaseClasses = __webpack_require__(538);
+	var ReactChildren = __webpack_require__(547);
+	var ReactDOMFactories = __webpack_require__(555);
+	var ReactElement = __webpack_require__(549);
+	var ReactPropTypes = __webpack_require__(561);
+	var ReactVersion = __webpack_require__(563);
 	
-	var createReactClass = __webpack_require__(570);
-	var onlyChild = __webpack_require__(576);
+	var createReactClass = __webpack_require__(564);
+	var onlyChild = __webpack_require__(570);
 	
 	var createElement = ReactElement.createElement;
 	var createFactory = ReactElement.createFactory;
 	var cloneElement = ReactElement.cloneElement;
 	
 	if (process.env.NODE_ENV !== 'production') {
-	  var lowPriorityWarning = __webpack_require__(552);
-	  var canDefineProperty = __webpack_require__(549);
-	  var ReactElementValidator = __webpack_require__(562);
+	  var lowPriorityWarning = __webpack_require__(546);
+	  var canDefineProperty = __webpack_require__(543);
+	  var ReactElementValidator = __webpack_require__(556);
 	  var didWarnPropTypesDeprecated = false;
 	  createElement = ReactElementValidator.createElement;
 	  createFactory = ReactElementValidator.createFactory;
@@ -73350,7 +72857,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 544 */
+/* 538 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -73363,15 +72870,15 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(545),
+	var _prodInvariant = __webpack_require__(539),
 	    _assign = __webpack_require__(166);
 	
-	var ReactNoopUpdateQueue = __webpack_require__(546);
+	var ReactNoopUpdateQueue = __webpack_require__(540);
 	
-	var canDefineProperty = __webpack_require__(549);
-	var emptyObject = __webpack_require__(550);
-	var invariant = __webpack_require__(551);
-	var lowPriorityWarning = __webpack_require__(552);
+	var canDefineProperty = __webpack_require__(543);
+	var emptyObject = __webpack_require__(544);
+	var invariant = __webpack_require__(545);
+	var lowPriorityWarning = __webpack_require__(546);
 	
 	/**
 	 * Base class helpers for the updating state of a component.
@@ -73496,7 +73003,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 545 */
+/* 539 */
 /***/ (function(module, exports) {
 
 	/**
@@ -73537,7 +73044,7 @@
 	module.exports = reactProdInvariant;
 
 /***/ }),
-/* 546 */
+/* 540 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -73550,7 +73057,7 @@
 	
 	'use strict';
 	
-	var warning = __webpack_require__(547);
+	var warning = __webpack_require__(541);
 	
 	function warnNoop(publicInstance, callerName) {
 	  if (process.env.NODE_ENV !== 'production') {
@@ -73635,7 +73142,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 547 */
+/* 541 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -73648,7 +73155,7 @@
 	
 	'use strict';
 	
-	var emptyFunction = __webpack_require__(548);
+	var emptyFunction = __webpack_require__(542);
 	
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -73703,7 +73210,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 548 */
+/* 542 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -73744,7 +73251,7 @@
 	module.exports = emptyFunction;
 
 /***/ }),
-/* 549 */
+/* 543 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -73773,7 +73280,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 550 */
+/* 544 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -73796,7 +73303,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 551 */
+/* 545 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -73855,7 +73362,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 552 */
+/* 546 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -73923,7 +73430,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 553 */
+/* 547 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -73936,11 +73443,11 @@
 	
 	'use strict';
 	
-	var PooledClass = __webpack_require__(554);
-	var ReactElement = __webpack_require__(555);
+	var PooledClass = __webpack_require__(548);
+	var ReactElement = __webpack_require__(549);
 	
-	var emptyFunction = __webpack_require__(548);
-	var traverseAllChildren = __webpack_require__(558);
+	var emptyFunction = __webpack_require__(542);
+	var traverseAllChildren = __webpack_require__(552);
 	
 	var twoArgumentPooler = PooledClass.twoArgumentPooler;
 	var fourArgumentPooler = PooledClass.fourArgumentPooler;
@@ -74116,7 +73623,7 @@
 	module.exports = ReactChildren;
 
 /***/ }),
-/* 554 */
+/* 548 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -74130,9 +73637,9 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(545);
+	var _prodInvariant = __webpack_require__(539);
 	
-	var invariant = __webpack_require__(551);
+	var invariant = __webpack_require__(545);
 	
 	/**
 	 * Static poolers. Several custom versions for each potential number of
@@ -74231,7 +73738,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 555 */
+/* 549 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -74246,13 +73753,13 @@
 	
 	var _assign = __webpack_require__(166);
 	
-	var ReactCurrentOwner = __webpack_require__(556);
+	var ReactCurrentOwner = __webpack_require__(550);
 	
-	var warning = __webpack_require__(547);
-	var canDefineProperty = __webpack_require__(549);
+	var warning = __webpack_require__(541);
+	var canDefineProperty = __webpack_require__(543);
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	
-	var REACT_ELEMENT_TYPE = __webpack_require__(557);
+	var REACT_ELEMENT_TYPE = __webpack_require__(551);
 	
 	var RESERVED_PROPS = {
 	  key: true,
@@ -74575,7 +74082,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 556 */
+/* 550 */
 /***/ (function(module, exports) {
 
 	/**
@@ -74606,7 +74113,7 @@
 	module.exports = ReactCurrentOwner;
 
 /***/ }),
-/* 557 */
+/* 551 */
 /***/ (function(module, exports) {
 
 	/**
@@ -74628,7 +74135,7 @@
 	module.exports = REACT_ELEMENT_TYPE;
 
 /***/ }),
-/* 558 */
+/* 552 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -74641,15 +74148,15 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(545);
+	var _prodInvariant = __webpack_require__(539);
 	
-	var ReactCurrentOwner = __webpack_require__(556);
-	var REACT_ELEMENT_TYPE = __webpack_require__(557);
+	var ReactCurrentOwner = __webpack_require__(550);
+	var REACT_ELEMENT_TYPE = __webpack_require__(551);
 	
-	var getIteratorFn = __webpack_require__(559);
-	var invariant = __webpack_require__(551);
-	var KeyEscapeUtils = __webpack_require__(560);
-	var warning = __webpack_require__(547);
+	var getIteratorFn = __webpack_require__(553);
+	var invariant = __webpack_require__(545);
+	var KeyEscapeUtils = __webpack_require__(554);
+	var warning = __webpack_require__(541);
 	
 	var SEPARATOR = '.';
 	var SUBSEPARATOR = ':';
@@ -74807,7 +74314,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 559 */
+/* 553 */
 /***/ (function(module, exports) {
 
 	/**
@@ -74850,7 +74357,7 @@
 	module.exports = getIteratorFn;
 
 /***/ }),
-/* 560 */
+/* 554 */
 /***/ (function(module, exports) {
 
 	/**
@@ -74911,7 +74418,7 @@
 	module.exports = KeyEscapeUtils;
 
 /***/ }),
-/* 561 */
+/* 555 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -74924,7 +74431,7 @@
 	
 	'use strict';
 	
-	var ReactElement = __webpack_require__(555);
+	var ReactElement = __webpack_require__(549);
 	
 	/**
 	 * Create a factory that creates HTML tag elements.
@@ -74933,7 +74440,7 @@
 	 */
 	var createDOMFactory = ReactElement.createFactory;
 	if (process.env.NODE_ENV !== 'production') {
-	  var ReactElementValidator = __webpack_require__(562);
+	  var ReactElementValidator = __webpack_require__(556);
 	  createDOMFactory = ReactElementValidator.createFactory;
 	}
 	
@@ -75083,7 +74590,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 562 */
+/* 556 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -75103,16 +74610,16 @@
 	
 	'use strict';
 	
-	var ReactCurrentOwner = __webpack_require__(556);
-	var ReactComponentTreeHook = __webpack_require__(563);
-	var ReactElement = __webpack_require__(555);
+	var ReactCurrentOwner = __webpack_require__(550);
+	var ReactComponentTreeHook = __webpack_require__(557);
+	var ReactElement = __webpack_require__(549);
 	
-	var checkReactTypeSpec = __webpack_require__(564);
+	var checkReactTypeSpec = __webpack_require__(558);
 	
-	var canDefineProperty = __webpack_require__(549);
-	var getIteratorFn = __webpack_require__(559);
-	var warning = __webpack_require__(547);
-	var lowPriorityWarning = __webpack_require__(552);
+	var canDefineProperty = __webpack_require__(543);
+	var getIteratorFn = __webpack_require__(553);
+	var warning = __webpack_require__(541);
+	var lowPriorityWarning = __webpack_require__(546);
 	
 	function getDeclarationErrorAddendum() {
 	  if (ReactCurrentOwner.current) {
@@ -75341,7 +74848,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 563 */
+/* 557 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -75355,12 +74862,12 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(545);
+	var _prodInvariant = __webpack_require__(539);
 	
-	var ReactCurrentOwner = __webpack_require__(556);
+	var ReactCurrentOwner = __webpack_require__(550);
 	
-	var invariant = __webpack_require__(551);
-	var warning = __webpack_require__(547);
+	var invariant = __webpack_require__(545);
+	var warning = __webpack_require__(541);
 	
 	function isNative(fn) {
 	  // Based on isNative() from Lodash
@@ -75723,7 +75230,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 564 */
+/* 558 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -75736,13 +75243,13 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(545);
+	var _prodInvariant = __webpack_require__(539);
 	
-	var ReactPropTypeLocationNames = __webpack_require__(565);
-	var ReactPropTypesSecret = __webpack_require__(566);
+	var ReactPropTypeLocationNames = __webpack_require__(559);
+	var ReactPropTypesSecret = __webpack_require__(560);
 	
-	var invariant = __webpack_require__(551);
-	var warning = __webpack_require__(547);
+	var invariant = __webpack_require__(545);
+	var warning = __webpack_require__(541);
 	
 	var ReactComponentTreeHook;
 	
@@ -75752,7 +75259,7 @@
 	  // https://github.com/facebook/react/issues/7240
 	  // Remove the inline requires when we don't need them anymore:
 	  // https://github.com/facebook/react/pull/7178
-	  ReactComponentTreeHook = __webpack_require__(563);
+	  ReactComponentTreeHook = __webpack_require__(557);
 	}
 	
 	var loggedTypeFailures = {};
@@ -75794,7 +75301,7 @@
 	
 	        if (process.env.NODE_ENV !== 'production') {
 	          if (!ReactComponentTreeHook) {
-	            ReactComponentTreeHook = __webpack_require__(563);
+	            ReactComponentTreeHook = __webpack_require__(557);
 	          }
 	          if (debugID !== null) {
 	            componentStackInfo = ReactComponentTreeHook.getStackAddendumByID(debugID);
@@ -75813,7 +75320,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 565 */
+/* 559 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -75841,7 +75348,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 566 */
+/* 560 */
 /***/ (function(module, exports) {
 
 	/**
@@ -75860,7 +75367,7 @@
 	module.exports = ReactPropTypesSecret;
 
 /***/ }),
-/* 567 */
+/* 561 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -75873,15 +75380,15 @@
 	
 	'use strict';
 	
-	var _require = __webpack_require__(555),
+	var _require = __webpack_require__(549),
 	    isValidElement = _require.isValidElement;
 	
-	var factory = __webpack_require__(568);
+	var factory = __webpack_require__(562);
 	
 	module.exports = factory(isValidElement);
 
 /***/ }),
-/* 568 */
+/* 562 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -75906,7 +75413,7 @@
 
 
 /***/ }),
-/* 569 */
+/* 563 */
 /***/ (function(module, exports) {
 
 	/**
@@ -75922,7 +75429,7 @@
 	module.exports = '15.6.2';
 
 /***/ }),
-/* 570 */
+/* 564 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -75935,19 +75442,19 @@
 	
 	'use strict';
 	
-	var _require = __webpack_require__(544),
+	var _require = __webpack_require__(538),
 	    Component = _require.Component;
 	
-	var _require2 = __webpack_require__(555),
+	var _require2 = __webpack_require__(549),
 	    isValidElement = _require2.isValidElement;
 	
-	var ReactNoopUpdateQueue = __webpack_require__(546);
-	var factory = __webpack_require__(571);
+	var ReactNoopUpdateQueue = __webpack_require__(540);
+	var factory = __webpack_require__(565);
 	
 	module.exports = factory(Component, isValidElement, ReactNoopUpdateQueue);
 
 /***/ }),
-/* 571 */
+/* 565 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -75962,11 +75469,11 @@
 	
 	var _assign = __webpack_require__(166);
 	
-	var emptyObject = __webpack_require__(572);
-	var _invariant = __webpack_require__(573);
+	var emptyObject = __webpack_require__(566);
+	var _invariant = __webpack_require__(567);
 	
 	if (process.env.NODE_ENV !== 'production') {
-	  var warning = __webpack_require__(574);
+	  var warning = __webpack_require__(568);
 	}
 	
 	var MIXINS_KEY = 'mixins';
@@ -76824,7 +76331,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 572 */
+/* 566 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -76847,7 +76354,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 573 */
+/* 567 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -76906,7 +76413,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 574 */
+/* 568 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -76919,7 +76426,7 @@
 	
 	'use strict';
 	
-	var emptyFunction = __webpack_require__(575);
+	var emptyFunction = __webpack_require__(569);
 	
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -76974,7 +76481,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 575 */
+/* 569 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -77015,7 +76522,7 @@
 	module.exports = emptyFunction;
 
 /***/ }),
-/* 576 */
+/* 570 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -77027,11 +76534,11 @@
 	 */
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(545);
+	var _prodInvariant = __webpack_require__(539);
 	
-	var ReactElement = __webpack_require__(555);
+	var ReactElement = __webpack_require__(549);
 	
-	var invariant = __webpack_require__(551);
+	var invariant = __webpack_require__(545);
 	
 	/**
 	 * Returns the first child in a collection of children and verifies that there
@@ -77056,7 +76563,801 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
+/* 571 */
+/***/ (function(module, exports) {
+
+	module.exports = function(data, filename, mime) {
+	    var blob = new Blob([data], {type: mime || 'application/octet-stream'});
+	    if (typeof window.navigator.msSaveBlob !== 'undefined') {
+	        // IE workaround for "HTML7007: One or more blob URLs were 
+	        // revoked by closing the blob for which they were created. 
+	        // These URLs will no longer resolve as the data backing 
+	        // the URL has been freed."
+	        window.navigator.msSaveBlob(blob, filename);
+	    }
+	    else {
+	        var blobURL = window.URL.createObjectURL(blob);
+	        var tempLink = document.createElement('a');
+	        tempLink.style.display = 'none';
+	        tempLink.href = blobURL;
+	        tempLink.setAttribute('download', filename); 
+	        
+	        // Safari thinks _blank anchor are pop ups. We only want to set _blank
+	        // target if the browser does not support the HTML5 download attribute.
+	        // This allows you to download files in desktop safari if pop up blocking 
+	        // is enabled.
+	        if (typeof tempLink.download === 'undefined') {
+	            tempLink.setAttribute('target', '_blank');
+	        }
+	        
+	        document.body.appendChild(tempLink);
+	        tempLink.click();
+	        document.body.removeChild(tempLink);
+	        window.URL.revokeObjectURL(blobURL);
+	    }
+	}
+
+
+/***/ }),
+/* 572 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _ChatService = __webpack_require__(573);
+	
+	var ChatService = _interopRequireWildcard(_ChatService);
+	
+	var _MessageCard = __webpack_require__(574);
+	
+	var _MessageCard2 = _interopRequireDefault(_MessageCard);
+	
+	var _PageHeader = __webpack_require__(373);
+	
+	var _ChatBox = __webpack_require__(575);
+	
+	var _ChatBox2 = _interopRequireDefault(_ChatBox);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'ChatHome',
+	    getInitialState: function getInitialState() {
+	        return { msgs: [], msg_len: 0 };
+	    },
+	    componentDidMount: function componentDidMount() {
+	        this.getMessages();
+	        var intervalId = setInterval(this.getMessages, 3000);
+	        // store intervalId in the state so it can be accessed later:
+	        this.setState({ intervalId: intervalId });
+	    },
+	    componentWillUnmount: function componentWillUnmount() {
+	        // use intervalId from the state to clear the interval
+	        clearInterval(this.state.intervalId);
+	    },
+	    componentDidUpdate: function componentDidUpdate() {
+	        if (this.state.msg_len != this.state.msgs.length) {
+	            var objDiv = document.getElementById("cht_box");
+	            objDiv.scrollTop = objDiv.scrollHeight;
+	            this.setState({ msg_len: this.state.msgs.length });
+	        }
+	    },
+	    getMessages: function getMessages() {
+	        var _this = this;
+	
+	        fetch(window.location.protocol + 'messages').then(function (response) {
+	            return response.json();
+	        }).then(function (data) {
+	            _this.setState({ msgs: data });
+	        });
+	    },
+	    deleteHandler: function deleteHandler(msg) {
+	        ChatService.deleteItem(this.state.msg.id).then(function () {
+	            return window.location.hash = "chat";
+	        });
+	    },
+	    editHandler: function editHandler(msg) {
+	        window.location.hash = "#chat/" + msg.id + "/edit";
+	    },
+	    sendHandler: function sendHandler(msg, type) {
+	        var _this2 = this;
+	
+	        ChatService.createItem({ user_id: sessionStorage.token, pos: sessionStorage.pos, text: msg, type: type, course_id: this.props.course.id }).then(function () {
+	            _this2.getMessages();
+	        });
+	    },
+	    render: function render() {
+	        var rows = [];
+	        rows = this.state.msgs.map(function (item) {
+	            return _react2.default.createElement(_MessageCard2.default, { data: item });
+	        });
+	        // for (let i = 0 ; i < this.state.msgs.length; i++) {
+	        //     rows.push(<MessageCard data={this.state.msgs[i]}/>);
+	        // }
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'slds-card' },
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'slds-m-around--medium slds-scrollable--y', id: 'cht_box' },
+	                rows
+	            ),
+	            _react2.default.createElement(_ChatBox2.default, { onSend: this.sendHandler })
+	        );
+	    }
+	});
+
+/***/ }),
+/* 573 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.deleteItem = exports.updateItem = exports.createItem = exports.findByData = exports.findById = exports.findAll = undefined;
+	
+	var _rest = __webpack_require__(347);
+	
+	var rest = _interopRequireWildcard(_rest);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	var url = "/messages";
+	
+	var findAll = exports.findAll = function findAll(queryParams) {
+	  return rest.get(url, queryParams);
+	};
+	
+	var findById = exports.findById = function findById(id) {
+	  return rest.get(url + "/" + id);
+	};
+	
+	var findByData = exports.findByData = function findByData(student) {
+	  return rest.post('/message', student);
+	};
+	
+	var createItem = exports.createItem = function createItem(student) {
+	  return rest.post(url, student);
+	};
+	
+	var updateItem = exports.updateItem = function updateItem(student) {
+	  return rest.put(url, student);
+	};
+	
+	var deleteItem = exports.deleteItem = function deleteItem(id) {
+	  return rest.del(url + "/" + id);
+	};
+
+/***/ }),
+/* 574 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _CourseService = __webpack_require__(370);
+	
+	var CourseService = _interopRequireWildcard(_CourseService);
+	
+	var _DataGrid = __webpack_require__(492);
+	
+	var _DataGrid2 = _interopRequireDefault(_DataGrid);
+	
+	var _Icons = __webpack_require__(364);
+	
+	var _CourseFormWindow = __webpack_require__(494);
+	
+	var _CourseFormWindow2 = _interopRequireDefault(_CourseFormWindow);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'MessageCard',
+	    attachLinkHandler: function attachLinkHandler(event) {
+	        var link = document.createElement('a');
+	        link.download = this.props.data.text;
+	        link.href = window.location.protocol + '/upload/' + link.download;
+	        var clickEvent = document.createEvent("MouseEvent");
+	        clickEvent.initEvent("click", true, true);
+	
+	        link.dispatchEvent(clickEvent);
+	        event.preventDefault();
+	        // PresentationService.downFile({filename: present.path}).then(downloaded => {
+	
+	        //     // fileDownload(downloaded, present.path);
+	        //     // writeFile(present.path, downloaded, function (err) {
+	        //     //     if (err) return console.log(err)
+	        //     //     console.log('file is written')
+	        //     //   })
+	        //     var link = document.createElement('a');
+	        //     link.download = present.path;
+	        //     link.href = 'http://localhost:5000/upload/'+present.path;
+	        // });
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	                'section',
+	                { className: 'slds-card__body' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-media__body ' },
+	                    _react2.default.createElement(
+	                        'small',
+	                        null,
+	                        this.props.data.pos == "teacher" ? 'Professor ' + this.props.data.user_name : null
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'span',
+	                    { className: 'slds-input' },
+	                    !this.props.data.type ? this.props.data.text : _react2.default.createElement(
+	                        'a',
+	                        { href: '#', className: 'slds-badge', onClick: this.attachLinkHandler },
+	                        this.props.data.text
+	                    )
+	                )
+	            )
+	        );
+	    }
+	});
+
+/***/ }),
+/* 575 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _StudentService = __webpack_require__(346);
+	
+	var StudentService = _interopRequireWildcard(_StudentService);
+	
+	var _Icons = __webpack_require__(364);
+	
+	var _SearchBox = __webpack_require__(366);
+	
+	var _SearchBox2 = _interopRequireDefault(_SearchBox);
+	
+	var _fileInput = __webpack_require__(524);
+	
+	var _fileInput2 = _interopRequireDefault(_fileInput);
+	
+	var _fineUploaderWrappers = __webpack_require__(526);
+	
+	var _fineUploaderWrappers2 = _interopRequireDefault(_fineUploaderWrappers);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var uploader = new _fineUploaderWrappers2.default({
+	    options: {
+	        request: {
+	            endpoint: 'upload/'
+	        },
+	        autoUpload: false
+	    }
+	});
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'ChatBox',
+	    getInitialState: function getInitialState() {
+	        return { searchKey: "" };
+	    },
+	    handleKeyPress: function handleKeyPress(target) {
+	        if (target.charCode == 13) {
+	            if (this.state.searchKey != "") {
+	                this.props.onSend(this.state.searchKey, 0);
+	                this.setState({ searchKey: "" });
+	            }
+	            if (this.state.attachment) {
+	                uploader.methods.uploadStoredFiles();
+	            }
+	        }
+	    },
+	
+	    changeHandler: function changeHandler(event) {
+	        var inputKey = event.target.value;
+	        this.setState({ searchKey: inputKey });
+	    },
+	    componentDidMount: function componentDidMount() {
+	        var _this = this;
+	
+	        uploader.on('complete', function (id, name, response) {
+	            // handle completed upload
+	            _this.props.onSend(_this.state.attachment, 1);
+	            _this.setState({ attachment: "" });
+	        });
+	        uploader.on('submitted', function (id) {
+	            _this.setState({ attachment: uploader.methods.getFile(id).name });
+	        });
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'slds-form-element' },
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'slds-form-element__control' },
+	                _react2.default.createElement('input', { className: 'slds-input', type: 'text',
+	                    placeholder: this.props.placeholder || 'Enter your message...',
+	                    value: this.state.searchKey,
+	                    style: { minWidth: "200px", marginTop: "1px" },
+	                    onChange: this.changeHandler,
+	                    onKeyPress: this.handleKeyPress }),
+	                _react2.default.createElement(
+	                    _fileInput2.default,
+	                    { accept: '*', uploader: uploader },
+	                    _react2.default.createElement(
+	                        'span',
+	                        { 'class': 'icon ion-upload' },
+	                        _react2.default.createElement(_Icons.Icon, { name: 'link' })
+	                    )
+	                ),
+	                '\xA0',
+	                _react2.default.createElement(
+	                    'span',
+	                    { className: 'slds-badge' },
+	                    this.state.attachment ? this.state.attachment : ""
+	                )
+	            )
+	        );
+	    }
+	});
+
+/***/ }),
+/* 576 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _CourseForm = __webpack_require__(495);
+	
+	var _CourseForm2 = _interopRequireDefault(_CourseForm);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'CourseFormWrapper',
+	    saveHandler: function saveHandler() {
+	        this.refs.form.save();
+	    },
+	    savedHandler: function savedHandler() {
+	        window.location.hash = "#course/" + this.props.course.code;
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'slds-m-around--medium' },
+	            _react2.default.createElement(_CourseForm2.default, { ref: 'form', course: this.props.course, onSaved: this.savedHandler }),
+	            _react2.default.createElement(
+	                'button',
+	                { className: 'slds-button slds-button--neutral slds-button--brand slds-m-around--small', onClick: this.saveHandler },
+	                'Save'
+	            )
+	        );
+	    }
+	});
+
+/***/ }),
 /* 577 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _moment = __webpack_require__(374);
+	
+	var _moment2 = _interopRequireDefault(_moment);
+	
+	var _HomeworkService = __webpack_require__(520);
+	
+	var HomeworkService = _interopRequireWildcard(_HomeworkService);
+	
+	var _PageHeader = __webpack_require__(373);
+	
+	var _HomeworkView = __webpack_require__(578);
+	
+	var _HomeworkView2 = _interopRequireDefault(_HomeworkView);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// import HomeworkEnrollmentCard from './HomeworkEnrollmentCard';
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'HomeworkRecord',
+	    getInitialState: function getInitialState() {
+	        return { homework: {} };
+	    },
+	    componentDidMount: function componentDidMount() {
+	        console.log(params);
+	        this.getHomework(this.props.params.homeworkId);
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(props) {
+	        this.getHomework(props.params.homeworkId);
+	    },
+	    getHomework: function getHomework(id) {
+	        var _this = this;
+	
+	        HomeworkService.findById(id).then(function (homework) {
+	            return _this.setState({ homework: homework });
+	        });
+	    },
+	    deleteHandler: function deleteHandler() {
+	        HomeworkService.deleteItem(this.state.homework.id).then(function () {
+	            return window.location.hash = "homeworks";
+	        });
+	    },
+	    editHandler: function editHandler() {
+	        window.location.hash = "#homework/" + this.state.homework.id + "/edit";
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	                _PageHeader.RecordHeader,
+	                { type: 'Homework',
+	                    icon: 'report',
+	                    title: this.state.homework.title,
+	                    onEdit: sessionStorage.pos == "teacher" ? this.editHandler : null,
+	                    onDelete: sessionStorage.pos == "teacher" ? this.deleteHandler : null },
+	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Details', value: this.state.homework.details })
+	            ),
+	            _react2.default.cloneElement(this.props.children, { homework: this.state.homework })
+	        );
+	    }
+	});
+
+/***/ }),
+/* 578 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _HomeworkResultCard = __webpack_require__(579);
+	
+	var _HomeworkResultCard2 = _interopRequireDefault(_HomeworkResultCard);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: "HomeworkView",
+	    render: function render() {
+	        var homework = this.props.homework;
+	        return _react2.default.createElement(
+	            "div",
+	            { className: "slds-m-around--medium" },
+	            _react2.default.createElement(
+	                "div",
+	                { className: "slds-grid slds-wrap slds-m-bottom--large" },
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium" },
+	                    _react2.default.createElement(
+	                        "dl",
+	                        { className: "page-header--rec-home__detail-item" },
+	                        _react2.default.createElement(
+	                            "dt",
+	                            null,
+	                            _react2.default.createElement(
+	                                "p",
+	                                { className: "slds-text-heading--label slds-truncate", title: "Field 1" },
+	                                "Course"
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            "dd",
+	                            null,
+	                            _react2.default.createElement(
+	                                "p",
+	                                { className: "slds-text-body--regular slds-truncate", title: "course_name" },
+	                                homework.course_name
+	                            )
+	                        )
+	                    )
+	                )
+	            )
+	        );
+	    }
+	});
+
+/***/ }),
+/* 579 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _ResultService = __webpack_require__(500);
+	
+	var ResultService = _interopRequireWildcard(_ResultService);
+	
+	var _DataGrid = __webpack_require__(492);
+	
+	var _DataGrid2 = _interopRequireDefault(_DataGrid);
+	
+	var _StudentSearchBox = __webpack_require__(365);
+	
+	var _StudentSearchBox2 = _interopRequireDefault(_StudentSearchBox);
+	
+	var _ResultFormWindow = __webpack_require__(501);
+	
+	var _ResultFormWindow2 = _interopRequireDefault(_ResultFormWindow);
+	
+	var _Icons = __webpack_require__(364);
+	
+	var _reactUploadFile = __webpack_require__(535);
+	
+	var _reactUploadFile2 = _interopRequireDefault(_reactUploadFile);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var assign = Object.assign || __webpack_require__(349);
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'HomeworkResultCard',
+	    getInitialState: function getInitialState() {
+	        return { results: [], submitting: false, estimatting: false, current: null };
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(props) {
+	        this.getResults(props.homework);
+	    },
+	    getResults: function getResults(homework) {
+	        var _this = this;
+	
+	        if (homework) {
+	            ResultService.findByHomework(homework).then(function (results) {
+	                return _this.setState({ results: results });
+	            });
+	        }
+	    },
+	    resultLinkHandler: function resultLinkHandler(result) {
+	        this.setState({ estimatting: true, current: result });
+	    },
+	    resultDeleteHandler: function resultDeleteHandler(result) {
+	        var _this2 = this;
+	
+	        ResultService.deleteFile(result.path).then(function () {
+	            return _this2.getResults(_this2.props.homework);
+	        });
+	    },
+	    studentLinkHandler: function studentLinkHandler(result) {
+	        window.location.hash = "#student/" + result.id;
+	    },
+	    actionHandler: function actionHandler(data, index, value, label) {
+	        var _this3 = this;
+	
+	        switch (index) {
+	            case 0:
+	                this.resultLinkHandler(data);
+	                break;
+	            case 1:
+	                ResultService.deleteItem(data.id).then(function () {
+	                    return _this3.getResults(_this3.props.homework);
+	                });
+	                break;
+	        }
+	    },
+	    submitHomeworkHandler: function submitHomeworkHandler() {
+	        this.setState({ submitting: true });
+	    },
+	    scoreSavedHandler: function scoreSavedHandler() {
+	        this.setState({ estimatting: false });
+	        this.getResults(this.props.homework);
+	    },
+	    scoreCancelHandler: function scoreCancelHandler() {
+	        this.setState({ estimatting: false });
+	    },
+	    render: function render() {
+	        var _this4 = this;
+	
+	        var options = {
+	            baseUrl: '/upload',
+	            query: function query(files) {
+	                var l = files.length;
+	                var queryObj = {};
+	                for (var i = l - 1; i >= 0; --i) {
+	                    queryObj[i] = files[i].name;
+	                }
+	                return queryObj;
+	            },
+	            body: {
+	                purpose: 'save'
+	            },
+	            //   body: (files) => {
+	            //     const l = files.length;
+	            //     const queryObj = {};
+	            //     for(let i = l-1; i >= 0; --i) {
+	            //       queryObj[i] = files[i].name;
+	            //     }
+	            //     return queryObj;
+	            //   },
+	            dataType: 'json',
+	            multiple: false,
+	            numberLimit: 1,
+	            accept: '*',
+	            // fileFieldName: 'file',
+	            fileFieldName: function fileFieldName(file) {
+	                return file.name;
+	            },
+	            withCredentials: false,
+	            requestHeaders: {
+	                'method': 'POST'
+	            },
+	            beforeChoose: function beforeChoose() {
+	                return true;
+	            },
+	            didChoose: function didChoose(files) {
+	                console.log('you choose', typeof files == 'string' ? files : files[0].name);
+	            },
+	            beforeUpload: function beforeUpload(files) {
+	                _this4.setState({ homework: assign(_this4.props.homework, { std_id: sessionStorage.token, path: files[0].name }) });
+	                if (typeof files === 'string') return true;
+	                if (files[0].size < 1024 * 1024 * 20) {
+	
+	                    return true;
+	                }
+	                return false;
+	            },
+	            didUpload: function didUpload(files) {
+	                console.log('you just uploaded', typeof files === 'string' ? files : files[0].name);
+	            },
+	            uploading: function uploading(progress) {
+	                console.log('loading...', progress.loaded / progress.total + '%');
+	            },
+	            uploadSuccess: function uploadSuccess(resp) {
+	                ResultService.createItem(_this4.state.homework).then(function () {
+	                    return _this4.getResults(_this4.props.homework);
+	                }).catch(function (error) {
+	                    var event = new CustomEvent('notify', { detail: 'You already submitted to this homework' });
+	                    document.dispatchEvent(event);
+	                });
+	                console.log('upload success!');
+	            },
+	            uploadError: function uploadError(err) {
+	                alert(err.message);
+	            }
+	        };
+	
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'slds-card' },
+	            _react2.default.createElement(
+	                'header',
+	                { className: 'slds-card__header slds-grid' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-media slds-media--center slds-has-flexi-truncate' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-media__figure' },
+	                        _react2.default.createElement(_Icons.Icon, { name: 'file', size: 'small' })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-media__body' },
+	                        _react2.default.createElement(
+	                            'h3',
+	                            { className: 'slds-text-heading--small slds-truncate' },
+	                            'Results'
+	                        )
+	                    )
+	                ),
+	                sessionStorage.pos == "student" ? _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-no-flex' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-button-group' },
+	                        _react2.default.createElement(_reactUploadFile2.default, { options: options,
+	                            chooseFileButton: _react2.default.createElement(
+	                                'button',
+	                                { className: 'slds-button slds-button--icon-border-filled' },
+	                                _react2.default.createElement(_Icons.ButtonIcon, { name: 'add' })
+	                            ),
+	                            uploadFileButton: _react2.default.createElement(
+	                                'button',
+	                                { className: 'slds-button slds-button--neutral slds-button--small' },
+	                                'Submit'
+	                            ) }),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'slds-button slds-button--icon-border-filled' },
+	                            _react2.default.createElement(_Icons.ButtonIcon, { name: 'down' }),
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'slds-assistive-text' },
+	                                'Show More'
+	                            )
+	                        )
+	                    )
+	                ) : null
+	            ),
+	            _react2.default.createElement(
+	                'section',
+	                { className: 'slds-card__body' },
+	                _react2.default.createElement(
+	                    _DataGrid2.default,
+	                    { data: this.state.results, keyField: 'id', actions: sessionStorage.pos == "teacher" ? ["View Details", "Delete"] : null, onAction: this.actionHandler },
+	                    _react2.default.createElement('div', { header: 'Student Name', field: 'student_name', sortable: true, onLink: this.studentLinkHandler }),
+	                    _react2.default.createElement('div', { header: 'Score', field: 'score', sortable: true }),
+	                    sessionStorage.pos == "teacher" ? _react2.default.createElement('div', { header: 'View details', field: 'details', action: 'Details', onLink: this.resultLinkHandler }) : "",
+	                    sessionStorage.pos == "teacher" ? _react2.default.createElement('div', { header: 'Delete file', field: 'delete', action: 'Delete', onLink: this.resultDeleteHandler }) : ""
+	                )
+	            ),
+	            this.state.estimatting ? _react2.default.createElement(_ResultFormWindow2.default, { result: this.state.current, homework: this.props.homework, onSaved: this.scoreSavedHandler, onCancel: this.scoreCancelHandler }) : null
+	        );
+	    }
+	});
+
+/***/ }),
+/* 580 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -77098,7 +77399,7 @@
 	});
 
 /***/ }),
-/* 578 */
+/* 581 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -77117,11 +77418,11 @@
 	
 	var _PageHeader = __webpack_require__(373);
 	
-	var _StudentList = __webpack_require__(579);
+	var _StudentList = __webpack_require__(582);
 	
 	var _StudentList2 = _interopRequireDefault(_StudentList);
 	
-	var _StudentFormWindow = __webpack_require__(580);
+	var _StudentFormWindow = __webpack_require__(583);
 	
 	var _StudentFormWindow2 = _interopRequireDefault(_StudentFormWindow);
 	
@@ -77170,7 +77471,7 @@
 	});
 
 /***/ }),
-/* 579 */
+/* 582 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -77214,7 +77515,7 @@
 	});
 
 /***/ }),
-/* 580 */
+/* 583 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -77227,7 +77528,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _StudentForm = __webpack_require__(581);
+	var _StudentForm = __webpack_require__(584);
 	
 	var _StudentForm2 = _interopRequireDefault(_StudentForm);
 	
@@ -77294,7 +77595,7 @@
 	});
 
 /***/ }),
-/* 581 */
+/* 584 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -77309,7 +77610,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactAddonsLinkedStateMixin = __webpack_require__(582);
+	var _reactAddonsLinkedStateMixin = __webpack_require__(585);
 	
 	var _reactAddonsLinkedStateMixin2 = _interopRequireDefault(_reactAddonsLinkedStateMixin);
 	
@@ -77370,13 +77671,13 @@
 	});
 
 /***/ }),
-/* 582 */
+/* 585 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(583);
+	module.exports = __webpack_require__(586);
 
 /***/ }),
-/* 583 */
+/* 586 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -77393,8 +77694,8 @@
 	
 	'use strict';
 	
-	var ReactLink = __webpack_require__(584);
-	var ReactStateSetters = __webpack_require__(585);
+	var ReactLink = __webpack_require__(587);
+	var ReactStateSetters = __webpack_require__(588);
 	
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -77417,7 +77718,7 @@
 	module.exports = LinkedStateMixin;
 
 /***/ }),
-/* 584 */
+/* 587 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -77491,7 +77792,7 @@
 	module.exports = ReactLink;
 
 /***/ }),
-/* 585 */
+/* 588 */
 /***/ (function(module, exports) {
 
 	/**
@@ -77600,7 +77901,7 @@
 	module.exports = ReactStateSetters;
 
 /***/ }),
-/* 586 */
+/* 589 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -77633,6 +77934,7 @@
 	        return { student: {} };
 	    },
 	    componentDidMount: function componentDidMount() {
+	        console.log(this.props.params);
 	        this.getStudent(this.props.params.studentId);
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(props) {
@@ -77649,12 +77951,12 @@
 	        return dob ? (0, _moment2.default)(dob).format("l") + ' (' + (0, _moment2.default)(dob).fromNow() + ')' : "";
 	    },
 	    deleteHandler: function deleteHandler() {
-	        StudentService.deleteItem(this.state.student.id).then(function () {
+	        StudentService.deleteItem(this.state.params.studentId).then(function () {
 	            return window.location.hash = "students";
 	        });
 	    },
 	    editHandler: function editHandler() {
-	        window.location.hash = "#student/" + this.state.student.id + "/edit";
+	        window.location.hash = "#student/" + this.params.studentId + "/edit";
 	    },
 	    render: function render() {
 	        return _react2.default.createElement(
@@ -77669,13 +77971,13 @@
 	                    onClone: sessionStorage.pos == "student" ? this.cloneHandler : null },
 	                _react2.default.createElement(_PageHeader.HeaderField, { label: 'Student ID', value: this.state.student.id })
 	            ),
-	            _react2.default.cloneElement(this.props.children, { student: this.state.student })
+	            _react2.default.cloneElement(this.props.children, { student: this.props.params.studentId })
 	        );
 	    }
 	});
 
 /***/ }),
-/* 587 */
+/* 590 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -77692,7 +77994,7 @@
 	
 	var _moment2 = _interopRequireDefault(_moment);
 	
-	var _StudentEnrollmentCard = __webpack_require__(588);
+	var _StudentEnrollmentCard = __webpack_require__(591);
 	
 	var _StudentEnrollmentCard2 = _interopRequireDefault(_StudentEnrollmentCard);
 	
@@ -77712,7 +78014,7 @@
 	});
 
 /***/ }),
-/* 588 */
+/* 591 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -77725,7 +78027,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _EnrollmentService = __webpack_require__(589);
+	var _EnrollmentService = __webpack_require__(592);
 	
 	var EnrollmentService = _interopRequireWildcard(_EnrollmentService);
 	
@@ -77739,7 +78041,7 @@
 	
 	var _Icons = __webpack_require__(364);
 	
-	var _CourseEnrollmentWindow = __webpack_require__(590);
+	var _CourseEnrollmentWindow = __webpack_require__(593);
 	
 	var _CourseEnrollmentWindow2 = _interopRequireDefault(_CourseEnrollmentWindow);
 	
@@ -77753,7 +78055,7 @@
 	        return { enrollments: [], period: "current", addingEnrollment: false };
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(props) {
-	        this.getEnrollments(props.student.id);
+	        this.getEnrollments(props.student);
 	    },
 	    newEnrollmentHandler: function newEnrollmentHandler() {
 	        this.setState({ addingEnrollment: true });
@@ -77764,8 +78066,8 @@
 	    newEnrollmentSelectedHandler: function newEnrollmentSelectedHandler(course) {
 	        var _this = this;
 	
-	        EnrollmentService.createItem({ student_id: this.props.student.id, course_id: course.id }).then(function () {
-	            _this.getEnrollments(_this.props.student.id);
+	        EnrollmentService.createItem({ student_id: this.props.student, course_code: course }).then(function () {
+	            _this.getEnrollments(_this.props.student);
 	            _this.setState({ addingEnrollment: false });
 	        }).catch(function (error) {
 	            var event = new CustomEvent('notify', { detail: 'You already enrolled in this course' });
@@ -77773,15 +78075,15 @@
 	        });
 	    },
 	    viewAllHandler: function viewAllHandler(event) {
-	        this.getEnrollments(this.props.student.id, "all");
+	        this.getEnrollments(this.props.student, "all");
 	        event.preventDefault();
 	    },
 	    viewCurrentHandler: function viewCurrentHandler(event) {
-	        this.getEnrollments(this.props.student.id, "current");
+	        this.getEnrollments(this.props.student, "current");
 	        event.preventDefault();
 	    },
 	    courseLinkHandler: function courseLinkHandler(enrollment) {
-	        window.location.hash = "#course/" + enrollment.course_id;
+	        window.location.hash = "#course/" + enrollment.code;
 	    },
 	    teacherLinkHandler: function teacherLinkHandler(enrollment) {
 	        window.location.hash = "#teacher/" + enrollment.teacher_id;
@@ -77798,7 +78100,7 @@
 	                break;
 	            case 2:
 	                EnrollmentService.deleteItem(data.id).then(function () {
-	                    return _this2.getEnrollments(_this2.props.student.id);
+	                    return _this2.getEnrollments(_this2.props.student);
 	                });
 	                break;
 	        }
@@ -77871,7 +78173,6 @@
 	                _react2.default.createElement(
 	                    _DataGrid2.default,
 	                    { data: this.state.enrollments, keyField: 'id', actions: sessionStorage.pos == "teacher" ? ["View Course", "View Teacher", "Delete"] : ["View Course", "Delete"], onAction: this.actionHandler },
-	                    _react2.default.createElement('div', { header: 'Code', field: 'code', onLink: this.courseLinkHandler }),
 	                    _react2.default.createElement('div', { header: 'Name', field: 'course_name', onLink: this.courseLinkHandler }),
 	                    _react2.default.createElement('div', { header: 'Period', field: 'period_name' }),
 	                    _react2.default.createElement('div', { header: 'Teacher', field: 'teacher_name' })
@@ -77900,7 +78201,7 @@
 	});
 
 /***/ }),
-/* 589 */
+/* 592 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -77935,7 +78236,7 @@
 	};
 
 /***/ }),
-/* 590 */
+/* 593 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -77975,33 +78276,31 @@
 	exports.default = _react2.default.createClass({
 	    displayName: 'CourseEnrollmentWindow',
 	    getInitialState: function getInitialState() {
-	        return { courses: [], periodId: _config2.default.currentPeriod };
+	        return { courses: [], periodId: _config2.default.currentPeriod, course_code: '' };
 	    },
 	    componentDidMount: function componentDidMount() {
-	        var _this = this;
-	
-	        CourseService.findAll({ periodId: this.state.periodId }).then(function (courses) {
-	            return _this.setState({ courses: courses });
-	        });
-	        PeriodService.findAll().then(function (periods) {
-	            return _this.setState({ periods: periods });
-	        });
+	        // CourseService.findAll({periodId: this.state.periodId}).then(courses => this.setState({courses}));
+	        // PeriodService.findAll().then(periods => this.setState({periods}));
 	    },
 	    rowClickHandler: function rowClickHandler(data) {
 	        this.selectedItem = data;
 	    },
 	    addHandler: function addHandler() {
 	        if (this.props.onSelected) {
-	            this.props.onSelected(this.selectedItem);
+	            //this.props.onSelected(this.selectedItem);
+	            this.props.onSelected(this.state.course_code);
 	        }
 	    },
 	    changeHandler: function changeHandler(index, periodId, label) {
-	        var _this2 = this;
+	        var _this = this;
 	
 	        this.setState({ periodId: periodId });
 	        CourseService.findAll({ periodId: periodId }).then(function (courses) {
-	            return _this2.setState({ courses: courses });
+	            return _this.setState({ courses: courses });
 	        });
+	    },
+	    changeCodeHandler: function changeCodeHandler(data) {
+	        this.setState({ course_code: data.target.value });
 	    },
 	    render: function render() {
 	        return _react2.default.createElement(
@@ -78016,7 +78315,6 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'slds-modal__header', style: { borderBottom: "solid 1px #d8dde6" } },
-	                        _react2.default.createElement(_ComboBox2.default, { data: this.state.periods, value: this.state.periodId, onChange: this.changeHandler }),
 	                        _react2.default.createElement(
 	                            'button',
 	                            { className: 'slds-button slds-modal__close' },
@@ -78031,7 +78329,20 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'slds-modal__content', style: { padding: 0 } },
-	                        _react2.default.createElement(_CourseList2.default, { ref: 'form', courses: this.state.courses, ignoreLinks: true, onRowClick: this.rowClickHandler })
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'slds-form-element' },
+	                            _react2.default.createElement(
+	                                'label',
+	                                { className: 'slds-form-element__label', htmlFor: 'sample1' },
+	                                'Course Code'
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'slds-form-element__control' },
+	                                _react2.default.createElement('input', { className: 'slds-input', type: 'text', value: this.props.course_code, onChange: this.changeCodeHandler })
+	                            )
+	                        )
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
@@ -78055,7 +78366,7 @@
 	});
 
 /***/ }),
-/* 591 */
+/* 594 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -78068,7 +78379,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _StudentForm = __webpack_require__(581);
+	var _StudentForm = __webpack_require__(584);
 	
 	var _StudentForm2 = _interopRequireDefault(_StudentForm);
 	
@@ -78097,7 +78408,7 @@
 	});
 
 /***/ }),
-/* 592 */
+/* 595 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -78116,11 +78427,11 @@
 	
 	var _PageHeader = __webpack_require__(373);
 	
-	var _TeacherList = __webpack_require__(593);
+	var _TeacherList = __webpack_require__(596);
 	
 	var _TeacherList2 = _interopRequireDefault(_TeacherList);
 	
-	var _TeacherFormWindow = __webpack_require__(594);
+	var _TeacherFormWindow = __webpack_require__(597);
 	
 	var _TeacherFormWindow2 = _interopRequireDefault(_TeacherFormWindow);
 	
@@ -78186,7 +78497,7 @@
 	});
 
 /***/ }),
-/* 593 */
+/* 596 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -78237,7 +78548,7 @@
 	});
 
 /***/ }),
-/* 594 */
+/* 597 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -78250,7 +78561,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _TeacherForm = __webpack_require__(595);
+	var _TeacherForm = __webpack_require__(598);
 	
 	var _TeacherForm2 = _interopRequireDefault(_TeacherForm);
 	
@@ -78317,7 +78628,7 @@
 	});
 
 /***/ }),
-/* 595 */
+/* 598 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -78332,7 +78643,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactAddonsLinkedStateMixin = __webpack_require__(582);
+	var _reactAddonsLinkedStateMixin = __webpack_require__(585);
 	
 	var _reactAddonsLinkedStateMixin2 = _interopRequireDefault(_reactAddonsLinkedStateMixin);
 	
@@ -78361,6 +78672,7 @@
 	        var _this = this;
 	
 	        var saveItem = this.state.id ? TeacherService.updateItem : TeacherService.createItem;
+	        console.log(this.state);
 	        saveItem(this.state).then(function (savedTeacher) {
 	            if (_this.props.onSaved) _this.props.onSaved(savedTeacher);
 	        });
@@ -78410,7 +78722,7 @@
 	});
 
 /***/ }),
-/* 596 */
+/* 599 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -78480,7 +78792,7 @@
 	});
 
 /***/ }),
-/* 597 */
+/* 600 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -78497,15 +78809,11 @@
 	
 	var _moment2 = _interopRequireDefault(_moment);
 	
-	var _TeacherCoursesCard = __webpack_require__(598);
+	var _TeacherCoursesCard = __webpack_require__(601);
 	
 	var _TeacherCoursesCard2 = _interopRequireDefault(_TeacherCoursesCard);
 	
-	var _TeacherPresentationCard = __webpack_require__(599);
-	
-	var _TeacherPresentationCard2 = _interopRequireDefault(_TeacherPresentationCard);
-	
-	var _TeacherList = __webpack_require__(593);
+	var _TeacherList = __webpack_require__(596);
 	
 	var _TeacherList2 = _interopRequireDefault(_TeacherList);
 	
@@ -78578,14 +78886,13 @@
 	                    )
 	                )
 	            ),
-	            _react2.default.createElement(_TeacherCoursesCard2.default, { teacher: teacher }),
-	            _react2.default.createElement(_TeacherPresentationCard2.default, { teacher: teacher })
+	            _react2.default.createElement(_TeacherCoursesCard2.default, { teacher: teacher })
 	        );
 	    }
 	});
 
 /***/ }),
-/* 598 */
+/* 601 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -78622,10 +78929,10 @@
 	        return { courses: [] };
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(props) {
-	        this.getCourses(props.teacher.id);
+	        this.getCourses({ teacher_id: props.teacher.id, university_id: props.teacher.university_id });
 	    },
 	    viewAllHandler: function viewAllHandler(event) {
-	        this.getCourses(this.props.teacher.id);
+	        this.getCourses({ teacher_id: this.props.teacher.id, university_id: this.props.teacher.university_id });
 	        event.preventDefault();
 	    },
 	    getCourses: function getCourses(teacherId, queryParams) {
@@ -78638,7 +78945,7 @@
 	        }
 	    },
 	    courseLinkHandler: function courseLinkHandler(course) {
-	        window.location.hash = "#course/" + course.id;
+	        window.location.hash = "#course/" + course.code;
 	    },
 	    newCourseHandler: function newCourseHandler() {
 	        this.setState({ addingCourse: true });
@@ -78648,7 +78955,7 @@
 	    },
 	    newCourseSavedHandler: function newCourseSavedHandler(course) {
 	        this.setState({ addingCourse: false });
-	        this.getCourses(this.props.teacher.id);
+	        this.getCourses({ teacher_id: this.props.teacher.id, university_id: this.props.teacher.university_id });
 	    },
 	    render: function render() {
 	        return _react2.default.createElement(
@@ -78706,299 +79013,13 @@
 	                    _DataGrid2.default,
 	                    { data: this.state.courses, keyField: 'id' },
 	                    _react2.default.createElement('div', { header: 'Period', field: 'period_name', sortable: true }),
-	                    _react2.default.createElement('div', { header: 'ID', field: 'id', sortable: true, onLink: this.courseLinkHandler }),
 	                    _react2.default.createElement('div', { header: 'Name', field: 'name', sortable: true, onLink: this.courseLinkHandler })
 	                )
 	            ),
-	            this.state.addingCourse ? _react2.default.createElement(_CourseFormWindow2.default, { tid: this.props.teacher.id, onSaved: this.newCourseSavedHandler, onCancel: this.newCourseCancelHandler }) : null
+	            this.state.addingCourse ? _react2.default.createElement(_CourseFormWindow2.default, { tid: this.props.teacher.id, uid: this.props.teacher.university_id, onSaved: this.newCourseSavedHandler, onCancel: this.newCourseCancelHandler }) : null
 	        );
 	    }
 	});
-
-/***/ }),
-/* 599 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _PresentationService = __webpack_require__(600);
-	
-	var PresentationService = _interopRequireWildcard(_PresentationService);
-	
-	var _DataGrid = __webpack_require__(492);
-	
-	var _DataGrid2 = _interopRequireDefault(_DataGrid);
-	
-	var _Icons = __webpack_require__(364);
-	
-	var _reactUploadFile = __webpack_require__(541);
-	
-	var _reactUploadFile2 = _interopRequireDefault(_reactUploadFile);
-	
-	var _fileInput = __webpack_require__(524);
-	
-	var _fileInput2 = _interopRequireDefault(_fileInput);
-	
-	var _fineUploaderWrappers = __webpack_require__(526);
-	
-	var _fineUploaderWrappers2 = _interopRequireDefault(_fineUploaderWrappers);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var fileDownload = __webpack_require__(601);
-	
-	
-	var uploader = new _fineUploaderWrappers2.default({
-	    options: {
-	        request: {
-	            endpoint: 'upload/'
-	        },
-	        autoUpload: false
-	    }
-	});
-	
-	exports.default = _react2.default.createClass({
-	    displayName: 'TeacherPresentationCard',
-	    getInitialState: function getInitialState() {
-	        return { presents: [] };
-	    },
-	    componentDidMount: function componentDidMount() {
-	        var _this = this;
-	
-	        uploader.on('complete', function (id, name, response) {
-	            // handle completed upload
-	            PresentationService.createItem(_this.state.present).then(function () {
-	                return _this.getPresents(_this.props.teacher.id);
-	            }).catch(function (error) {
-	                var event = new CustomEvent('notify', { detail: 'You already uploaded this file' });
-	                document.dispatchEvent(event);
-	            });
-	            console.log('upload success!');
-	        });
-	        uploader.on('submitted', function (id) {
-	            _this.setState({ present: { teacher_id: _this.props.teacher.id, path: uploader.methods.getFile(id).name, size: uploader.methods.getFile(id).size } });
-	        });
-	    },
-	    componentWillReceiveProps: function componentWillReceiveProps(props) {
-	        this.getPresents(props.teacher.id);
-	    },
-	    viewAllHandler: function viewAllHandler(event) {
-	        this.getPresents(this.props.teacher.id);
-	        event.preventDefault();
-	    },
-	    getPresents: function getPresents(teacherId) {
-	        var _this2 = this;
-	
-	        if (teacherId) {
-	            PresentationService.findAll({ teacherId: teacherId }).then(function (presents) {
-	                return _this2.setState({ presents: presents });
-	            });
-	        }
-	    },
-	    presentLinkHandler: function presentLinkHandler(present) {
-	        var link = document.createElement('a');
-	        link.download = present.path;
-	        link.href = window.location.protocol + '/upload/' + present.path;
-	        var clickEvent = document.createEvent("MouseEvent");
-	        clickEvent.initEvent("click", true, true);
-	
-	        link.dispatchEvent(clickEvent);
-	        // PresentationService.downFile({filename: present.path}).then(downloaded => {
-	
-	        //     // fileDownload(downloaded, present.path);
-	        //     // writeFile(present.path, downloaded, function (err) {
-	        //     //     if (err) return console.log(err)
-	        //     //     console.log('file is written')
-	        //     //   })
-	        //     var link = document.createElement('a');
-	        //     link.download = present.path;
-	        //     link.href = 'http://localhost:5000/upload/'+present.path;
-	        // });
-	    },
-	    presentDeleteHandler: function presentDeleteHandler(present) {
-	        PresentationService.deleteItem(present.id);
-	        PresentationService.deleteFile({ filename: present.path });
-	        this.getPresents(this.props.teacher.id);
-	    },
-	    newPresentHandler: function newPresentHandler() {
-	        this.setState({ addingPresent: true });
-	    },
-	    newPresentCancelHandler: function newPresentCancelHandler() {
-	        this.setState({ addingPresent: false });
-	    },
-	    newPresentSavedHandler: function newPresentSavedHandler(present) {
-	        this.setState({ addingPresent: false });
-	        this.getPresents(this.props.teacher.id);
-	    },
-	    actionHandler: function actionHandler(data, index, value, label) {
-	        switch (label) {
-	            case "Download File":
-	                this.presentLinkHandler(data);
-	                break;
-	            case "Delete":
-	                this.presentDeleteHandler(data);
-	                break;
-	        }
-	    },
-	    uploadFiles: function uploadFiles() {
-	        uploader.methods.uploadStoredFiles();
-	    },
-	    render: function render() {
-	        return _react2.default.createElement(
-	            'div',
-	            { className: 'slds-card' },
-	            _react2.default.createElement(
-	                'header',
-	                { className: 'slds-card__header slds-grid' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-media slds-media--center slds-has-flexi-truncate' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'slds-media__figure' },
-	                        _react2.default.createElement(_Icons.Icon, { name: 'file', size: 'small' })
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'slds-media__body' },
-	                        _react2.default.createElement(
-	                            'h3',
-	                            { className: 'slds-text-heading--small slds-truncate' },
-	                            'Presentations'
-	                        )
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'slds-no-flex' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'slds-button-group' },
-	                        _react2.default.createElement(
-	                            _fileInput2.default,
-	                            { accept: '.c,.cpp,.java,.js,.txt', uploader: uploader },
-	                            _react2.default.createElement(
-	                                'span',
-	                                { 'class': 'icon ion-upload' },
-	                                _react2.default.createElement(_Icons.Icon, { name: 'link' })
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'button',
-	                            { className: 'slds-button slds-button--neutral slds-button--small', onClick: this.uploadFiles },
-	                            'Upload'
-	                        )
-	                    )
-	                )
-	            ),
-	            _react2.default.createElement(
-	                'section',
-	                { className: 'slds-card__body' },
-	                _react2.default.createElement(
-	                    _DataGrid2.default,
-	                    { data: this.state.presents, keyField: 'id', actions: sessionStorage.pos == "teacher" ? ["Download File", "Delete"] : ["Download File"], onAction: this.actionHandler },
-	                    _react2.default.createElement('div', { header: 'File Name', field: 'path', sortable: true, onLink: this.presentLinkHandler }),
-	                    _react2.default.createElement('div', { header: 'Description', field: 'description', sortable: true }),
-	                    _react2.default.createElement('div', { header: 'Size', field: 'size', sortable: true, format: 'size' }),
-	                    _react2.default.createElement('div', { header: 'Uploaded Time', field: 'uploaded_time', sortable: true, format: 'datatime' })
-	                )
-	            )
-	        );
-	    }
-	});
-
-/***/ }),
-/* 600 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.deleteItem = exports.updateItem = exports.deleteFile = exports.downFile = exports.createItem = exports.findById = exports.findAll = undefined;
-	
-	var _rest = __webpack_require__(347);
-	
-	var rest = _interopRequireWildcard(_rest);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	var url = "/presents";
-	
-	var findAll = exports.findAll = function findAll(queryParams) {
-	  return rest.get(url, queryParams);
-	};
-	
-	var findById = exports.findById = function findById(id) {
-	  return rest.get(url + "/" + id);
-	};
-	
-	var createItem = exports.createItem = function createItem(student) {
-	  return rest.post(url, student);
-	};
-	
-	var downFile = exports.downFile = function downFile(filename) {
-	  return rest.post("/download", filename);
-	};
-	
-	var deleteFile = exports.deleteFile = function deleteFile(filename) {
-	  return rest.post("/deletefile", filename);
-	};
-	
-	var updateItem = exports.updateItem = function updateItem(student) {
-	  return rest.put(url, student);
-	};
-	
-	var deleteItem = exports.deleteItem = function deleteItem(id) {
-	  return rest.del(url + "/" + id);
-	};
-
-/***/ }),
-/* 601 */
-/***/ (function(module, exports) {
-
-	module.exports = function(data, filename, mime) {
-	    var blob = new Blob([data], {type: mime || 'application/octet-stream'});
-	    if (typeof window.navigator.msSaveBlob !== 'undefined') {
-	        // IE workaround for "HTML7007: One or more blob URLs were 
-	        // revoked by closing the blob for which they were created. 
-	        // These URLs will no longer resolve as the data backing 
-	        // the URL has been freed."
-	        window.navigator.msSaveBlob(blob, filename);
-	    }
-	    else {
-	        var blobURL = window.URL.createObjectURL(blob);
-	        var tempLink = document.createElement('a');
-	        tempLink.style.display = 'none';
-	        tempLink.href = blobURL;
-	        tempLink.setAttribute('download', filename); 
-	        
-	        // Safari thinks _blank anchor are pop ups. We only want to set _blank
-	        // target if the browser does not support the HTML5 download attribute.
-	        // This allows you to download files in desktop safari if pop up blocking 
-	        // is enabled.
-	        if (typeof tempLink.download === 'undefined') {
-	            tempLink.setAttribute('target', '_blank');
-	        }
-	        
-	        document.body.appendChild(tempLink);
-	        tempLink.click();
-	        document.body.removeChild(tempLink);
-	        window.URL.revokeObjectURL(blobURL);
-	    }
-	}
-
 
 /***/ }),
 /* 602 */
@@ -79014,7 +79035,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _TeacherForm = __webpack_require__(595);
+	var _TeacherForm = __webpack_require__(598);
 	
 	var _TeacherForm2 = _interopRequireDefault(_TeacherForm);
 	
@@ -79049,6 +79070,361 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _UniversityService = __webpack_require__(604);
+	
+	var UniversityService = _interopRequireWildcard(_UniversityService);
+	
+	var _PageHeader = __webpack_require__(373);
+	
+	var _UniversityList = __webpack_require__(605);
+	
+	var _UniversityList2 = _interopRequireDefault(_UniversityList);
+	
+	var _UniversityFormWindow = __webpack_require__(606);
+	
+	var _UniversityFormWindow2 = _interopRequireDefault(_UniversityFormWindow);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'UniversityHome',
+	    getInitialState: function getInitialState() {
+	        return { universities: [] };
+	    },
+	    componentDidMount: function componentDidMount() {
+	        var _this = this;
+	
+	        UniversityService.findAll().then(function (universities) {
+	            return _this.setState({ universities: universities });
+	        });
+	    },
+	    newHandler: function newHandler() {
+	        this.setState({ addingUniversity: true });
+	    },
+	    savedHandler: function savedHandler(university) {
+	        var _this2 = this;
+	
+	        this.setState({ addingUniversity: false });
+	        UniversityService.findAll().then(function (universities) {
+	            return _this2.setState({ universities: universities });
+	        });
+	    },
+	    cancelHandler: function cancelHandler() {
+	        this.setState({ addingUniversity: false });
+	    },
+	    approveHandler: function approveHandler(data) {
+	        var _this3 = this;
+	
+	        data.allowed = 1;
+	        UniversityService.updateItem(data);
+	        UniversityService.findAll().then(function (universities) {
+	            return _this3.setState({ universities: universities });
+	        });
+	    },
+	    deleteHandler: function deleteHandler(data) {
+	        var _this4 = this;
+	
+	        UniversityService.deleteItem(data.code);
+	        UniversityService.findAll().then(function (universities) {
+	            return _this4.setState({ universities: universities });
+	        });
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(_PageHeader.HomeHeader, { type: 'Universities',
+	                title: 'Recent Universities',
+	                newLabel: 'New University',
+	                actions: [{ value: "new", label: "New University" }],
+	                itemCount: this.state.universities.length,
+	                views: [{ id: 1, name: "Recent Universities" }],
+	                viewId: '1',
+	                onNew: this.newHandler }),
+	            _react2.default.createElement(_UniversityList2.default, { universities: this.state.universities, onDelete: this.deleteHandler }),
+	            this.state.addingUniversity ? _react2.default.createElement(_UniversityFormWindow2.default, { onSaved: this.savedHandler, onCancel: this.cancelHandler }) : null
+	        );
+	    }
+	});
+
+/***/ }),
+/* 604 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.deleteItem = exports.updateItem = exports.createItem = exports.findById = exports.findAll = undefined;
+	
+	var _rest = __webpack_require__(347);
+	
+	var rest = _interopRequireWildcard(_rest);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	var url = "/universities";
+	
+	var findAll = exports.findAll = function findAll(queryParams) {
+	  return rest.get(url, queryParams);
+	};
+	
+	var findById = exports.findById = function findById(id) {
+	  return rest.get(url + "/" + id);
+	};
+	
+	var createItem = exports.createItem = function createItem(student) {
+	  return rest.post(url, student);
+	};
+	
+	var updateItem = exports.updateItem = function updateItem(student) {
+	  return rest.put(url, student);
+	};
+	
+	var deleteItem = exports.deleteItem = function deleteItem(id) {
+	  return rest.del(url + "/" + id);
+	};
+
+/***/ }),
+/* 605 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _DataGrid = __webpack_require__(492);
+	
+	var _DataGrid2 = _interopRequireDefault(_DataGrid);
+	
+	var _TeacherService = __webpack_require__(348);
+	
+	var UniversityService = _interopRequireWildcard(_TeacherService);
+	
+	var _Icons = __webpack_require__(364);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'UniversityList',
+	    linkHandler: function linkHandler(university) {
+	        window.location.hash = "#university/" + university.id;
+	    },
+	    actionHandler: function actionHandler(data, value, label) {
+	        if (value === 0) {
+	            this.linkHandler(data);
+	        } else if (value === 1) {
+	            this.props.onDelete(data);
+	        }
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            _DataGrid2.default,
+	            { data: this.props.universities, actions: ["View", "Delete"], onAction: this.actionHandler },
+	            _react2.default.createElement('div', { header: 'Representation Code', field: 'code', onLink: this.linkHandler }),
+	            _react2.default.createElement('div', { header: 'University Name', field: 'name' })
+	        );
+	    }
+	});
+
+/***/ }),
+/* 606 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _UniversityForm = __webpack_require__(607);
+	
+	var _UniversityForm2 = _interopRequireDefault(_UniversityForm);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'UniversityFormWindow',
+	    saveHandler: function saveHandler() {
+	        this.refs.form.save();
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	                'div',
+	                { 'aria-hidden': 'false', role: 'dialog', className: 'slds-modal slds-fade-in-open' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-modal__container' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-modal__header' },
+	                        _react2.default.createElement(
+	                            'h2',
+	                            { className: 'slds-text-heading--medium' },
+	                            'New University'
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'slds-button slds-modal__close' },
+	                            _react2.default.createElement('svg', { 'aria-hidden': 'true', className: 'slds-button__icon slds-button__icon--inverse slds-button__icon--large' }),
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'slds-assistive-text' },
+	                                'Close'
+	                            )
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-modal__content' },
+	                        _react2.default.createElement(_UniversityForm2.default, { ref: 'form', onSaved: this.props.onSaved })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-modal__footer' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'slds-button slds-button--neutral', onClick: this.props.onCancel },
+	                            'Cancel'
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'slds-button slds-button--neutral slds-button--brand', onClick: this.saveHandler },
+	                            'Save'
+	                        )
+	                    )
+	                )
+	            ),
+	            _react2.default.createElement('div', { className: 'slds-modal-backdrop slds-modal-backdrop--open' })
+	        );
+	    }
+	});
+
+/***/ }),
+/* 607 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactAddonsLinkedStateMixin = __webpack_require__(585);
+	
+	var _reactAddonsLinkedStateMixin2 = _interopRequireDefault(_reactAddonsLinkedStateMixin);
+	
+	var _UniversityService = __webpack_require__(604);
+	
+	var UniversityService = _interopRequireWildcard(_UniversityService);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+	    displayName: 'UniversityForm',
+	
+	
+	    mixins: [_reactAddonsLinkedStateMixin2.default],
+	
+	    getInitialState: function getInitialState() {
+	        return this.props.university || {};
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(props) {
+	        var university = props.university;
+	        this.setState(_extends({}, university));
+	    },
+	    save: function save() {
+	        var _this = this;
+	
+	        var saveItem = this.state.id ? UniversityService.updateItem : UniversityService.createItem;
+	        saveItem(this.state).then(function (savedUniversity) {
+	            if (_this.props.onSaved) _this.props.onSaved(savedUniversity);
+	        });
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'slds-form--stacked slds-grid slds-wrap' },
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-form-element' },
+	                    _react2.default.createElement(
+	                        'label',
+	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
+	                        'Name'
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-form-element__control' },
+	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('name') })
+	                    )
+	                )
+	            ),
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-form-element' },
+	                    _react2.default.createElement(
+	                        'label',
+	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
+	                        'Representation Code'
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-form-element__control' },
+	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', valueLink: this.linkState('code') })
+	                    )
+	                )
+	            )
+	        );
+	    }
+	});
+
+/***/ }),
+/* 608 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
@@ -79060,7 +79436,7 @@
 	
 	var _reactRouter = __webpack_require__(216);
 	
-	var _Nav = __webpack_require__(604);
+	var _Nav = __webpack_require__(609);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	
@@ -79140,7 +79516,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(HomePage);
 
 /***/ }),
-/* 604 */
+/* 609 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79157,9 +79533,9 @@
 	
 	var _reactRouter = __webpack_require__(216);
 	
-	var _AppActions = __webpack_require__(605);
+	var _AppActions = __webpack_require__(610);
 	
-	var _LoadingButton = __webpack_require__(607);
+	var _LoadingButton = __webpack_require__(612);
 	
 	var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
 	
@@ -79305,7 +79681,7 @@
 	exports.default = Nav;
 
 /***/ }),
-/* 605 */
+/* 610 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79326,7 +79702,7 @@
 	
 	var _AppConstants = __webpack_require__(279);
 	
-	var _MessageConstants = __webpack_require__(606);
+	var _MessageConstants = __webpack_require__(611);
 	
 	var errorMessages = _interopRequireWildcard(_MessageConstants);
 	
@@ -79388,7 +79764,7 @@
 	      }
 	    }
 	    if (pos == "student") {
-	      if (anyElementsEmpty({ stdid: data.stdid, password: data.password, course_id: data.course_id })) {
+	      if (anyElementsEmpty({ stdid: data.stdid, password: data.password, university_id: data.university_id })) {
 	        dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
 	        dispatch(sendingRequest(false));
 	        return;
@@ -79411,7 +79787,7 @@
 	
 	      if (success === true) {
 	        // If the login worked, forward the user to the whiteboard and clear the form
-	        forwardTo('#/' + sessionStorage.pos + '/' + sessionStorage.token);
+	        if (pos == "teacher") forwardTo('#/' + sessionStorage.pos + '/' + sessionStorage.token);else forwardTo('#/' + sessionStorage.pos + '/' + data.university_id + '_' + sessionStorage.token);
 	        window.location.reload();
 	        dispatch(changeForm({
 	          stdid: "",
@@ -79610,7 +79986,7 @@
 	}
 
 /***/ }),
-/* 606 */
+/* 611 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -79635,7 +80011,7 @@
 	var GENERAL_ERROR = exports.GENERAL_ERROR = 'Something went wrong, please try again';
 
 /***/ }),
-/* 607 */
+/* 612 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79648,7 +80024,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _LoadingIndicator = __webpack_require__(608);
+	var _LoadingIndicator = __webpack_require__(613);
 	
 	var _LoadingIndicator2 = _interopRequireDefault(_LoadingIndicator);
 	
@@ -79671,7 +80047,7 @@
 	exports.default = LoadingButton;
 
 /***/ }),
-/* 608 */
+/* 613 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -79719,7 +80095,7 @@
 	exports.default = LoadingIndicator;
 
 /***/ }),
-/* 609 */
+/* 614 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79736,17 +80112,17 @@
 	
 	var _reactRouter = __webpack_require__(216);
 	
-	var _Nav = __webpack_require__(604);
+	var _Nav = __webpack_require__(609);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	
 	var _reactRedux = __webpack_require__(199);
 	
-	var _LoginPage = __webpack_require__(610);
+	var _LoginPage = __webpack_require__(615);
 	
 	var _LoginPage2 = _interopRequireDefault(_LoginPage);
 	
-	var _RegisterPage = __webpack_require__(613);
+	var _RegisterPage = __webpack_require__(618);
 	
 	var _RegisterPage2 = _interopRequireDefault(_RegisterPage);
 	
@@ -79863,7 +80239,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(TeacherPage);
 
 /***/ }),
-/* 610 */
+/* 615 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79880,7 +80256,7 @@
 	
 	var _reactRedux = __webpack_require__(199);
 	
-	var _Form = __webpack_require__(611);
+	var _Form = __webpack_require__(616);
 	
 	var _Form2 = _interopRequireDefault(_Form);
 	
@@ -79888,9 +80264,9 @@
 	
 	var _auth2 = _interopRequireDefault(_auth);
 	
-	var _AppActions = __webpack_require__(605);
+	var _AppActions = __webpack_require__(610);
 	
-	var _LoadingIndicator = __webpack_require__(608);
+	var _LoadingIndicator = __webpack_require__(613);
 	
 	var _LoadingIndicator2 = _interopRequireDefault(_LoadingIndicator);
 	
@@ -79967,7 +80343,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(LoginPage);
 
 /***/ }),
-/* 611 */
+/* 616 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79982,15 +80358,21 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _AppActions = __webpack_require__(605);
+	var _AppActions = __webpack_require__(610);
 	
-	var _LoadingButton = __webpack_require__(607);
+	var _LoadingButton = __webpack_require__(612);
 	
 	var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
 	
-	var _ErrorMessage = __webpack_require__(612);
+	var _ErrorMessage = __webpack_require__(617);
 	
 	var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
+	
+	var _UniversityService = __webpack_require__(604);
+	
+	var UniversityService = _interopRequireWildcard(_UniversityService);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -80019,14 +80401,42 @@
 	    var _this = _possibleConstructorReturn(this, (LoginForm.__proto__ || Object.getPrototypeOf(LoginForm)).call(this, props));
 	
 	    _this.state = {
-	      showTeacher: props.pos == "teacher"
+	      showTeacher: props.pos == "teacher",
+	      universities: []
 	    };
+	    _this.getUniversities();
 	    return _this;
 	  }
 	
 	  _createClass(LoginForm, [{
+	    key: 'getUniversities',
+	    value: function getUniversities() {
+	      var _this2 = this;
+	
+	      UniversityService.findAll().then(function (universities) {
+	        _this2.setState({ universities: universities });
+	        assign(_this2.props.data, { university_id: universities[0]['code'] });
+	      });
+	      //this.props.data.university_id = this.state.universities[0]['code'];
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var rows = [];
+	      for (var i = 0; i < this.state.universities.length; i++) {
+	        if (i == 0) {
+	          rows.push(_react2.default.createElement(
+	            'option',
+	            { value: this.state.universities[i]['code'] },
+	            this.state.universities[i]['name']
+	          ));
+	        } else rows.push(_react2.default.createElement(
+	          'option',
+	          { value: this.state.universities[i]['code'] },
+	          this.state.universities[i]['name']
+	        ));
+	      }
+	
 	      return _react2.default.createElement(
 	        'form',
 	        { className: 'form', onSubmit: this._onSubmit.bind(this) },
@@ -80058,10 +80468,14 @@
 	            { className: 'form__field-wrapper', id: 'student_form' },
 	            _react2.default.createElement(
 	              'label',
-	              { className: 'form__field-label', htmlFor: 'crsid' },
-	              'Course ID'
+	              { className: 'form__field-label', htmlFor: 'university' },
+	              'University'
 	            ),
-	            _react2.default.createElement('input', { className: 'form__field-input', type: 'text', id: 'crsid', value: this.props.data.course_id, onChange: this._changeCourseid.bind(this), autoCorrect: 'off', autoCapitalize: 'off', spellCheck: 'false' })
+	            _react2.default.createElement(
+	              'select',
+	              { className: 'form__field-input', id: 'university', value: this.props.data.university_id, onChange: this._changeUniversity.bind(this) },
+	              rows
+	            )
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -80100,10 +80514,10 @@
 	    // Change the Student ID in the app state
 	
 	  }, {
-	    key: '_changeCourseid',
-	    value: function _changeCourseid(evt) {
+	    key: '_changeUniversity',
+	    value: function _changeUniversity(evt) {
 	      var newState = this._mergeWithCurrentState({
-	        course_id: evt.target.value
+	        university_id: evt.target.value
 	      });
 	
 	      this._emitChange(newState);
@@ -80184,7 +80598,7 @@
 	exports.default = LoginForm;
 
 /***/ }),
-/* 612 */
+/* 617 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80237,7 +80651,7 @@
 	exports.default = ErrorMessage;
 
 /***/ }),
-/* 613 */
+/* 618 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80254,13 +80668,13 @@
 	
 	var _reactRedux = __webpack_require__(199);
 	
-	var _RegisterForm = __webpack_require__(614);
+	var _RegisterForm = __webpack_require__(619);
 	
 	var _RegisterForm2 = _interopRequireDefault(_RegisterForm);
 	
-	var _AppActions = __webpack_require__(605);
+	var _AppActions = __webpack_require__(610);
 	
-	var _LoadingIndicator = __webpack_require__(608);
+	var _LoadingIndicator = __webpack_require__(613);
 	
 	var _LoadingIndicator2 = _interopRequireDefault(_LoadingIndicator);
 	
@@ -80340,7 +80754,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(RegisterPage);
 
 /***/ }),
-/* 614 */
+/* 619 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80355,17 +80769,17 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _AppActions = __webpack_require__(605);
+	var _AppActions = __webpack_require__(610);
 	
-	var _LoadingButton = __webpack_require__(607);
+	var _LoadingButton = __webpack_require__(612);
 	
 	var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
 	
-	var _ErrorMessage = __webpack_require__(612);
+	var _ErrorMessage = __webpack_require__(617);
 	
 	var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
 	
-	var _UniversityService = __webpack_require__(615);
+	var _UniversityService = __webpack_require__(604);
 	
 	var UniversityService = _interopRequireWildcard(_UniversityService);
 	
@@ -80421,7 +80835,7 @@
 	      for (var i = 0; i < this.state.universities.length; i++) {
 	        rows.push(_react2.default.createElement(
 	          'option',
-	          { value: this.state.universities[i]['id'] },
+	          { value: this.state.universities[i]['code'] },
 	          this.state.universities[i]['name']
 	        ));
 	      }return _react2.default.createElement(
@@ -80648,46 +81062,7 @@
 	exports.default = RegisterForm;
 
 /***/ }),
-/* 615 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.deleteItem = exports.updateItem = exports.createItem = exports.findById = exports.findAll = undefined;
-	
-	var _rest = __webpack_require__(347);
-	
-	var rest = _interopRequireWildcard(_rest);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	var url = "/universities";
-	
-	var findAll = exports.findAll = function findAll(queryParams) {
-	  return rest.get(url, queryParams);
-	};
-	
-	var findById = exports.findById = function findById(id) {
-	  return rest.get(url + "/" + id);
-	};
-	
-	var createItem = exports.createItem = function createItem(student) {
-	  return rest.post(url, student);
-	};
-	
-	var updateItem = exports.updateItem = function updateItem(student) {
-	  return rest.put(url, student);
-	};
-	
-	var deleteItem = exports.deleteItem = function deleteItem(id) {
-	  return rest.del(url + "/" + id);
-	};
-
-/***/ }),
-/* 616 */
+/* 620 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80704,17 +81079,17 @@
 	
 	var _reactRouter = __webpack_require__(216);
 	
-	var _Nav = __webpack_require__(604);
+	var _Nav = __webpack_require__(609);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	
 	var _reactRedux = __webpack_require__(199);
 	
-	var _LoginPage = __webpack_require__(610);
+	var _LoginPage = __webpack_require__(615);
 	
 	var _LoginPage2 = _interopRequireDefault(_LoginPage);
 	
-	var _RegisterPage = __webpack_require__(613);
+	var _RegisterPage = __webpack_require__(618);
 	
 	var _RegisterPage2 = _interopRequireDefault(_RegisterPage);
 	
@@ -80830,7 +81205,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(StudentPage);
 
 /***/ }),
-/* 617 */
+/* 621 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80890,7 +81265,7 @@
 	exports.default = NotFound;
 
 /***/ }),
-/* 618 */
+/* 622 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80905,7 +81280,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Nav = __webpack_require__(604);
+	var _Nav = __webpack_require__(609);
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	

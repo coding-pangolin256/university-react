@@ -4,12 +4,11 @@ let db = require('./pghelper');
 
 let findAll = (req, res, next) => {
     let courseId = req.query.courseId;
+    let table_name = courseId + '_homework';
     let sql = `
-        SELECT h.id, h.title, h.details, h.course_id , c.code as course_code, c.name
-        FROM homework as h
-        LEFT OUTER JOIN course as c ON h.course_id=c.id
-        ${courseId ? 'WHERE h.course_id = ?' : ''}`;
-    db.query(sql, courseId ? [courseId] : [])
+        SELECT h.id, h.title, h.details
+        FROM ${table_name} as h`;
+    db.query(sql)
         .then(result => res.json(result))
         .catch(next);
 };
@@ -40,7 +39,7 @@ let findByHomework = (req, res, next) => {
     let sql = `
         SELECT r.id, r.std_id, ${path_field}, ${score_field}, s.name as student_name
         FROM ${table_name} as r
-        LEFT JOIN student as s ON r.std_id = s.id
+        LEFT JOIN student as s ON r.student_id = s.id
         ORDER BY r.id`;
     db.query(sql)
         .then(homeworks =>  res.json(homeworks))
@@ -62,14 +61,15 @@ let findById = (req, res, next) => {
 
 let createItem = (req, res, next) => {
     let homework = req.body;
-    let sql = `INSERT INTO homework (title, details, course_id)
-			   VALUES (?, ?, ?)`;
-    db.query(sql, [homework.title, homework.details, homework.course_id])
+    let table_name = homework.course_code + '_homework';
+    let sql = `INSERT INTO ${table_name} (title, details)
+			   VALUES (?, ?)`;
+    db.query(sql, [homework.title, homework.details])
         .then(result => {
             let sql = `
-                ALTER TABLE ` + homework.course_code + homework.course_id + `
+                ALTER TABLE ` + homework.course_code + '_students' + `
                 ADD ` + result.insertId + `_hw TEXT;
-                ALTER TABLE ` + homework.course_code + homework.course_id + `
+                ALTER TABLE ` + homework.course_code + '_students' + `
                 ADD ` + result.insertId + `_score DOUBLE;
               `;
             db.query(sql);

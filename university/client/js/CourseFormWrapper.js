@@ -9,7 +9,7 @@ export default React.createClass({
     },
 
     savedHandler() {
-        window.location.hash = "#course/" + this.props.course.id;
+        window.location.hash = "#course/" + this.props.course.code;
     },
 
     render() {

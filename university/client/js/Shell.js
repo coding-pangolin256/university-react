@@ -30,13 +30,17 @@ export default React.createClass({
                         <li className="slds-list__item slds-m-top--xx-small">
                             <StudentSearchBox onSelect={this.selectHandler}/>
                         </li> */}
-                        <li className="slds-list__item"><a href={"#"+sessionStorage.pos+"/"+sessionStorage.token}><Icon name="home" theme={null}/>Home</a></li>
+                        <li className="slds-list__item"><a href={"#"+sessionStorage.pos+"/"+(sessionStorage.pos=="student"?sessionStorage.university+'_':'' )+ sessionStorage.token}><Icon name="home" theme={null}/>Home</a></li>
                         {
                             sessionStorage.permission == 2?
                             <li className="slds-list__item"><a href="#teachers"><Icon name="user" theme={null}/>Teachers</a></li>
                             :""
                         }
-                        
+                        {
+                            sessionStorage.permission == 2?
+                            <li className="slds-list__item"><a href="#universities"><Icon name="social" theme={null}/>Universities</a></li>
+                            :""
+                        }
                     </ul>
                     
                 </header>

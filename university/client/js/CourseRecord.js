@@ -4,7 +4,7 @@ import moment from 'moment';
 import * as CourseService from './services/CourseService';
 
 import {RecordHeader, HeaderField} from './components/PageHeader';
-
+import { browserHistory } from 'react-router';
 import CourseView from './CourseView';
 import CourseEnrollmentCard from './CourseEnrollmentCard';
 
@@ -27,11 +27,11 @@ export default React.createClass({
     },
 
     deleteHandler() {
-        CourseService.deleteItem(this.state.course.id).then(() => window.location.hash = "courses");
+        CourseService.deleteItem(this.state.course.code).then(() => browserHistory.goBack());
     },
 
     editHandler() {
-        window.location.hash = "#course/" + this.state.course.id + "/edit";
+        window.location.hash = "#course/" + this.state.course.code + "/edit";
     },
 
     render() {

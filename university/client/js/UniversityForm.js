@@ -1,26 +1,25 @@
 import React from 'react';
 import LinkedStateMixin from 'react-addons-linked-state-mixin';
 
-import * as TeacherService from './services/TeacherService';
+import * as UniversityService from './services/UniversityService';
 
 export default React.createClass({
 
     mixins: [LinkedStateMixin],
 
     getInitialState() {
-        return this.props.teacher || {};
+        return this.props.university || {};
     },
 
     componentWillReceiveProps(props) {
-        let teacher = props.teacher;
-        this.setState({...teacher});
+        let university = props.university;
+        this.setState({...university});
     },
 
     save() {
-        let saveItem = this.state.id ? TeacherService.updateItem : TeacherService.createItem;
-        console.log(this.state);
-        saveItem(this.state).then(savedTeacher => {
-            if (this.props.onSaved) this.props.onSaved(savedTeacher);
+        let saveItem = this.state.id ? UniversityService.updateItem : UniversityService.createItem;
+        saveItem(this.state).then(savedUniversity => {
+            if (this.props.onSaved) this.props.onSaved(savedUniversity);
         });
     },
 
@@ -74,9 +73,9 @@ export default React.createClass({
                         </div>
                     </div> */}
                     <div className="slds-form-element">
-                        <label className="slds-form-element__label" htmlFor="sample1">Email</label>
+                        <label className="slds-form-element__label" htmlFor="sample1">Representation Code</label>
                         <div className="slds-form-element__control">
-                            <input className="slds-input" type="text" valueLink={this.linkState('email')}/>
+                            <input className="slds-input" type="text" valueLink={this.linkState('code')}/>
                         </div>
                     </div>
                     {/* <div className="slds-form-element">

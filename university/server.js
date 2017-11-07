@@ -124,7 +124,7 @@ app.delete('/homeworks/:id', homeworks.deleteItem);
 
 app.get('/teachers', teachers.findAll);
 app.get('/teachers/:id', teachers.findById);
-app.get('/teachers/:id/courses', courses.findByTeacher);
+app.post('/teacher_courses', courses.findByTeacher);
 app.post('/teachers', teachers.createItem);
 app.post('/teacher', teachers.findByData);
 app.put('/teachers', teachers.updateItem);

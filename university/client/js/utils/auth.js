@@ -23,12 +23,13 @@ var auth = {
 
     if(pos == "student")
     {
-      StudentService.findByData({ 'id': data.stdid, 'pwd': data.password, 'course_id': data.course_id }).then(response => {
+      StudentService.findByData({ 'id': data.stdid, 'pwd': data.password, 'university_id': data.university_id }).then(response => {
         // If the user was authenticated successfully, save a random token to the
         // sessionStorage
         if (response != null) {
           sessionStorage.token = response.id;
           sessionStorage.permission = 0;
+          sessionStorage.university = data.university_id;
           sessionStorage.pos = "student";
           callback(true);
         } else {
@@ -49,6 +50,7 @@ var auth = {
         if (response != null && response.allowed) {
           sessionStorage.token = response.id;
           sessionStorage.pos = "teacher";
+          sessionStorage.university = response.university;
           sessionStorage.permission = response.allowed;
           callback(true);
         } else {

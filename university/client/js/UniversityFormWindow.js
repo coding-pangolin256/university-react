@@ -1,5 +1,6 @@
 import React from 'react';
-import CourseForm from './CourseForm';
+
+import UniversityForm from './UniversityForm';
 
 export default React.createClass({
 
@@ -13,15 +14,15 @@ export default React.createClass({
                 <div aria-hidden="false" role="dialog" className="slds-modal slds-fade-in-open">
                     <div className="slds-modal__container">
                         <div className="slds-modal__header">
-                            <h2 className="slds-text-heading--medium">New Course</h2>
+                            <h2 className="slds-text-heading--medium">New University</h2>
                             <button className="slds-button slds-modal__close">
                                 <svg aria-hidden="true" className="slds-button__icon slds-button__icon--inverse slds-button__icon--large">
                                 </svg>
                                 <span className="slds-assistive-text">Close</span>
                             </button>
                         </div>
-                        <div className="slds-modal__content" style={{overflow:"visible"}}>
-                            <CourseForm ref="form" tid={this.props.tid} uid={this.props.uid} onSaved={this.props.onSaved}/>
+                        <div className="slds-modal__content">
+                            <UniversityForm ref="form" onSaved={this.props.onSaved}/>
                         </div>
 
                         <div className="slds-modal__footer">

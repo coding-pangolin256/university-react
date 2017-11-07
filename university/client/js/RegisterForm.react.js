@@ -34,7 +34,7 @@ class RegisterForm extends Component {
   render() {
     let rows = [];
     for(let i=0;i<this.state.universities.length;i++)
-      rows.push(<option value = {this.state.universities[i]['id']}>{this.state.universities[i]['name']}</option>);
+      rows.push(<option value = {this.state.universities[i]['code']}>{this.state.universities[i]['name']}</option>);
       
     return(
       <form className="form" onSubmit={this._onSubmit.bind(this)}>

@@ -1,3 +1,3 @@
 export default {
-    currentPeriod: 7
+    currentPeriod: 2
 }

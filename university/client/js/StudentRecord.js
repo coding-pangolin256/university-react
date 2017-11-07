@@ -12,6 +12,7 @@ export default React.createClass({
     },
 
     componentDidMount() {
+        console.log(this.props.params);
         this.getStudent(this.props.params.studentId);
     },
 
@@ -28,11 +29,11 @@ export default React.createClass({
     },
 
     deleteHandler() {
-        StudentService.deleteItem(this.state.student.id).then(() => window.location.hash = "students");
+        StudentService.deleteItem(this.state.params.studentId).then(() => window.location.hash = "students");
     },
 
     editHandler() {
-        window.location.hash = "#student/" + this.state.student.id + "/edit";
+        window.location.hash = "#student/" + this.params.studentId + "/edit";
     },
 
     render() {
@@ -47,7 +48,7 @@ export default React.createClass({
                     <HeaderField label="Student ID" value={this.state.student.id}/>
                 </RecordHeader>
 
-                {React.cloneElement(this.props.children, {student: this.state.student})}
+                {React.cloneElement(this.props.children, {student: this.props.params.studentId})}
 
             </div>
         );

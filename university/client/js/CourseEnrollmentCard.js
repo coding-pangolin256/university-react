@@ -28,7 +28,7 @@ export default React.createClass({
     },
 
     studentLinkHandler(result) {
-        window.location.hash = "#student/" + result.std_id;
+        window.location.hash = "#student/" + this.props.course.university_id + result.student_id;
     },
 
     actionHandler(data, index, value, label) {
@@ -47,7 +47,6 @@ export default React.createClass({
     },
     
     resultLinkHandler(result) {
-        console.log(result);
         this.setState({estimatting:true, current: result.result, selected_hwId: result.homeworkId});
     },
 
@@ -82,7 +81,7 @@ export default React.createClass({
                 {
                     cols.push(<div header={keys[index]} field={keys[index]} sortable={true} onLink={this.studentLinkHandler}/>);    
                 }
-                else if(keys[index] == "std_id")
+                else if(keys[index] == "student_id")
                 {
                     continue;
                 }
@@ -116,7 +115,6 @@ export default React.createClass({
         // {
         //    cols.push(<div header={keys[index]} field={keys[index]}/>);
         // }
-        console.log(this.state.results);
         for( let i = 0; i<1&&this.state.results.length; i++)
         {
             let keys = Object.keys(this.state.results[i]);
@@ -126,7 +124,7 @@ export default React.createClass({
                 {
                     cols.push(<div header={keys[index]} field={keys[index]} onLink={this.studentLinkHandler}/>);    
                 }
-                else if(keys[index] == "std_id")
+                else if(keys[index] == "student_id")
                 {
                     continue;
                 }
@@ -174,7 +172,7 @@ export default React.createClass({
                 <section className="slds-card__body">
                     <DataGrid table_id={this.props.editable?"":"table-to-xls"} data={this.state.results} actions={sessionStorage.pos=="teacher"&&this.props.editable?["View Student", "Delete"]:null} onAction={this.actionHandler}>
                         {/* <div header="Name" field="name" sortable={true} onLink={this.studentLinkHandler}/>
-                        <div header="Student ID" field="std_id"/> */}
+                        <div header="Student ID" field="student_id"/> */}
                         {cols}
                     </DataGrid>
                 </section>
