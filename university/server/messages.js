@@ -5,7 +5,7 @@ let db = require('./pghelper');
 let findAll = (req, res, next) => {
     let id = req.params.course_code;
     let table_name = id+'_chat';
-    let sql = `SELECT c.id, c.user_id, c.pos, c.text, c.time, c.type, IF (pos='teacher', t.name, s.name) user_name
+    let sql = `SELECT c.id, c.user_id, c.pos, c.text, c.time, c.type, IF (pos='teacher', t.name, '') user_name
         FROM ${table_name} as c
         LEFT JOIN student as s on c.user_id = s.id
         LEFT JOIN teacher as t on c.user_id = t.id

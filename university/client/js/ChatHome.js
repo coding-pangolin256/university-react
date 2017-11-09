@@ -63,9 +63,7 @@ export default React.createClass({
                 'Content-Type': 'application/json',
             }
         }
-        ).then((response) => {
-                return response.json();
-        }).then((data) => {this.setState({msgs: data})});
+        ).then((data) => {this.setState({msgs: data.data})});
     },
 
     deleteHandler(msg) {
