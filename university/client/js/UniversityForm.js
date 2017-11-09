@@ -13,7 +13,7 @@ export default React.createClass({
 
     componentWillReceiveProps(props) {
         let university = props.university;
-        this.setState({...university});
+        this.setState({university});
     },
 
     save() {
