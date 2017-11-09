@@ -6,7 +6,6 @@ import DataGrid from './components/DataGrid';
 import {Icon, ButtonIcon} from './components/Icons';
 
 import ReactUploadFile from 'react-upload-file';
-var fileDownload = require('react-file-download');
 import FileInput from 'react-fine-uploader/file-input'
 import FineUploaderTraditional from 'fine-uploader-wrappers'
 
@@ -29,7 +28,7 @@ export default React.createClass({
         uploader.on('complete', (id, name, response) => {
             // handle completed upload
             PresentationService.createItem(this.state.present)
-            .then(() => this.getPresents(this.props.course.id))
+            .then(() => this.getPresents(this.props.course.code))
             .catch((error) => {
                 let event = new CustomEvent('notify', {detail:'You already uploaded this file'});
                 document.dispatchEvent(event);
@@ -37,7 +36,7 @@ export default React.createClass({
             console.log('upload success!');
         })
         uploader.on('submitted', id => {
-           this.setState({present: {path: uploader.methods.getFile(id).name, size: uploader.methods.getFile(id).size}});
+           this.setState({present: {course_code: this.props.course.code, path: uploader.methods.getFile(id).name, size: uploader.methods.getFile(id).size}});
         })
     },
 
@@ -79,7 +78,7 @@ export default React.createClass({
 
     presentDeleteHandler(present)
     {
-        PresentationService.deleteItem(present.id);
+        PresentationService.deleteItem(this.props.course.code+'_'+present.id);
         PresentationService.deleteFile({filename: present.path});
         this.getPresents(this.props.course.code);
     },
@@ -134,7 +133,7 @@ export default React.createClass({
                                                     <span className="slds-assistive-text">Show More</span>
                                                 </button>} 
                                             uploadFileButton={<button className="slds-button slds-button--neutral slds-button--small">Upload</button>} /> */}
-                            <FileInput accept='.c,.cpp,.java,.js,.txt' uploader={ uploader}>
+                            <FileInput accept='.pdf,.doc,.c,.cpp,.java,.js,.txt' uploader={ uploader}>
                                 <span class="icon ion-upload"><Icon name="link"/></span>
                             </FileInput>
                             {/* <button className="slds-button slds-button--neutral slds-button--small" onClick={this.newPresentHandler}>New</button> */}

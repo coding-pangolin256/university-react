@@ -29,9 +29,9 @@ export default React.createClass({
             <TeacherPresentationCard course={course}/>
             <CourseEnrollmentCard course={course} title="Embedded Excel" icon="metrics"/>
             </div>
-            {/* <div className="slds-size--1-of-5 slds-medium-size--1-of-5">
+            <div className="slds-size--1-of-5 slds-medium-size--1-of-5">
                 <ChatHome course={course}/>
-            </div> */}
+            </div>
         </div>
         );
     }

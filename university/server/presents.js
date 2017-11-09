@@ -24,7 +24,9 @@ let findById = (req, res, next) => {
 
 let createItem = (req, res, next) => {
     let present = req.body;
-    let sql = `INSERT INTO lecture SET ?`;
+    let table_name = present.course_code + '_material';
+    delete present.course_code;
+    let sql = `INSERT INTO ${table_name} SET ?`;
     db.query(sql, present)
         .then(result => {
             res.send({id: result.insertId});
@@ -34,15 +36,20 @@ let createItem = (req, res, next) => {
 
 let updateItem = (req, res, next) => {
     let present = req.body;
-    let sql = `UPDATE lecture SET ? WHERE id=?`;
+    let table_name = present.course_code + '_material';
+    delete present.course_code;
+    let sql = `UPDATE ${table_name} SET ? WHERE id=?`;
     db.query(sql, present)
         .then(() => res.send({result: 'ok'}))
         .catch(next);
 };
 
 let deleteItem = (req, res, next) => {
-    let presentkId = req.params.id;
-    db.query('DELETE FROM lecture WHERE id=?', [presentkId], true)
+    let Id = req.params.id;
+    var search = Id.search('_');
+    let table_name = Id.slice(0,search) + '_material';
+    let presentkId = Id.slice(search + 1);
+    db.query(`DELETE FROM ${table_name} WHERE id=?`, [presentkId], true)
         .then(() => res.send({result: 'ok'}))
         .catch(next);
 };

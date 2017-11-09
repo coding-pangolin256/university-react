@@ -4,18 +4,20 @@ import * as ChatService from './services/ChatService';
 import MessageCard from './MessageCard';
 import {RecordHeader, HeaderField} from './components/PageHeader';
 import ChatBox from './ChatBox';
+import axios from 'axios';
 
 export default React.createClass({
 
     getInitialState() {
         return {msgs: [], msg_len: 0};
     },
-
+    componentWillReceiveProps(props) {
+        this.getMessages(props.course.code);
+        this.setState({course_code: props.course.code});
+        setTimeout(this.startReceivingMessages, 3000);
+    },
     componentDidMount() {
-        this.getMessages();
-        var intervalId = setInterval(this.getMessages, 3000);
-        // store intervalId in the state so it can be accessed later:
-        this.setState({intervalId: intervalId});
+        
     },
     componentWillUnmount() {
         // use intervalId from the state to clear the interval
@@ -29,12 +31,40 @@ export default React.createClass({
             objDiv.scrollTop = objDiv.scrollHeight;
             this.setState({msg_len: this.state.msgs.length});
         }
+        
     },
 
-    getMessages() {
-        fetch(window.location.protocol + 'messages')
-        .then((response) => {
-            return response.json();
+    getMessages(code) {
+        ChatService.findByData({course_code: code}).then((data) => {this.setState({msgs: data})});
+        // fetch(window.location.protocol + 'messages')
+        // .then((response) => {
+        //     return response.json();
+        // })
+    },
+    
+    startReceivingMessages()
+    {
+        var intervalId = setInterval(this.getMessagesInverval, 3000);
+        // // store intervalId in the state so it can be accessed later:
+        this.setState({intervalId: intervalId});
+    },
+    getMessagesInverval() {
+        //ChatService.findByData({course_code: this.state.course_code}).then((data) => {this.setState({msgs: data})});
+        // fetch(window.location.protocol + 'messages')
+        // .then((response) => {
+        //     return response.json();
+        // })
+        let data = {
+            course_code: this.state.course_code
+        }
+    
+        axios.post(window.location.protocol + 'message', data, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }
+        ).then((response) => {
+                return response.json();
         }).then((data) => {this.setState({msgs: data})});
     },
 
@@ -48,9 +78,9 @@ export default React.createClass({
 
     sendHandler(msg,type)
     {
-        ChatService.createItem({user_id: sessionStorage.token, pos: sessionStorage.pos, text: msg, type: type, course_id: this.props.course.id})
+        ChatService.createItem({user_id: sessionStorage.token, pos: sessionStorage.pos, text: msg, type: type, course_code: this.props.course.code})
         .then(()=>{
-            this.getMessages();
+            this.getMessages(this.props.course.code);
         });
     },
 
