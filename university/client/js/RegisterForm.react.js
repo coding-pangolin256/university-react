@@ -171,7 +171,7 @@ class RegisterForm extends Component {
       pos: this.props.pos
     });
     if(this.props.data.university == null)
-      this.props.data.university = 1;
+      this.props.data.university = this.state.universities[0]['code'];
     this.props.onSubmit(this.props.data);
   }
 }
