@@ -23,7 +23,7 @@ CREATE TABLE `cbg_course` (
   `name` varchar(255) DEFAULT NULL,
   `period_id` int(11) DEFAULT NULL,
   `teacher_id` int(11) DEFAULT NULL,
-  `university_id` int(11) DEFAULT NULL,
+  `university_id` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
