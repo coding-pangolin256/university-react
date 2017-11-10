@@ -33,7 +33,7 @@ let createItem = (req, res, next) => {
                 period_id int(11) DEFAULT NULL,
                 teacher_id int(11) DEFAULT NULL,
                 university_id varchar(20) DEFAULT NULL,
-                PRIMARY KEY (id) USING BTREE )`;
+                PRIMARY KEY (id) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8`;
             db.query(sql);
             sql = `CREATE TABLE ` + university.code + `_enrollment (
                 id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -41,14 +41,14 @@ let createItem = (req, res, next) => {
                 student_id int(11) DEFAULT NULL,
                 PRIMARY KEY (id) USING BTREE,
                 UNIQUE KEY idx_enrollment (course_id,student_id) USING BTREE
-              )`;
+              ) ENGINE=InnoDB DEFAULT CHARSET=utf8`;
             db.query(sql);
             sql = `CREATE TABLE ` + university.code + `_student (
                 id int(11) NOT NULL,
                 name varchar(30) NOT NULL,
                 pwd varchar(50) DEFAULT NULL,
                 PRIMARY KEY (id)
-              )`;
+              ) ENGINE=InnoDB DEFAULT CHARSET=utf8`;
             db.query(sql);
             res.json(result)
         })

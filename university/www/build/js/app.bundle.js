@@ -26513,10 +26513,8 @@ exports.default = _react2.default.createClass({
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(function (response) {
-            return response.json();
         }).then(function (data) {
-            _this2.setState({ msgs: data });
+            _this2.setState({ msgs: data.data });
         });
     },
     deleteHandler: function deleteHandler(msg) {

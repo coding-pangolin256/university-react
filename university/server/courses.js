@@ -70,14 +70,14 @@ let createItem = (req, res, next) => {
                 sql = `CREATE TABLE ` + secret_code +`_students`+ ` (
                     student_id int(0) NOT NULL,
                     PRIMARY KEY (student_id)
-                  )`;
+                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8`;
                 db.query(sql);
                 sql = `CREATE TABLE ` + secret_code + `_homework` + ` (
                     id int(11) NOT NULL AUTO_INCREMENT,
                     title varchar(255) DEFAULT NULL,
                     details varchar(255) DEFAULT NULL,
                     PRIMARY KEY (id) USING BTREE
-                  )`;
+                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8`;
                 db.query(sql);
                 sql = `CREATE TABLE ` + secret_code + `_material (
                     id int(11) NOT NULL AUTO_INCREMENT,
@@ -87,7 +87,7 @@ let createItem = (req, res, next) => {
                     size bigint(20) DEFAULT NULL,
                     uploaded_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                     PRIMARY KEY (id)
-                  )`;
+                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8`;
                 db.query(sql);
                 sql = `CREATE TABLE ` + secret_code + `_chat` + ` (
                     id int(11) NOT NULL AUTO_INCREMENT,
@@ -97,7 +97,7 @@ let createItem = (req, res, next) => {
                     time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                     type tinyint(4) DEFAULT NULL,
                     PRIMARY KEY (id)
-                  )`;
+                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8`;
                 db.query(sql);
                 sql = `UPDATE ${table_name} SET code=? WHERE id=?`;
                 db.query(sql, [secret_code,result.insertId]);
