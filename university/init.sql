@@ -137,12 +137,6 @@ CREATE TABLE `sfd20170150_chat` (
 
 /*Data for the table `sfd20170150_chat` */
 
-insert  into `sfd20170150_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (1,2,'teacher','asdfwef','2017-11-10 02:32:00',0);
-insert  into `sfd20170150_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (2,34,'student','sdfiefsdf','2017-11-10 02:34:03',0);
-insert  into `sfd20170150_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (3,34,'student','xxxxxx','2017-11-10 02:38:47',0);
-insert  into `sfd20170150_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (4,34,'student','zxcv','2017-11-10 02:41:56',0);
-insert  into `sfd20170150_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (5,2,'teacher','qowiefoisavcvx','2017-11-10 02:42:09',0);
-
 /*Table structure for table `sfd20170150_homework` */
 
 CREATE TABLE `sfd20170150_homework` (
@@ -192,15 +186,6 @@ CREATE TABLE `sfd20170158_chat` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 /*Data for the table `sfd20170158_chat` */
-
-insert  into `sfd20170158_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (1,5,'teacher','zxcv','2017-11-10 00:15:09',0);
-insert  into `sfd20170158_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (2,5,'teacher','wef','2017-11-10 00:15:11',0);
-insert  into `sfd20170158_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (3,5,'teacher','xcv','2017-11-10 00:15:57',0);
-insert  into `sfd20170158_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (4,5,'teacher','zxcv','2017-11-10 00:17:08',0);
-insert  into `sfd20170158_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (5,5,'teacher','zxcv','2017-11-10 00:18:09',0);
-insert  into `sfd20170158_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (6,5,'teacher','asdf','2017-11-10 00:18:44',0);
-insert  into `sfd20170158_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (7,5,'teacher','zxcv','2017-11-10 00:19:43',0);
-insert  into `sfd20170158_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (8,5,'teacher','final','2017-11-10 00:26:01',0);
 
 /*Table structure for table `sfd20170158_homework` */
 
@@ -519,7 +504,6 @@ CREATE TABLE `ygs2017011_chat` (
 
 /*Data for the table `ygs2017011_chat` */
 
-insert  into `ygs2017011_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (1,41,'teacher','zxfwef','2017-11-10 01:34:14',0);
 insert  into `ygs2017011_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (2,41,'teacher','囚汞了','2017-11-10 01:41:48',0);
 insert  into `ygs2017011_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (3,41,'teacher','电脑','2017-11-10 02:06:07',0);
 
