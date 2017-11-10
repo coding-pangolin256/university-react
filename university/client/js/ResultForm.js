@@ -1,6 +1,7 @@
 import React from 'react';
 
 import * as ResultService from './services/ResultService';
+// import FileViewer from './components/react-file-viewer/components/file-viewer';
 
 export default React.createClass({
 
@@ -12,7 +13,8 @@ export default React.createClass({
         result.path = this.props.result[result.homework_id+'_hw'];
         result.score = this.props.result[result.homework_id+'_score'];
         result.id = this.props.result.student_id;
-        return {result: result, src_code:""};
+        var file_type = result.path.split('.').pop();
+        return {result: result, src_code:"", file_path: window.location.protocol + '/upload/' + result.path, file_type: file_type};
     },
 
     componentWillReceiveProps(props) {
@@ -52,6 +54,7 @@ export default React.createClass({
                         <label className="slds-form-element__label" htmlFor="sample1">Source</label>
                         <div className="">
                             <textarea className="slds-input" style={{"height": "400px"}} value={src_code} />
+                         
                         </div>
                     </div>
                     <div className="slds-form-element">
