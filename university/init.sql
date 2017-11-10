@@ -23,6 +23,7 @@ CREATE TABLE `cbg_course` (
   `name` varchar(255) DEFAULT NULL,
   `period_id` int(11) DEFAULT NULL,
   `teacher_id` int(11) DEFAULT NULL,
+  `university_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -237,9 +238,11 @@ CREATE TABLE `sfd20170159_chat` (
   `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `type` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `sfd20170159_chat` */
+
+insert  into `sfd20170159_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (1,2,'teacher','i love work.','2017-11-10 12:13:57',0);
 
 /*Table structure for table `sfd20170159_homework` */
 
@@ -445,12 +448,13 @@ CREATE TABLE `teacher` (
   `allowed` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`email`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 
 /*Data for the table `teacher` */
 
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (32,'Abby Riley','sfd',NULL,'abby.R@outlook.com','abby',NULL);
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (14,'Ana Mitchell','sfd',NULL,'ana.M@bulletmail.com','ana',1);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (45,'asdf','cbg',NULL,'asdf','asdf',1);
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (16,'Bobby Chambers','sfd',NULL,'bobby.C@gmail.com','bobby',NULL);
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (1,'Brinley Sherman','cbg',NULL,'brinley.S@mail.com','brinley',NULL);
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (2,'Brown Davies','sfd','','brown.D@gmail.com','brown',2);
@@ -553,11 +557,12 @@ CREATE TABLE `ygs2017012_chat` (
   `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `type` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `ygs2017012_chat` */
 
 insert  into `ygs2017012_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (1,42,'teacher','我爱祖国','2017-11-10 11:55:17',0);
+insert  into `ygs2017012_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (2,42,'teacher','I love work.','2017-11-10 12:06:05',0);
 
 /*Table structure for table `ygs2017012_homework` */
 
