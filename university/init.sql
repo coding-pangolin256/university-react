@@ -133,9 +133,15 @@ CREATE TABLE `sfd20170150_chat` (
   `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `type` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `sfd20170150_chat` */
+
+insert  into `sfd20170150_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (1,2,'teacher','asdfwef','2017-11-10 02:32:00',0);
+insert  into `sfd20170150_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (2,34,'student','sdfiefsdf','2017-11-10 02:34:03',0);
+insert  into `sfd20170150_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (3,34,'student','xxxxxx','2017-11-10 02:38:47',0);
+insert  into `sfd20170150_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (4,34,'student','zxcv','2017-11-10 02:41:56',0);
+insert  into `sfd20170150_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (5,2,'teacher','qowiefoisavcvx','2017-11-10 02:42:09',0);
 
 /*Table structure for table `sfd20170150_homework` */
 
@@ -236,6 +242,54 @@ CREATE TABLE `sfd20170158_students` (
 
 /*Data for the table `sfd20170158_students` */
 
+/*Table structure for table `sfd20170159_chat` */
+
+CREATE TABLE `sfd20170159_chat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `pos` varchar(20) DEFAULT NULL,
+  `text` text,
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `type` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `sfd20170159_chat` */
+
+/*Table structure for table `sfd20170159_homework` */
+
+CREATE TABLE `sfd20170159_homework` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `details` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `sfd20170159_homework` */
+
+/*Table structure for table `sfd20170159_material` */
+
+CREATE TABLE `sfd20170159_material` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `teacher_id` int(11) DEFAULT NULL,
+  `description` text,
+  `path` text,
+  `size` bigint(20) DEFAULT NULL,
+  `uploaded_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `sfd20170159_material` */
+
+/*Table structure for table `sfd20170159_students` */
+
+CREATE TABLE `sfd20170159_students` (
+  `student_id` int(11) NOT NULL,
+  PRIMARY KEY (`student_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `sfd20170159_students` */
+
 /*Table structure for table `sfd2017015_chat` */
 
 CREATE TABLE `sfd2017015_chat` (
@@ -243,6 +297,7 @@ CREATE TABLE `sfd2017015_chat` (
   `user_id` int(11) DEFAULT NULL,
   `pos` varchar(20) DEFAULT NULL,
   `text` text,
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -321,7 +376,7 @@ CREATE TABLE `sfd_course` (
   `teacher_id` int(11) DEFAULT NULL,
   `university_id` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sfd_course` */
 
@@ -330,6 +385,7 @@ insert  into `sfd_course`(`id`,`code`,`name`,`period_id`,`teacher_id`,`universit
 insert  into `sfd_course`(`id`,`code`,`name`,`period_id`,`teacher_id`,`university_id`) values (50,'sfd20170150','Java 101',2,2,'sfd');
 insert  into `sfd_course`(`id`,`code`,`name`,`period_id`,`teacher_id`,`university_id`) values (57,NULL,'zxcv',NULL,2,'sfd');
 insert  into `sfd_course`(`id`,`code`,`name`,`period_id`,`teacher_id`,`university_id`) values (58,'sfd20170158','Angular',2,5,'sfd');
+insert  into `sfd_course`(`id`,`code`,`name`,`period_id`,`teacher_id`,`university_id`) values (59,'sfd20170159','React',2,2,'sfd');
 
 /*Table structure for table `sfd_enrollment` */
 
@@ -404,7 +460,7 @@ CREATE TABLE `teacher` (
   `allowed` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`email`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
 
 /*Data for the table `teacher` */
 
@@ -415,6 +471,7 @@ insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allo
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (2,'Brown Davies','sfd','','brown.D@gmail.com','brown',2);
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (20,'Desmond Hodges','cbg',NULL,'desmond.H@gmail.com','desmond',NULL);
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (38,'Diana Kirby','cbg',NULL,'diana.K@gmail.com','diana',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (42,'Elly Wilson','ygs','xxxxx','elly.W@mail.com','elly',1);
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (41,'gerhard','ygs','','ger@mail.com','1',1);
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (36,'Gisselle Medina','cbg',NULL,'gisselle.M@mail.com','gissele',NULL);
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (40,'Jennifer Brake','cbg','sd','jennifer@me.com','jennifer',1);
@@ -446,7 +503,7 @@ CREATE TABLE `university` (
 
 insert  into `university`(`code`,`name`) values ('cbg','Cambridge University');
 insert  into `university`(`code`,`name`) values ('sfd','Stanford University');
-insert  into `university`(`code`,`name`) values ('ygs','YunDaxie');
+insert  into `university`(`code`,`name`) values ('ygs','云南工');
 
 /*Table structure for table `ygs2017011_chat` */
 
@@ -458,12 +515,13 @@ CREATE TABLE `ygs2017011_chat` (
   `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `type` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `ygs2017011_chat` */
 
 insert  into `ygs2017011_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (1,41,'teacher','zxfwef','2017-11-10 01:34:14',0);
 insert  into `ygs2017011_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (2,41,'teacher','囚汞了','2017-11-10 01:41:48',0);
+insert  into `ygs2017011_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (3,41,'teacher','电脑','2017-11-10 02:06:07',0);
 
 /*Table structure for table `ygs2017011_homework` */
 
@@ -486,9 +544,11 @@ CREATE TABLE `ygs2017011_material` (
   `size` bigint(20) DEFAULT NULL,
   `uploaded_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `ygs2017011_material` */
+
+insert  into `ygs2017011_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (1,NULL,NULL,'1.txt',9551,'2017-11-10 02:07:31');
 
 /*Table structure for table `ygs2017011_students` */
 
@@ -498,6 +558,56 @@ CREATE TABLE `ygs2017011_students` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ygs2017011_students` */
+
+/*Table structure for table `ygs2017012_chat` */
+
+CREATE TABLE `ygs2017012_chat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `pos` varchar(20) DEFAULT NULL,
+  `text` text,
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `type` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `ygs2017012_chat` */
+
+insert  into `ygs2017012_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (1,42,'teacher','我爱祖国','2017-11-10 11:55:17',0);
+
+/*Table structure for table `ygs2017012_homework` */
+
+CREATE TABLE `ygs2017012_homework` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `details` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `ygs2017012_homework` */
+
+/*Table structure for table `ygs2017012_material` */
+
+CREATE TABLE `ygs2017012_material` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `teacher_id` int(11) DEFAULT NULL,
+  `description` text,
+  `path` text,
+  `size` bigint(20) DEFAULT NULL,
+  `uploaded_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `ygs2017012_material` */
+
+/*Table structure for table `ygs2017012_students` */
+
+CREATE TABLE `ygs2017012_students` (
+  `student_id` int(11) NOT NULL,
+  PRIMARY KEY (`student_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `ygs2017012_students` */
 
 /*Table structure for table `ygs_course` */
 
@@ -509,11 +619,12 @@ CREATE TABLE `ygs_course` (
   `teacher_id` int(11) DEFAULT NULL,
   `university_id` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `ygs_course` */
 
 insert  into `ygs_course`(`id`,`code`,`name`,`period_id`,`teacher_id`,`university_id`) values (1,'ygs2017011','React',2,41,'ygs');
+insert  into `ygs_course`(`id`,`code`,`name`,`period_id`,`teacher_id`,`university_id`) values (2,'ygs2017012','Laravel',2,42,'ygs');
 
 /*Table structure for table `ygs_enrollment` */
 
