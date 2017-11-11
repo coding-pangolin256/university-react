@@ -5,6 +5,7 @@ import * as PeriodService from './services/PeriodService';
 import * as TeacherService from './services/TeacherService';
 import * as HomeworkService from './services/HomeworkService';
 
+import {ReactDatePicker} from 'react-date-picker-cs';
 import ComboBox from './components/ComboBox';
 
 export default React.createClass({
@@ -34,7 +35,11 @@ export default React.createClass({
         homework.details = event.target.value;
         this.setState({homework});
     },
-
+    deadlineChangeHandler(date) {
+		let homework = this.state.homework;
+        homework.deadline = date;
+        this.setState({homework});
+	},
     save() {
         let saveItem = this.state.homework.id ? HomeworkService.updateItem : HomeworkService.createItem;
         saveItem(this.state.homework).then(savedhomework => {
@@ -57,6 +62,17 @@ export default React.createClass({
                         <label className="slds-form-element__label" htmlFor="sample1">Details</label>
                         <div className="slds-form-element__control">
                             <input className="slds-input" type="text" value={homework.details} onChange={this.detailsChangeHandler}/>
+                        </div>
+                    </div>
+                    <div className="slds-form-element">
+                        <label className="slds-form-element__label" htmlFor="sample1">Deadline</label>
+                        <div className="slds-form-element__control">
+                            <ReactDatePicker
+                                onChange={this.deadlineChangeHandler} 
+                                range={[2013, 2020]} 
+                                value={homework.deadline} 
+                                disabled={true}
+                            />
                         </div>
                     </div>
                 </div>

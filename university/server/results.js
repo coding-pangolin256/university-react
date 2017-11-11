@@ -78,7 +78,8 @@ let updateItem = (req, res, next) => {
 
 let deleteItem = (req, res, next) => {
     let homeworkId = req.params.id;
-    db.query('DELETE FROM homework WHERE id=?', [homeworkId], true)
+    let table_name = req.params.course_code+'_students';
+    db.query(`ALTER TABLE ${table_name} DROP COLUMN ${homeworkId}_hw, ${homeworkId}_score`)
         .then(() => res.send({result: 'ok'}))
         .catch(next);
 };

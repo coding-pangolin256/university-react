@@ -76,6 +76,7 @@ let createItem = (req, res, next) => {
                     id int(11) NOT NULL AUTO_INCREMENT,
                     title varchar(255) DEFAULT NULL,
                     details varchar(255) DEFAULT NULL,
+                    deadline date DEFAULT NULL,
                     PRIMARY KEY (id) USING BTREE
                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8`;
                 db.query(sql);
@@ -86,6 +87,7 @@ let createItem = (req, res, next) => {
                     path text,
                     size bigint(20) DEFAULT NULL,
                     uploaded_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                    share tinyint(4) DEFAULT NULL,
                     PRIMARY KEY (id)
                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8`;
                 db.query(sql);

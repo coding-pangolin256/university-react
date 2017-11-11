@@ -14,7 +14,7 @@ export default React.createClass({
     componentWillReceiveProps(props) {
         this.getMessages(props.course.code);
         this.setState({course_code: props.course.code});
-        setTimeout(this.startReceivingMessages, 3000);
+        //setTimeout(this.startReceivingMessages, 3000);
     },
     componentDidMount() {
         
@@ -44,9 +44,9 @@ export default React.createClass({
     
     startReceivingMessages()
     {
-        var intervalId = setInterval(this.getMessagesInverval, 3000);
-        // // store intervalId in the state so it can be accessed later:
-        this.setState({intervalId: intervalId});
+        // var intervalId = setInterval(this.getMessagesInverval, 3000);
+        // // // store intervalId in the state so it can be accessed later:
+        // this.setState({intervalId: intervalId});
     },
     getMessagesInverval() {
         //ChatService.findByData({course_code: this.state.course_code}).then((data) => {this.setState({msgs: data})});

@@ -61,6 +61,7 @@
     "react-animate-height": "^0.10.3",
     "react-bootstrap": "^0.31.3",
     "react-csv": "^1.0.8",
+    "react-date-picker-cs": "^0.1.28",
     "react-file-viewer": "^0.3.48",
     "react-fileupload": "^2.4.0",
     "react-fine-uploader": "^1.0.7",

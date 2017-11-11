@@ -15,3 +15,5 @@ export let deleteFile = filename => rest.post("/deletefile", filename);
 export let updateItem = student => rest.put(url, student);
 
 export let deleteItem = id => rest.del(url + "/" + id);
+
+export let findByData = id => rest.post('/present', id);

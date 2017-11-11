@@ -1,6 +1,7 @@
 import React from 'react';
 
 import * as ResultService from './services/ResultService';
+import * as EnrollmentService from './services/EnrollmentService';
 
 import DataGrid from './components/DataGrid';
 import StudentSearchBox from './StudentSearchBox';
@@ -32,13 +33,13 @@ export default React.createClass({
     },
 
     actionHandler(data, index, value, label) {
-        switch(value) {
+        switch(label) {
             case "View Student":
                 this.studentLinkHandler(data);
                 break;
             case "Delete":
-                ResultService.deleteItem(data.id)
-                    .then(() => this.getResults(this.props.course.id));
+                EnrollmentService.deleteItem(this.props.course.code+'_'+data.student_id)
+                    .then(() => this.getResults(this.props.course));
                 break;
             case "Submit":
 

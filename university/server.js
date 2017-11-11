@@ -106,6 +106,7 @@ app.get('/presents', presents.findAll);
 app.get('/presents/:id', presents.findById);
 app.post('/presents', presents.createItem);
 app.put('/presents', presents.updateItem);
+app.post('/present', presents.findByData);
 app.delete('/presents/:id', presents.deleteItem);
 
 app.get('/courses', courses.findAll);

@@ -66,9 +66,20 @@ let createItem = (req, res, next) => {
 };
 
 let deleteItem = (req, res, next) => {
-    let enrollmentId = req.params.id;
-    db.query('DELETE FROM enrollment WHERE id=?', [enrollmentId], true)
-        .then(() => res.send({result: 'ok'}))
+    let id = req.params.id;
+    var search = id.search('_');
+    let course_code = id.slice(0,search);
+    let studentId = id.slice(search + 1);
+    search = course_code.search(/\d/);
+    var university_id = course_code.slice(0,search);
+    var course_id = course_code.slice(search+6);
+    db.query(`DELETE FROM ${university_id}_enrollment WHERE student_id=? AND course_id=?`, [studentId, course_id], true)
+        .then(() => {
+            db.query(`DELETE FROM ${course_code}_students WHERE student_id=?`, [studentId])
+            .then(() => res.send({result: 'ok'}))
+            .catch(next);
+            res.send({result: 'ok'})
+        })
         .catch(next);
 };
 

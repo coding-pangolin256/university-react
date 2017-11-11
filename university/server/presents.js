@@ -5,7 +5,7 @@ let db = require('./pghelper');
 let findAll = (req, res, next) => {
     let courseId = req.query.courseId;
     let sql = `
-        SELECT *
+        SELECT *, IF(SHARE, 'Shared', '-') AS shared
         FROM ${courseId}_material`;
     db.query(sql)
         .then(result => res.json(result))
@@ -14,11 +14,23 @@ let findAll = (req, res, next) => {
 
 let findById = (req, res, next) => {
     let id = req.params.id;
-    let sql = `SELECT *
+    let sql = `SELECT *, IF(SHARE, 'Shared', '-') AS shared
         FROM lecture
         WHERE id = ?`;
     db.query(sql, [parseInt(id)])
         .then(presents =>  res.json(presents[0]))
+        .catch(next);
+};
+
+let findByData = (req, res, next) => {
+    let id = req.params.id;
+    let present = req.body;
+    let table_name = present.course_code + '_material';
+    delete present.course_code;
+    let sql = `SELECT *, IF(SHARE, 'Shared', '-') AS shared
+            FROM ${table_name} WHERE ?`;
+    db.query(sql, present)
+        .then(presents =>  res.json(presents))
         .catch(next);
 };
 
@@ -38,8 +50,10 @@ let updateItem = (req, res, next) => {
     let present = req.body;
     let table_name = present.course_code + '_material';
     delete present.course_code;
+    var id = present.id;
+    delete present.id;
     let sql = `UPDATE ${table_name} SET ? WHERE id=?`;
-    db.query(sql, present)
+    db.query(sql, [present, id])
         .then(() => res.send({result: 'ok'}))
         .catch(next);
 };
@@ -59,3 +73,4 @@ exports.findById = findById;
 exports.createItem = createItem;
 exports.updateItem = updateItem;
 exports.deleteItem = deleteItem;
+exports.findByData = findByData;

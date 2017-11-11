@@ -50,8 +50,16 @@ export default React.createClass({
     },
 
     getPresents(courseId) {
-        if (courseId) {
-            PresentationService.findAll({courseId}).then(presents => this.setState({presents}));
+        if (courseId) 
+        {
+            if(sessionStorage.pos=="teacher")
+            {
+                PresentationService.findAll({courseId}).then(presents => this.setState({presents}));
+            }
+            else
+            {
+                PresentationService.findByData({course_code: courseId, share: 1}).then(presents => this.setState({presents}));
+            }
         }
     },
 
@@ -74,6 +82,12 @@ export default React.createClass({
         //     link.download = present.path;
         //     link.href = 'http://localhost:5000/upload/'+present.path;
         // });
+    },
+
+    presentShareHandler(present)
+    {
+        PresentationService.updateItem({course_code: this.props.course.code, share: present.share?0:1, id: present.id})
+        .then(() => this.getPresents(this.props.course.code));
     },
 
     presentDeleteHandler(present)
@@ -104,6 +118,9 @@ export default React.createClass({
             case "Delete":
                 this.presentDeleteHandler(data);
                 break;
+            case "Share":
+                this.presentShareHandler(data);
+                break;
         }
     },
 
@@ -133,7 +150,7 @@ export default React.createClass({
                                                     <span className="slds-assistive-text">Show More</span>
                                                 </button>} 
                                             uploadFileButton={<button className="slds-button slds-button--neutral slds-button--small">Upload</button>} /> */}
-                            <FileInput accept='.pdf,.doc,.c,.cpp,.java,.js,.txt' uploader={ uploader}>
+                            <FileInput accept='*' uploader={ uploader}>
                                 <span class="icon ion-upload"><Icon name="link"/></span>
                             </FileInput>
                             {/* <button className="slds-button slds-button--neutral slds-button--small" onClick={this.newPresentHandler}>New</button> */}
@@ -147,11 +164,15 @@ export default React.createClass({
                 </header>
 
                 <section className="slds-card__body">
-                    <DataGrid data={this.state.presents} keyField="id" actions={sessionStorage.pos=="teacher"?["Download", "Delete"]:["Download"]} onAction={this.actionHandler}>
+                    <DataGrid data={this.state.presents} keyField="id" actions={sessionStorage.pos=="teacher"?["Download", "Share", "Delete"]:["Download"]} onAction={this.actionHandler}>
                         <div header="File Name" field="path" sortable={true} onLink={this.presentLinkHandler}/>
                         <div header="Description" field="description" sortable={true}/>
                         <div header="Size" field="size" sortable={true} format="size"/>
                         <div header="Uploaded Time" field="uploaded_time" sortable={true} format="datatime"/>
+                        {
+                            sessionStorage.pos=="teacher"?
+                            <div header="Shared" field="shared"/>:''
+                        }
                     </DataGrid>
                 </section>
             </div>

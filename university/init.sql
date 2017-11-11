@@ -15,6 +15,59 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`my_db` /*!40100 DEFAULT CHARACTER SET u
 
 USE `my_db`;
 
+/*Table structure for table `cbg2017011_chat` */
+
+CREATE TABLE `cbg2017011_chat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `pos` varchar(20) DEFAULT NULL,
+  `text` text,
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `type` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+/*Data for the table `cbg2017011_chat` */
+
+insert  into `cbg2017011_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (1,45,'teacher','xcvwef','2017-11-10 13:27:51',0);
+insert  into `cbg2017011_chat`(`id`,`user_id`,`pos`,`text`,`time`,`type`) values (2,45,'teacher','zefdedddd','2017-11-10 13:27:56',0);
+
+/*Table structure for table `cbg2017011_homework` */
+
+CREATE TABLE `cbg2017011_homework` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `details` varchar(255) DEFAULT NULL,
+  `deadline` date DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `cbg2017011_homework` */
+
+/*Table structure for table `cbg2017011_material` */
+
+CREATE TABLE `cbg2017011_material` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `teacher_id` int(11) DEFAULT NULL,
+  `description` text,
+  `path` text,
+  `size` bigint(20) DEFAULT NULL,
+  `uploaded_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `share` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `cbg2017011_material` */
+
+/*Table structure for table `cbg2017011_students` */
+
+CREATE TABLE `cbg2017011_students` (
+  `student_id` int(11) NOT NULL,
+  PRIMARY KEY (`student_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `cbg2017011_students` */
+
 /*Table structure for table `cbg_course` */
 
 CREATE TABLE `cbg_course` (
@@ -25,9 +78,11 @@ CREATE TABLE `cbg_course` (
   `teacher_id` int(11) DEFAULT NULL,
   `university_id` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `cbg_course` */
+
+insert  into `cbg_course`(`id`,`code`,`name`,`period_id`,`teacher_id`,`university_id`) values (1,'cbg2017011','asdf',2,45,'cbg');
 
 /*Table structure for table `cbg_enrollment` */
 
@@ -87,13 +142,14 @@ CREATE TABLE `sfd20170148_homework` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `details` varchar(255) DEFAULT NULL,
+  `deadline` date DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `sfd20170148_homework` */
 
-insert  into `sfd20170148_homework`(`id`,`title`,`details`) values (1,'Test',NULL);
-insert  into `sfd20170148_homework`(`id`,`title`,`details`) values (2,'Homework Oct 24','Solve the problem16 on page 44.');
+insert  into `sfd20170148_homework`(`id`,`title`,`details`,`deadline`) values (1,'Test',NULL,NULL);
+insert  into `sfd20170148_homework`(`id`,`title`,`details`,`deadline`) values (2,'Homework Oct 24','Solve the problem16 on page 44.',NULL);
 
 /*Table structure for table `sfd20170148_material` */
 
@@ -104,6 +160,7 @@ CREATE TABLE `sfd20170148_material` (
   `path` text,
   `size` bigint(20) DEFAULT NULL,
   `uploaded_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `share` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -134,7 +191,7 @@ CREATE TABLE `sfd20170150_chat` (
   `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `type` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `sfd20170150_chat` */
 
@@ -144,6 +201,7 @@ CREATE TABLE `sfd20170150_homework` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `details` varchar(255) DEFAULT NULL,
+  `deadline` date DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -158,6 +216,7 @@ CREATE TABLE `sfd20170150_material` (
   `path` text,
   `size` bigint(20) DEFAULT NULL,
   `uploaded_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `share` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -184,7 +243,7 @@ CREATE TABLE `sfd20170158_chat` (
   `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `type` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `sfd20170158_chat` */
 
@@ -194,12 +253,13 @@ CREATE TABLE `sfd20170158_homework` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `details` varchar(255) DEFAULT NULL,
+  `deadline` date DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `sfd20170158_homework` */
 
-insert  into `sfd20170158_homework`(`id`,`title`,`details`) values (1,'New','sdf');
+insert  into `sfd20170158_homework`(`id`,`title`,`details`,`deadline`) values (1,'New','Test','2017-11-24');
 
 /*Table structure for table `sfd20170158_material` */
 
@@ -210,12 +270,13 @@ CREATE TABLE `sfd20170158_material` (
   `path` text,
   `size` bigint(20) DEFAULT NULL,
   `uploaded_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `share` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `sfd20170158_material` */
 
-insert  into `sfd20170158_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (3,NULL,NULL,'1.txt',9551,'2017-11-10 00:59:26');
+insert  into `sfd20170158_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`,`share`) values (3,NULL,NULL,'1.txt',9551,'2017-11-10 00:59:26',NULL);
 
 /*Table structure for table `sfd20170158_students` */
 
@@ -250,6 +311,7 @@ CREATE TABLE `sfd20170159_homework` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `details` varchar(255) DEFAULT NULL,
+  `deadline` date DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -264,6 +326,7 @@ CREATE TABLE `sfd20170159_material` (
   `path` text,
   `size` bigint(20) DEFAULT NULL,
   `uploaded_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `share` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -297,17 +360,18 @@ CREATE TABLE `sfd2017015_homework` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `details` varchar(255) DEFAULT NULL,
+  `deadline` date DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sfd2017015_homework` */
 
-insert  into `sfd2017015_homework`(`id`,`title`,`details`) values (20,'Easy Exercise','Solve the problem on page 32.');
-insert  into `sfd2017015_homework`(`id`,`title`,`details`) values (21,'Easy Exercise','Solve the problem4 on page 23.');
-insert  into `sfd2017015_homework`(`id`,`title`,`details`) values (22,'Test','Develop a sorting program by using quick sort algorithm.');
-insert  into `sfd2017015_homework`(`id`,`title`,`details`) values (23,'Difficult Homework','Make a dummy using c.');
-insert  into `sfd2017015_homework`(`id`,`title`,`details`) values (24,'Easy Homework','Print your name on the screen.');
-insert  into `sfd2017015_homework`(`id`,`title`,`details`) values (25,'asdf','sdaf');
+insert  into `sfd2017015_homework`(`id`,`title`,`details`,`deadline`) values (20,'Easy Exercise','Solve the problem on page 32.','2017-11-18');
+insert  into `sfd2017015_homework`(`id`,`title`,`details`,`deadline`) values (21,'Easy Exercise','Solve the problem4 on page 23.','2017-11-16');
+insert  into `sfd2017015_homework`(`id`,`title`,`details`,`deadline`) values (22,'Test','Develop a sorting program by using quick sort algorithm.','2017-11-28');
+insert  into `sfd2017015_homework`(`id`,`title`,`details`,`deadline`) values (23,'Difficult Homework','Make a dummy using c.','2017-11-13');
+insert  into `sfd2017015_homework`(`id`,`title`,`details`,`deadline`) values (24,'Easy Homework','Print your name on the screen.','2017-11-15');
+insert  into `sfd2017015_homework`(`id`,`title`,`details`,`deadline`) values (25,'asdf','sdaf','2017-11-24');
 
 /*Table structure for table `sfd2017015_material` */
 
@@ -318,18 +382,19 @@ CREATE TABLE `sfd2017015_material` (
   `path` text,
   `size` bigint(20) DEFAULT NULL,
   `uploaded_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `share` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 /*Data for the table `sfd2017015_material` */
 
-insert  into `sfd2017015_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (10,18,NULL,'sdf.docx',2005,'2017-10-06 23:46:58');
-insert  into `sfd2017015_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (11,18,NULL,'iOS Swift Game Development Cookbook Second Edition.pdf',4146309,'2017-10-06 23:47:02');
-insert  into `sfd2017015_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (12,18,NULL,'CellTrack 3 EN.pdf',144778,'2017-10-06 23:47:09');
-insert  into `sfd2017015_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (13,2,NULL,'iOS Swift Game Development Cookbook Second Edition.pdf',4146309,'2017-10-07 00:07:25');
-insert  into `sfd2017015_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (14,2,NULL,'1.cpp',3601,'2017-10-10 04:07:11');
-insert  into `sfd2017015_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (20,2,NULL,'mail.txt',134,'2017-10-10 04:08:44');
-insert  into `sfd2017015_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (26,2,NULL,'mail.txt',134,'2017-10-10 04:20:56');
+insert  into `sfd2017015_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`,`share`) values (10,18,NULL,'sdf.docx',2005,'2017-10-06 23:46:58',NULL);
+insert  into `sfd2017015_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`,`share`) values (11,18,NULL,'iOS Swift Game Development Cookbook Second Edition.pdf',4146309,'2017-10-06 23:47:02',NULL);
+insert  into `sfd2017015_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`,`share`) values (12,18,NULL,'CellTrack 3 EN.pdf',144778,'2017-10-06 23:47:09',NULL);
+insert  into `sfd2017015_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`,`share`) values (13,2,NULL,'iOS Swift Game Development Cookbook Second Edition.pdf',4146309,'2017-10-07 00:07:25',NULL);
+insert  into `sfd2017015_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`,`share`) values (14,2,NULL,'1.cpp',3601,'2017-10-10 04:07:11',NULL);
+insert  into `sfd2017015_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`,`share`) values (20,2,NULL,'mail.txt',134,'2017-10-10 04:08:44',NULL);
+insert  into `sfd2017015_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`,`share`) values (26,2,NULL,'mail.txt',134,'2017-10-10 04:20:56',NULL);
 
 /*Table structure for table `sfd2017015_students` */
 
@@ -448,7 +513,7 @@ CREATE TABLE `teacher` (
   `allowed` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`email`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 
 /*Data for the table `teacher` */
 
@@ -471,6 +536,7 @@ insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allo
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (3,'Libby Robinson','cbg',NULL,'libby.R@protonmail.com','libby',1);
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (35,'Maia Alexander','sfd',NULL,'maia.A@me.com','maia',NULL);
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (10,'Mason Saunders','sfd',NULL,'mason.S@bulletmail.com','mason',NULL);
+insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (47,'qwer','cbg','qwer','qwer','qwer',NULL);
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (34,'Reece Harvey','cbg',NULL,'reece.H@mail.com','reece',NULL);
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (39,'Remington Gomez','sfd',NULL,'remington.G@me.com','remington',NULL);
 insert  into `teacher`(`id`,`name`,`university`,`department`,`email`,`pwd`,`allowed`) values (33,'Ryan Atkinson','cbg',NULL,'ryan.A@mail.com','ryan',NULL);
@@ -517,10 +583,13 @@ CREATE TABLE `ygs2017011_homework` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `details` varchar(255) DEFAULT NULL,
+  `deadline` date DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `ygs2017011_homework` */
+
+insert  into `ygs2017011_homework`(`id`,`title`,`details`,`deadline`) values (1,'Easy','Homework','2017-11-23');
 
 /*Table structure for table `ygs2017011_material` */
 
@@ -531,21 +600,26 @@ CREATE TABLE `ygs2017011_material` (
   `path` text,
   `size` bigint(20) DEFAULT NULL,
   `uploaded_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `share` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `ygs2017011_material` */
 
-insert  into `ygs2017011_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`) values (1,NULL,NULL,'1.txt',9551,'2017-11-10 02:07:31');
+insert  into `ygs2017011_material`(`id`,`teacher_id`,`description`,`path`,`size`,`uploaded_time`,`share`) values (1,NULL,NULL,'1.txt',9551,'2017-11-10 02:07:31',NULL);
 
 /*Table structure for table `ygs2017011_students` */
 
 CREATE TABLE `ygs2017011_students` (
   `student_id` int(11) NOT NULL,
+  `1_hw` text,
+  `1_score` double DEFAULT NULL,
   PRIMARY KEY (`student_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ygs2017011_students` */
+
+insert  into `ygs2017011_students`(`student_id`,`1_hw`,`1_score`) values (1,'1.cpp',NULL);
 
 /*Table structure for table `ygs2017012_chat` */
 
@@ -570,6 +644,7 @@ CREATE TABLE `ygs2017012_homework` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `details` varchar(255) DEFAULT NULL,
+  `deadline` date DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -584,6 +659,7 @@ CREATE TABLE `ygs2017012_material` (
   `path` text,
   `size` bigint(20) DEFAULT NULL,
   `uploaded_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `share` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -597,6 +673,8 @@ CREATE TABLE `ygs2017012_students` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ygs2017012_students` */
+
+insert  into `ygs2017012_students`(`student_id`) values (1);
 
 /*Table structure for table `ygs_course` */
 
@@ -623,9 +701,12 @@ CREATE TABLE `ygs_enrollment` (
   `student_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `idx_enrollment` (`course_id`,`student_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `ygs_enrollment` */
+
+insert  into `ygs_enrollment`(`id`,`course_id`,`student_id`) values (2,1,1);
+insert  into `ygs_enrollment`(`id`,`course_id`,`student_id`) values (1,2,1);
 
 /*Table structure for table `ygs_student` */
 
@@ -637,6 +718,8 @@ CREATE TABLE `ygs_student` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ygs_student` */
+
+insert  into `ygs_student`(`id`,`name`,`pwd`) values (1,'Nichola Great','nichola');
 
 /*Table structure for table `yundaxue_course` */
 

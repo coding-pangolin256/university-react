@@ -70,12 +70,12 @@ export default React.createClass({
                             <input className="slds-input" type="text" value={course.name} onChange={this.nameChangeHandler}/>
                         </div>
                     </div>
-                    <div className="slds-form-element">
+                    {/* <div className="slds-form-element">
                         <label className="slds-form-element__label" htmlFor="sample1">Teacher</label>
                         <div className="slds-form-element__control">
                             <ComboBox data={this.state.teachers} value={course.teacher_id} onChange={this.teacherChangeHandler}/>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2">
                     <div className="slds-form-element">
