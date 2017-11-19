@@ -166,7 +166,7 @@ export default React.createClass({
                 <section className="slds-card__body">
                     <DataGrid data={this.state.presents} keyField="id" actions={sessionStorage.pos=="teacher"?["Download", "Share", "Delete"]:["Download"]} onAction={this.actionHandler}>
                         <div header="File Name" field="path" sortable={true} onLink={this.presentLinkHandler}/>
-                        <div header="Description" field="description" sortable={true}/>
+                        {/* <div header="Description" field="description" sortable={true}/> */}
                         <div header="Size" field="size" sortable={true} format="size"/>
                         <div header="Uploaded Time" field="uploaded_time" sortable={true} format="datatime"/>
                         {

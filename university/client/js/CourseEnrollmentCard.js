@@ -82,6 +82,10 @@ export default React.createClass({
                 {
                     cols.push(<div header={keys[index]} field={keys[index]} sortable={true} onLink={this.studentLinkHandler}/>);    
                 }
+                else if(keys[index] == "id")
+                {
+                    cols.push(<div header={keys[index]} field={keys[index]}/>);    
+                }
                 else if(keys[index] == "student_id")
                 {
                     continue;
@@ -123,7 +127,11 @@ export default React.createClass({
             {
                 if(keys[index] == "name")
                 {
-                    cols.push(<div header={keys[index]} field={keys[index]} onLink={this.studentLinkHandler}/>);    
+                    cols.push(<div header={keys[index]} field={keys[index]}/>);    
+                }
+                else if(keys[index] == "id")
+                {
+                    cols.push(<div header={keys[index]} field={keys[index]}/>);    
                 }
                 else if(keys[index] == "student_id")
                 {
@@ -158,7 +166,7 @@ export default React.createClass({
                             <h3 className="slds-text-heading--small slds-truncate">{this.props.title}</h3>
                         </div>
                         {
-                            !this.props.editable?
+                            !this.props.editable&&sessionStorage.pos=="teacher"?
                         <ReactHTMLTableToExcel
                             id="test-table-xls-button"
                             className="slds-button slds-button--neutral"
@@ -171,7 +179,7 @@ export default React.createClass({
                 </header>
 
                 <section className="slds-card__body">
-                    <DataGrid table_id={this.props.editable?"":"table-to-xls"} data={this.state.results} actions={sessionStorage.pos=="teacher"&&this.props.editable?["View Student", "Delete"]:null} onAction={this.actionHandler}>
+                    <DataGrid table_id={this.props.editable?"":"table-to-xls"} data={this.state.results} actions={sessionStorage.pos=="teacher"&&this.props.editable?["Delete"]:null} onAction={this.actionHandler}>
                         {/* <div header="Name" field="name" sortable={true} onLink={this.studentLinkHandler}/>
                         <div header="Student ID" field="student_id"/> */}
                         {cols}

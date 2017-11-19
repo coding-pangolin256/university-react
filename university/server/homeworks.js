@@ -6,7 +6,7 @@ let findAll = (req, res, next) => {
     let courseId = req.query.courseId;
     let table_name = courseId + '_homework';
     let sql = `
-        SELECT h.id, h.title, h.details
+        SELECT h.*
         FROM ${table_name} as h`;
     db.query(sql)
         .then(result => res.json(result))
@@ -16,7 +16,7 @@ let findAll = (req, res, next) => {
 let findByTeacher = (req, res, next) => {
     let teacherId = req.params.id;
     let sql = `
-        SELECT c.id, c.code, c.name, teacher_id, t.name as teacher_name,
+        SELECT c.id, c.code, c.name, c.deadline, teacher_id, t.name as teacher_name,
             c.period_id, p.name as period_name,
             count(e.student_id) as student_count
         FROM homework as c
@@ -49,7 +49,7 @@ let findByHomework = (req, res, next) => {
 let findById = (req, res, next) => {
     let id = req.params.id;
     let sql = `
-        SELECT h.id, h.title, h.details, c.id as course_id, c.code as course_code, c.name as course_name, 
+        SELECT h.id, h.title, h.deadline, h.details, c.id as course_id, c.code as course_code, c.name as course_name, 
         c.period_id
         FROM homework as h
         LEFT JOIN course as c ON c.id=h.course_id
@@ -62,9 +62,11 @@ let findById = (req, res, next) => {
 let createItem = (req, res, next) => {
     let homework = req.body;
     let table_name = homework.course_code + '_homework';
-    let sql = `INSERT INTO ${table_name} (title, details)
-			   VALUES (?, ?)`;
-    db.query(sql, [homework.title, homework.details])
+    var date = new Date(homework.deadline);
+    var deadline = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+    let sql = `INSERT INTO ${table_name} (title, details, deadline)
+			   VALUES (?, ?, ?)`;
+    db.query(sql, [homework.title, homework.details, deadline])
         .then(result => {
             let sql = `
                 ALTER TABLE ` + homework.course_code + '_students' + `
@@ -80,8 +82,8 @@ let createItem = (req, res, next) => {
 
 let updateItem = (req, res, next) => {
     let homework = req.body;
-    let sql = `UPDATE homework SET title=?, details=? WHERE id=?`;
-    db.query(sql, [homework.title, homework.details, homework.id])
+    let sql = `UPDATE homework SET title=?, details=?, deadline=? WHERE id=?`;
+    db.query(sql, [homework.title, homework.details, homework.deadline, homework.id])
         .then(() => res.send({result: 'ok'}))
         .catch(next);
 };

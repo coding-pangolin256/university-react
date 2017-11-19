@@ -61,7 +61,7 @@ export default React.createClass({
                             </button>
                         </div>
                         <div className="slds-modal__content" style={{overflow:"visible"}}>
-                            <FileInput accept='.c,.cpp,.java,.js,.txt' uploader={ uploader}>
+                            <FileInput accept='.c,.cpp,.java,.js,.txt,.doc,.docx,.pdf,.ppt,.pptx' uploader={ uploader}>
                                 <span class="icon ion-upload">Select File<Icon name="link"/></span>
                             </FileInput>
                             <br/>

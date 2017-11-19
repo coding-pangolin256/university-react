@@ -23,7 +23,7 @@ let findByCourse = (req, res, next) => {
     var university_id = course.code.slice(0,search);
     let student_table = university_id + '_student';
     let sql = `
-        SELECT s.name as name, r.*
+        SELECT s.id, s.name as name, r.*
         FROM ${table_name} r
         LEFT JOIN ${student_table} as s ON r.student_id = s.id
         ORDER BY r.student_id`;

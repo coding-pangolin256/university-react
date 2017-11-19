@@ -1,17 +1,19 @@
 import React from 'react';
+import moment from 'moment';
 
 import * as CourseService from './services/CourseService';
 import * as PeriodService from './services/PeriodService';
 import * as TeacherService from './services/TeacherService';
 import * as HomeworkService from './services/HomeworkService';
 
-import {ReactDatePicker} from 'react-date-picker-cs';
+import DatePicker from 'react-datepicker';
 import ComboBox from './components/ComboBox';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default React.createClass({
 
     getInitialState() {
-        return {homework:{ course_id : this.props.cid, course_code: this.props.ccode}, periods:[], teachers:[]};
+        return {homework:{ course_id : this.props.cid, course_code: this.props.ccode, deadline: moment()}, periods:[], teachers:[]};
     },
 
     componentWillReceiveProps(props) {
@@ -36,7 +38,7 @@ export default React.createClass({
         this.setState({homework});
     },
     deadlineChangeHandler(date) {
-		let homework = this.state.homework;
+        let homework = this.state.homework;
         homework.deadline = date;
         this.setState({homework});
 	},
@@ -67,11 +69,12 @@ export default React.createClass({
                     <div className="slds-form-element">
                         <label className="slds-form-element__label" htmlFor="sample1">Deadline</label>
                         <div className="slds-form-element__control">
-                            <ReactDatePicker
-                                onChange={this.deadlineChangeHandler} 
-                                range={[2013, 2020]} 
-                                value={homework.deadline} 
-                                disabled={true}
+                            <DatePicker className="slds-input"
+                                selected={homework.deadline}
+                                onChange={this.deadlineChangeHandler}
+                                dateFormat="YYYY/MM/DD"
+                                isClearable={true}
+                                placeholderText="Click to select date!"
                             />
                         </div>
                     </div>

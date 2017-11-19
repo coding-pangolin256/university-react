@@ -107,7 +107,7 @@ export default React.createClass({
                     <DataGrid data={this.state.homeworks} keyField="id" actions={sessionStorage.pos=="teacher"?["View Homework", "Delete"]:["Submit"]} onAction={this.actionHandler}>
                         {/* <div header="Homework Id" field="id" sortable={true} onLink={this.homeworkLinkHandler}/> */}
                         <div header="Title" field="title" sortable={true} onLink={this.homeworkLinkHandler}/>
-                        {/* <div header="Last Name" field="last_name" sortable={true} onLink={this.homeworkLinkHandler}/> */}
+                        <div header="Deadline" field="deadline" format="date" sortable={true}/>
                         <div header="Details" field="details"/>
                     </DataGrid>
                 </section>
