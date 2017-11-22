@@ -7,7 +7,7 @@ var pg = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'my_db',
+    database: 'teaching_db',
     multipleStatements: true,
     pipes_as_concat: true,
 });
@@ -21,7 +21,8 @@ exports.query = function (sql, values, singleItem, dontLog) {
         pg.getConnection(function (err, conn) {
             if (err) return reject(err);
             try {
-                conn.query(sql, values, function (err, result) {
+                conn.query(sql
+                    , values, function (err, result) {
                     if (err) {
                         reject(err);
                     } else {

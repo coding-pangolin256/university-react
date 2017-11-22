@@ -7,9 +7,10 @@
  */
 
 import React, { Component } from 'react';
-import { changeForm } from './actions/AppActions';
+import { changeForm, setErrorMessage } from './actions/AppActions';
 import LoadingButton from './LoadingButton.react';
 import ErrorMessage from './ErrorMessage.react';
+import * as errorMessages  from './constants/MessageConstants';
 
 import * as UniversityService from './services/UniversityService';
 
@@ -40,26 +41,22 @@ class RegisterForm extends Component {
       <form className="form" onSubmit={this._onSubmit.bind(this)}>
         <ErrorMessage />
         {
-          this.state.showTeacher?
-            <div>
               <div className="form__field-wrapper" id="teacher_form">
                 <label className="form__field-label" htmlFor="university">University</label>
-                <select className="form__field-input" id="university" value={this.props.data.university} onChange={this._changeUniversity.bind(this)}>
+                <select className="form__field-input" id="university" value={this.props.data.university_id} onChange={this._changeUniversity.bind(this)}>
                   {rows}
                 </select>
               </div>
-              <div className="form__field-wrapper" id="teacher_form">
+              /* <div className="form__field-wrapper" id="teacher_form">
                 <label className="form__field-label" htmlFor="email">Department</label>
                 <input className="form__field-input" type="text" id="department" value={this.props.data.department} onChange={this._changeDepartment.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
-              </div>
-            </div>:
-            null
+              </div> */
         }
         {
           this.state.showTeacher?
             <div className="form__field-wrapper" id="teacher_form">
-            <label className="form__field-label" htmlFor="email">Email Address</label>
-              <input className="form__field-input" type="text" id="email" value={this.props.data.email} onChange={this._changeEmail.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
+            <label className="form__field-label" htmlFor="phone">Phone Address</label>
+              <input className="form__field-input" type="text" id="phone" value={this.props.data.phone} onChange={this._changePhone.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
             </div>
             :
             <div>
@@ -67,10 +64,10 @@ class RegisterForm extends Component {
               <label className="form__field-label" htmlFor="stdid">Student ID</label>
               <input className="form__field-input" type="text" id="stdid" value={this.props.data.stdid} onChange={this._changeStdid.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
             </div>
-            <div className="form__field-wrapper" id="student_form">
+            {/* <div className="form__field-wrapper" id="student_form">
               <label className="form__field-label" htmlFor="course_id">Course ID</label>
               <input className="form__field-input" type="text" id="course_id" value={this.props.data.course_id} onChange={this._changeCourseid.bind(this)} autoCorrect="off" autoCapitalize="off" spellCheck="false" />
-            </div>
+            </div> */}
             </div>
         }
         <div className="form__field-wrapper">
@@ -80,6 +77,10 @@ class RegisterForm extends Component {
         <div className="form__field-wrapper">
           <label className="form__field-label" htmlFor="password">Password</label>
           <input className="form__field-input" id="password" type="password" value={this.props.data.password} onChange={this._changePassword.bind(this)} />
+        </div>
+        <div className="form__field-wrapper">
+          <label className="form__field-label" htmlFor="confirm">Confirm Password</label>
+          <input className="form__field-input" id="confirm" type="password" value={this.props.data.confirm} onChange={this._changeConfirm.bind(this)} />
         </div>
         <div className="form__submit-btn-wrapper">
           {this.props.currentlySending ? (
@@ -94,17 +95,17 @@ class RegisterForm extends Component {
   // Change the position in the app state
   _changeUniversity(evt) {
     var newState = this._mergeWithCurrentState({
-      university: evt.target.value
+      university_id: evt.target.value
     });
     this._emitChange(newState);
   }
   // Change the position in the app state
-  _changeDepartment(evt) {
-    var newState = this._mergeWithCurrentState({
-      department: evt.target.value
-    });
-    this._emitChange(newState);
-  }
+  // _changeDepartment(evt) {
+  //   var newState = this._mergeWithCurrentState({
+  //     department: evt.target.value
+  //   });
+  //   this._emitChange(newState);
+  // }
   // Change the position in the app state
     _changePos(evt) {
       var newState = this._mergeWithCurrentState({
@@ -128,10 +129,10 @@ class RegisterForm extends Component {
   
       this._emitChange(newState);
     }
-    // Change the email in the app state
-  _changeEmail(evt) {
+    // Change the Phone in the app state
+  _changePhone(evt) {
       var newState = this._mergeWithCurrentState({
-        email: evt.target.value
+        phone: evt.target.value
       });
   
       this._emitChange(newState);
@@ -150,6 +151,15 @@ class RegisterForm extends Component {
     var newState = this._mergeWithCurrentState({
       password: evt.target.value
     });
+    
+    this._emitChange(newState);
+  }
+
+  // Change the password in the app state
+  _changeConfirm(evt) {
+    var newState = this._mergeWithCurrentState({
+      confirm: evt.target.value
+    });
 
     this._emitChange(newState);
   }
@@ -167,11 +177,17 @@ class RegisterForm extends Component {
   // onSubmit call the passed onSubmit function
   _onSubmit(evt) {
     evt.preventDefault();
+    
+    if(this.props.data.password.localeCompare(this.props.data.confirm) != 0)
+    {
+      this.props.dispatch(setErrorMessage(errorMessages.CONFIRM_PASSWORD));
+      return;
+    }
     this._mergeWithCurrentState({
       pos: this.props.pos
     });
-    if(this.props.data.university == null)
-      this.props.data.university = this.state.universities[0]['code'];
+    if(this.props.data.university_id == null)
+      this.props.data.university_id = this.state.universities[0]['code'];
     this.props.onSubmit(this.props.data);
   }
 }

@@ -13,11 +13,11 @@ export default React.createClass({
     },
 
     componentWillReceiveProps(props) {
-        this.getCourses({teacher_id: props.teacher.id, university_id: props.teacher.university_id});
+        this.getCourses({teacher_id: props.teacher.phone, university_id: props.teacher.university_id});
     },
 
     viewAllHandler(event) {
-        this.getCourses({teacher_id: this.props.teacher.id, university_id: this.props.teacher.university_id});
+        this.getCourses({teacher_id: this.props.teacher.phone, university_id: this.props.teacher.university_id});
         event.preventDefault();
     },
 
@@ -41,7 +41,7 @@ export default React.createClass({
 
     newCourseSavedHandler(course) {
         this.setState({addingCourse:false});
-        this.getCourses({teacher_id: this.props.teacher.id, university_id: this.props.teacher.university_id});
+        this.getCourses({teacher_id: this.props.teacher.phone, university_id: this.props.teacher.university_id});
     },
 
     render() {
@@ -75,7 +75,7 @@ export default React.createClass({
                     </DataGrid>
                 </section>
 
-                {this.state.addingCourse?<CourseFormWindow tid={this.props.teacher.id} uid={this.props.teacher.university_id} onSaved={this.newCourseSavedHandler} onCancel={this.newCourseCancelHandler}/>:null}
+                {this.state.addingCourse?<CourseFormWindow tid={this.props.teacher.phone} uid={this.props.teacher.university_id} onSaved={this.newCourseSavedHandler} onCancel={this.newCourseCancelHandler}/>:null}
             </div>
         );
     }

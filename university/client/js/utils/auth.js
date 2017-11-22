@@ -12,7 +12,7 @@ var auth = {
    * @param  {string}   password The password of the user
    * @param  {Function} callback Called after a user was logged in on the remote server
    */
-  login(pos, data, callback) {
+  login(pos, data, callback) {console.log(data);
     // If there is a token in the sessionStorage, the user already is
     // authenticated
     if (this.loggedIn()) {
@@ -23,13 +23,13 @@ var auth = {
 
     if(pos == "student")
     {
-      StudentService.findByData({ 'id': data.stdid, 'pwd': data.password, 'university_id': data.university_id }).then(response => {
+      StudentService.findByData({ 'student_id': data.stdid, 'pswd': data.password, 'univ_code': data.university_id }).then(response => {
         // If the user was authenticated successfully, save a random token to the
         // sessionStorage
         if (response != null) {
-          sessionStorage.token = response.id;
+          sessionStorage.token = response.student_id;
           sessionStorage.permission = 0;
-          sessionStorage.university = data.university_id;
+          sessionStorage.university = data.univ_code;
           sessionStorage.pos = "student";
           callback(true);
         } else {
@@ -44,14 +44,14 @@ var auth = {
     }
     else
     {
-      TeacherService.findByData({ 'email': data.email, 'pwd': data.password }).then(response => {
+      TeacherService.findByData({ 'phone': data.phone, 'pswd': data.password }).then(response => {
         // If the user was authenticated successfully, save a random token to the
         // sessionStorage
-        if (response != null && response.allowed) {
-          sessionStorage.token = response.id;
+        if (response != null) {
+          sessionStorage.token = response.phone;
           sessionStorage.pos = "teacher";
-          sessionStorage.university = response.university;
-          sessionStorage.permission = response.allowed;
+          sessionStorage.university = response.univ_code;
+          sessionStorage.permission = 1;
           callback(true);
         } else {
           var err={
@@ -93,11 +93,10 @@ var auth = {
     if(info.pos == "teacher")
     {
       var data = {
-        'university': info.university,
-        'department': info.department,
-        'name': info.name,
-        'email': info.email,
-        'pwd': info.password
+        'univ_code': info.university,
+        'teacher_name': info.name,
+        'phone': info.phone,
+        'pswd': info.password
       }
       
       TeacherService.createItem(data).then(response => {
@@ -115,10 +114,10 @@ var auth = {
     }
     else {
       var data = {
-        'id': info.stdid,
-        'name': info.name,
-        'pwd': info.password,
-        'course_id': info.course_id
+        'student_id': info.stdid,
+        'student_name': info.name,
+        'pswd': info.password,
+        'univ_code': info.university
       }
       
       StudentService.createItem(data).then(response => {

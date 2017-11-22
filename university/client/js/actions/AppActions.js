@@ -43,15 +43,15 @@ export function login(pos, data, password) {
     console.log(data);
     if(pos == "teacher")
     {
-      if (anyElementsEmpty({email: data.email, password: data.password})) {
+      if (anyElementsEmpty({phone: data.phone, password: data.password})) {
         dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
         dispatch(sendingRequest(false));
         return;
       }  
     }
     if(pos == "student")
-    {
-      if (anyElementsEmpty({stdid: data.stdid, password: data.password, university_id: data.university_id})) {
+    {console.log(data);
+      if (anyElementsEmpty({stdid: data.stdid, password: data.password, university: data.university_id})) {
         dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
         dispatch(sendingRequest(false));
         return;
@@ -81,7 +81,7 @@ export function login(pos, data, password) {
           window.location.reload();
           dispatch(changeForm({
             stdid: "",
-            email: "",
+            phone: "",
             name: "",
             password: ""
           }));
@@ -179,7 +179,7 @@ export function register(data) {
           
           dispatch(changeForm({
             stdid: "",
-            email: "",
+            phone: "",
             name: "",
             password: ""
           }));
@@ -234,7 +234,7 @@ export function sendingRequest(sending) {
  * Sets the errorMessage state, which displays the ErrorMessage component when it is not empty
  * @param message
  */
-function setErrorMessage(message) {
+export function setErrorMessage(message) {
   return (dispatch) => {
     let type = message == errorMessages.SUCCESSFUL_REGISTER?SET_INFO_MESSAGE:SET_ERROR_MESSAGE;
     dispatch({ type: type, message });

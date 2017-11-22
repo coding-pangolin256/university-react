@@ -4,10 +4,10 @@ let db = require('./pghelper');
 
 let findAll = (req, res, next) => {
     let name = req.query.name;
-    let sql = `SELECT t.id, t.name, t.email, t.allowed, u.name AS university, t.university AS university_id, t.department, IF ( allowed, 'Approved', 'Not') approved
+    let sql = `SELECT t.teacher_name AS name, t.phone, u.univ_name AS university, t.univ_code AS university_id
         FROM teacher as t 
-        INNER JOIN university as u ON t.university=u.code
-        ORDER BY name`;
+        INNER JOIN university as u ON t.univ_code=u.univ_code
+        ORDER BY teacher_name`;
     db.query(sql)
         .then(result => res.json(result))
         .catch(next);
@@ -15,9 +15,9 @@ let findAll = (req, res, next) => {
 
 let findById = (req, res, next) => {
     let id = req.params.id;
-    let sql = `SELECT t.id, t.name AS name, t.email, t.allowed, u.name AS university, t.department, t.university AS university_id
+    let sql = `SELECT t.teacher_name AS name, t.phone, u.univ_name AS university, t.univ_code AS university_id
         FROM teacher as t 
-        INNER JOIN university as u ON t.university=u.code WHERE id=?`;
+        INNER JOIN university as u ON t.univ_code=u.univ_code WHERE phone=?`;
     db.query(sql, [parseInt(id)])
         .then(teachers =>  res.json(teachers[0]))
         .catch(next);
@@ -25,8 +25,8 @@ let findById = (req, res, next) => {
 
 let findByData = (req, res, next) => {
     let teacher = req.body;
-    let sql = `SELECT id, name, email, university, department, allowed FROM teacher WHERE email=? AND pwd=?`;
-    db.query(sql, [teacher.email,teacher.pwd])
+    let sql = `SELECT teacher_name, phone, univ_code AS university FROM teacher WHERE phone=? AND pswd=?`;
+    db.query(sql, [teacher.phone,teacher.pswd])
     .then(teachers =>  res.json(teachers[0]))
     .catch(next);
 };
@@ -44,8 +44,8 @@ let createItem = (req, res, next) => {
 
 let updateItem = (req, res, next) => {
     let teacher = req.body;
-    let sql = `UPDATE teacher SET name=?, email=?, university=?, department=?, allowed=? WHERE id=?`;
-    db.query(sql, [teacher.name, teacher.email, teacher.university_id, teacher.department, teacher.allowed, teacher.id])
+    let sql = `UPDATE teacher SET name=?, phone=?, university=?, allowed=? WHERE id=?`;
+    db.query(sql, [teacher.name, teacher.phone, teacher.university_id, teacher.allowed, teacher.id])
         .then(() => res.send({result: 'ok'}))
         .catch(next);
 };

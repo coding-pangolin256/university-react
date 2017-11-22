@@ -18,7 +18,9 @@ export default React.createClass({
     },
 
     componentDidMount() {
-        PeriodService.findAll().then(periods => this.setState({periods}));
+        // PeriodService.findAll().then(periods => this.setState({periods}));
+        var periods = [{id: 's', name: 'Spring Semester'},{id: 'f', name: 'Fall Semester'}];
+        this.setState({periods});
         TeacherService.findAll().then(teachers => this.setState({teachers}));
     },
 

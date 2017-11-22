@@ -6,6 +6,7 @@
  * export const YOUR_CONSTANT = 'Your message text';
  */
 export const FIELD_MISSING = 'Please fill out the entire form.';
+export const CONFIRM_PASSWORD = 'The password and confirmation password doesnt match';
 export const WRONG_PASSWORD = 'Wrong password.';
 export const USER_NOT_FOUND = 'This username does not exist.';
 export const USERNAME_TAKEN = 'Sorry, but this username is already taken';

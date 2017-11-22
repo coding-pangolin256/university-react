@@ -16,16 +16,14 @@ let findAll = (req, res, next) => {
 
 let findByCourse = (req, res, next) => {
     let course = req.body;
-    let table_name = course.code + '_students';
-    let path_field = course.id + '_hw';
-    let score_field = course.id + '_score';
     var search = course.code.search(/\d/);
     var university_id = course.code.slice(0,search);
     let student_table = university_id + '_student';
+    let table_name = university_id + '_enrolling';
     let sql = `
-        SELECT s.id, s.name as name, r.*
+        SELECT s.student_id, s.student_name as name, r.*
         FROM ${table_name} r
-        LEFT JOIN ${student_table} as s ON r.student_id = s.id
+        LEFT JOIN ${student_table} as s ON r.student_id = s.student_id
         ORDER BY r.student_id`;
     db.query(sql)
         .then(results =>  {
