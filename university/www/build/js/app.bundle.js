@@ -57977,7 +57977,16 @@ exports.default = _react2.default.createClass({
 
         if (teacherId) {
             CourseService.findByTeacher(teacherId, queryParams).then(function (courses) {
-                return _this.setState({ courses: courses });
+                for (var i = 0; i < courses.length; i++) {
+                    var code = courses[i].code;
+                    var search = code.search(/\d/);
+                    var year = code.slice(search, 2);
+                    var period = code.slice(search + 2, 1);
+                    var period_name = year + (period == 's' ? ' Spring' : ' Fall') + ' Semester';
+                    console.log(year + ' ' + period + ' ' + period_name);
+                    courses.period_name = period_name;
+                }
+                _this.setState({ courses: courses });
             });
         }
     },

@@ -23,7 +23,19 @@ export default React.createClass({
 
     getCourses(teacherId, queryParams) {
         if (teacherId) {
-            CourseService.findByTeacher(teacherId, queryParams).then(courses => this.setState({courses}));
+            CourseService.findByTeacher(teacherId, queryParams).then(courses => {
+                for(var i=0; i<courses.length; i++)
+                {
+                    let code = courses[i].code;
+                    let search = code.search(/\d/);
+                    let year = code.slice(search, 2);
+                    let period = code.slice(search+2, 1);
+                    let period_name = year + (period=='s'?' Spring':' Fall') + ' Semester';
+                    console.log(year+' '+period+' '+period_name);
+                    courses.period_name = period_name;
+                }
+                this.setState({courses})
+            });
         }
     },
 
@@ -68,7 +80,7 @@ export default React.createClass({
                 </header>
 
                 <section className="slds-card__body">
-                    <DataGrid data={this.state.courses} keyField="id">
+                    <DataGrid data={this.state.courses} keyField="code">
                         <div header="Period" field="period_name" sortable={true}/>
                         {/* <div header="ID" field="id" sortable={true} onLink={this.courseLinkHandler}/> */}
                         <div header="Name" field="name" sortable={true} onLink={this.courseLinkHandler}/>
