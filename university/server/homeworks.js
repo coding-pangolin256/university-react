@@ -4,11 +4,12 @@ let db = require('./pghelper');
 
 let findAll = (req, res, next) => {
     let courseId = req.query.courseId;
-    let table_name = courseId + '_homework';
+    let search = courseId.search(/\d/);
+    let table_name = courseId.slice(0,search) + '_hw';
     let sql = `
         SELECT h.*
-        FROM ${table_name} as h`;
-    db.query(sql)
+        FROM ${table_name} as h WHERE course_code=? ORDER BY counter`;
+    db.query(sql,[courseId])
         .then(result => res.json(result))
         .catch(next);
 };
@@ -61,23 +62,23 @@ let findById = (req, res, next) => {
 
 let createItem = (req, res, next) => {
     let homework = req.body;
-    let table_name = homework.course_code + '_homework';
+    let search = homework.course_code.search(/\d/);
+    let university_name = homework.course_code.slice(0, search);
+    let table_name = university_name + '_hw';
     var date = new Date(homework.deadline);
     var deadline = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
-    let sql = `INSERT INTO ${table_name} (title, details, deadline)
-			   VALUES (?, ?, ?)`;
-    db.query(sql, [homework.title, homework.details, deadline])
+    let sql = `SELECT MAX(counter) AS count FROM ${table_name}`;
+    db.query(sql).then(result=>{
+        sql = `INSERT INTO ${table_name} (course_code, counter, content, deadline)
+        VALUES (?, ?, ?, ?)`;
+        db.query(sql, [homework.course_code, result[0].count+1, homework.title, deadline])
         .then(result => {
-            let sql = `
-                ALTER TABLE ` + homework.course_code + '_students' + `
-                ADD ` + result.insertId + `_hw TEXT;
-                ALTER TABLE ` + homework.course_code + '_students' + `
-                ADD ` + result.insertId + `_score DOUBLE;
-              `;
-            db.query(sql);
-            res.send({id: result.insertId});
+            let sql = `UPDATE ${university_name}_enrolling SET grades = CONCAT (grades, ',') WHERE course_code = ?`;
+            db.query(sql, homework.course_code);
+            res.send({result: 'ok'});
         })
         .catch(next);
+    });
 };
 
 let updateItem = (req, res, next) => {

@@ -28,11 +28,10 @@ export default React.createClass({
                 {
                     let code = courses[i].code;
                     let search = code.search(/\d/);
-                    let year = code.slice(search, 2);
+                    var year = '20' + code.slice(search, search+2);
                     let period = code.slice(search+2, 1);
                     let period_name = year + (period=='s'?' Spring':' Fall') + ' Semester';
-                    console.log(year+' '+period+' '+period_name);
-                    courses.period_name = period_name;
+                    courses[i].period_name = period_name;
                 }
                 this.setState({courses})
             });

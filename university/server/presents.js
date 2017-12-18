@@ -4,10 +4,15 @@ let db = require('./pghelper');
 
 let findAll = (req, res, next) => {
     let courseId = req.query.courseId;
+    let search = courseId.search(/\d/);
+    let university_name = courseId.slice(0, search);
     let sql = `
-        SELECT *, IF(SHARE, 'Shared', '-') AS shared
-        FROM ${courseId}_material`;
-    db.query(sql)
+        SELECT *
+        FROM ${university_name}_material WHERE course_code = ?`;
+    // let sql = `
+    //     SELECT *, IF(SHARE, 'Shared', '-') AS shared
+    //     FROM ${university_name}_material WHERE course_code = ?`;
+    db.query(sql, [courseId])
         .then(result => res.json(result))
         .catch(next);
 };

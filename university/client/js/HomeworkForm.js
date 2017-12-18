@@ -32,11 +32,11 @@ export default React.createClass({
         this.setState({homework});
     },
 
-    detailsChangeHandler(event) {
-        let homework = this.state.homework;
-        homework.details = event.target.value;
-        this.setState({homework});
-    },
+    // detailsChangeHandler(event) {
+    //     let homework = this.state.homework;
+    //     homework.details = event.target.value;
+    //     this.setState({homework});
+    // },
     deadlineChangeHandler(date) {
         let homework = this.state.homework;
         homework.deadline = date;
@@ -60,12 +60,12 @@ export default React.createClass({
                             <input className="slds-input" type="text" value={homework.title} onChange={this.titleChangeHandler}/>
                         </div>
                     </div>
-                    <div className="slds-form-element">
+                    {/* <div className="slds-form-element">
                         <label className="slds-form-element__label" htmlFor="sample1">Details</label>
                         <div className="slds-form-element__control">
                             <input className="slds-input" type="text" value={homework.details} onChange={this.detailsChangeHandler}/>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="slds-form-element">
                         <label className="slds-form-element__label" htmlFor="sample1">Deadline</label>
                         <div className="slds-form-element__control">

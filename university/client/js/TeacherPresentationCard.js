@@ -27,16 +27,17 @@ export default React.createClass({
     componentDidMount() {
         uploader.on('complete', (id, name, response) => {
             // handle completed upload
-            PresentationService.createItem(this.state.present)
-            .then(() => this.getPresents(this.props.course.code))
-            .catch((error) => {
-                let event = new CustomEvent('notify', {detail:'You already uploaded this file'});
-                document.dispatchEvent(event);
-            });
+            // PresentationService.createItem(this.state.present)
+            // .then(() => this.getPresents(this.props.course.code))
+            // .catch((error) => {
+            //     let event = new CustomEvent('notify', {detail:'You already uploaded this file'});
+            //     document.dispatchEvent(event);
+            // });
             console.log('upload success!');
         })
         uploader.on('submitted', id => {
-           this.setState({present: {course_code: this.props.course.code, path: uploader.methods.getFile(id).name, size: uploader.methods.getFile(id).size}});
+            uploader.methods.setFile
+            this.setState({present: {course_code: this.props.course.code, path: uploader.methods.getFile(id).name, size: uploader.methods.getFile(id).size}});
         })
     },
 
@@ -61,6 +62,7 @@ export default React.createClass({
                 PresentationService.findByData({course_code: courseId, share: 1}).then(presents => this.setState({presents}));
             }
         }
+        console.log(this.state.presents);
     },
 
     presentLinkHandler(present) {
@@ -165,14 +167,15 @@ export default React.createClass({
 
                 <section className="slds-card__body">
                     <DataGrid data={this.state.presents} keyField="id" actions={sessionStorage.pos=="teacher"?["Download", "Share", "Delete"]:["Download"]} onAction={this.actionHandler}>
-                        <div header="File Name" field="path" sortable={true} onLink={this.presentLinkHandler}/>
+                        <div header="Title" field="title" sortable={true} onLink={this.presentLinkHandler}/>
+                        <div header="File" field="file" sortable={true}/>
                         {/* <div header="Description" field="description" sortable={true}/> */}
-                        <div header="Size" field="size" sortable={true} format="size"/>
+                        {/* <div header="Size" field="size" sortable={true} format="size"/>
                         <div header="Uploaded Time" field="uploaded_time" sortable={true} format="datatime"/>
                         {
                             sessionStorage.pos=="teacher"?
                             <div header="Shared" field="shared"/>:''
-                        }
+                        } */}
                     </DataGrid>
                 </section>
             </div>

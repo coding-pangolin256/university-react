@@ -23,7 +23,15 @@ export default React.createClass({
     },
 
     getCourse(id) {
-        CourseService.findById(id).then(course => this.setState({course}));
+        CourseService.findById(id).then(course => {
+            let code = course.code;
+            let search = code.search(/\d/);
+            var year = '20' + code.slice(search, search+2);
+            let period = code.slice(search+2, 1);
+            let period_name = year + (period=='s'?' Spring':' Fall') + ' Semester';
+            course.period_name = period_name;
+            this.setState({course});
+        });
     },
 
     deleteHandler() {

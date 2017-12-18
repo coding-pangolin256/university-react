@@ -76,32 +76,48 @@ export default React.createClass({
         for( let i = 0; i<1&&this.state.results.length; i++)
         {
             let keys = Object.keys(this.state.results[i]);
-            for(let index = 0; index < keys.length; index ++)
+            let grades = this.state.results[i].grades.split(",");
+            delete this.state.results[i].grades;
+            for( x in grades)
             {
-                if(keys[index] == "name")
-                {
-                    cols.push(<div header={keys[index]} field={keys[index]} sortable={true} onLink={this.studentLinkHandler}/>);    
-                }
-                else if(keys[index] == "id")
-                {
-                    cols.push(<div header={keys[index]} field={keys[index]}/>);    
-                }
-                else if(keys[index] == "student_id")
-                {
-                    continue;
-                }
-                else{
-                    if(keys[index].endsWith("_score"))
-                    {
-                        continue;
-                    }
-                    if(this.props.editable == true)
-                        cols.push(<div header={keys[index]} field={keys[index+1]} action="Details" onLink={this.resultLinkHandler}/>);
-                    else
-                    cols.push(<div header={keys[index]} field={keys[index+1]}/>);
-                }
-                
+                let key_name = 'hw'+x;
+                Object.assign(this.state.results[i], {key_name: grades[x]});
             }
+            // for(let index = 0; index < keys.length; index ++)
+            // {
+            //     if(keys[index] == "name")
+            //     {
+            //         cols.push(<div header={keys[index]} field={keys[index]} sortable={true} onLink={this.studentLinkHandler}/>);    
+            //     }
+            //     else if(keys[index] == "id")
+            //     {
+            //         cols.push(<div header={keys[index]} field={keys[index]}/>);    
+            //     }
+            //     else if(keys[index] == "student_id")
+            //     {
+            //         continue;
+            //     }
+            //     else{
+            //         if(keys[index].endsWith("_score"))
+            //         {
+            //             continue;
+            //         }
+            //         if(keys[index] == "grades")
+            //         {
+            //             let grades = keys[index].split(",");
+            //             console.log(grades);
+            //             for(x in grades)
+            //             {
+            //                 if(this.props.editable == true)
+            //                     cols.push(<div header={keys[index]} field={keys[index+1]} action="Details" onLink={this.resultLinkHandler}/>);
+            //                 else
+            //                     cols.push(<div header={keys[index]} field={keys[index+1]}/>);
+            //             }
+            //         }
+                    
+            //     }
+                
+            // }
         }
         var uri = 'data:application/vnd.ms-excel;base64,'
         , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
@@ -120,6 +136,19 @@ export default React.createClass({
         // {
         //    cols.push(<div header={keys[index]} field={keys[index]}/>);
         // }
+        for( let i = 0; i<this.state.results.length; i++)
+        {
+            let grades = this.state.results[i]["grades"].replace(/\s/g,'').split(",");
+            delete this.state.results[i]["grades"];
+            for(let x = 1; x <= grades.length; x++)
+            {
+                let key_name = 'hw'+x;
+                if(this.props.editable == true)
+                    this.state.results[i][key_name] = grades[x-1]=="-"?" ":grades[x-1];
+                else
+                this.state.results[i][key_name] = grades[x-1];
+            }
+        }
         for( let i = 0; i<1&&this.state.results.length; i++)
         {
             let keys = Object.keys(this.state.results[i]);
@@ -138,14 +167,14 @@ export default React.createClass({
                     continue;
                 }
                 else{
-                    if(keys[index].endsWith("_score"))
+                    if(keys[index].endsWith("code"))
                     {
                         continue;
                     }
                     if(this.props.editable == true)
-                        cols.push(<div header={keys[index]} field={keys[index+1]} action="Details" onLink={this.resultLinkHandler}/>);
+                        cols.push(<div header={keys[index]} field={keys[index]} action={keys[index]!=""?"Details":""} onLink={this.resultLinkHandler}/>);
                     else
-                        cols.push(<div header={keys[index]} field={keys[index+1]}/>);
+                        cols.push(<div header={keys[index]} field={keys[index]}/>);
                 }
                 
             }

@@ -24,8 +24,9 @@ let findByCourse = (req, res, next) => {
         SELECT s.student_id, s.student_name as name, r.*
         FROM ${table_name} r
         LEFT JOIN ${student_table} as s ON r.student_id = s.student_id
+        WHERE course_code=?
         ORDER BY r.student_id`;
-    db.query(sql)
+    db.query(sql,[course.code])
         .then(results =>  {
             res.json(results);
         })

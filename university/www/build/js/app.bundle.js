@@ -26976,20 +26976,47 @@ exports.default = _react2.default.createClass({
         // console.log(result.toString());
         for (var i = 0; i < 1 && this.state.results.length; i++) {
             var keys = Object.keys(this.state.results[i]);
-            for (var index = 0; index < keys.length; index++) {
-                if (keys[index] == "name") {
-                    cols.push(_react2.default.createElement('div', { header: keys[index], field: keys[index], sortable: true, onLink: this.studentLinkHandler }));
-                } else if (keys[index] == "id") {
-                    cols.push(_react2.default.createElement('div', { header: keys[index], field: keys[index] }));
-                } else if (keys[index] == "student_id") {
-                    continue;
-                } else {
-                    if (keys[index].endsWith("_score")) {
-                        continue;
-                    }
-                    if (this.props.editable == true) cols.push(_react2.default.createElement('div', { header: keys[index], field: keys[index + 1], action: 'Details', onLink: this.resultLinkHandler }));else cols.push(_react2.default.createElement('div', { header: keys[index], field: keys[index + 1] }));
-                }
+            var grades = this.state.results[i].grades.split(",");
+            delete this.state.results[i].grades;
+            for (x in grades) {
+                var key_name = 'hw' + x;
+                Object.assign(this.state.results[i], { key_name: grades[x] });
             }
+            // for(let index = 0; index < keys.length; index ++)
+            // {
+            //     if(keys[index] == "name")
+            //     {
+            //         cols.push(<div header={keys[index]} field={keys[index]} sortable={true} onLink={this.studentLinkHandler}/>);    
+            //     }
+            //     else if(keys[index] == "id")
+            //     {
+            //         cols.push(<div header={keys[index]} field={keys[index]}/>);    
+            //     }
+            //     else if(keys[index] == "student_id")
+            //     {
+            //         continue;
+            //     }
+            //     else{
+            //         if(keys[index].endsWith("_score"))
+            //         {
+            //             continue;
+            //         }
+            //         if(keys[index] == "grades")
+            //         {
+            //             let grades = keys[index].split(",");
+            //             console.log(grades);
+            //             for(x in grades)
+            //             {
+            //                 if(this.props.editable == true)
+            //                     cols.push(<div header={keys[index]} field={keys[index+1]} action="Details" onLink={this.resultLinkHandler}/>);
+            //                 else
+            //                     cols.push(<div header={keys[index]} field={keys[index+1]}/>);
+            //             }
+            //         }
+
+            //     }
+
+            // }
         }
         var uri = 'data:application/vnd.ms-excel;base64,',
             template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
@@ -27013,8 +27040,16 @@ exports.default = _react2.default.createClass({
         // {
         //    cols.push(<div header={keys[index]} field={keys[index]}/>);
         // }
-        for (var i = 0; i < 1 && this.state.results.length; i++) {
-            var keys = Object.keys(this.state.results[i]);
+        for (var i = 0; i < this.state.results.length; i++) {
+            var grades = this.state.results[i]["grades"].replace(/\s/g, '').split(",");
+            delete this.state.results[i]["grades"];
+            for (var _x = 1; _x <= grades.length; _x++) {
+                var key_name = 'hw' + _x;
+                if (this.props.editable == true) this.state.results[i][key_name] = grades[_x - 1] == "-" ? " " : grades[_x - 1];else this.state.results[i][key_name] = grades[_x - 1];
+            }
+        }
+        for (var _i = 0; _i < 1 && this.state.results.length; _i++) {
+            var keys = Object.keys(this.state.results[_i]);
             for (var index = 0; index < keys.length; index++) {
                 if (keys[index] == "name") {
                     cols.push(_react2.default.createElement('div', { header: keys[index], field: keys[index] }));
@@ -27023,10 +27058,10 @@ exports.default = _react2.default.createClass({
                 } else if (keys[index] == "student_id") {
                     continue;
                 } else {
-                    if (keys[index].endsWith("_score")) {
+                    if (keys[index].endsWith("code")) {
                         continue;
                     }
-                    if (this.props.editable == true) cols.push(_react2.default.createElement('div', { header: keys[index], field: keys[index + 1], action: 'Details', onLink: this.resultLinkHandler }));else cols.push(_react2.default.createElement('div', { header: keys[index], field: keys[index + 1] }));
+                    if (this.props.editable == true) cols.push(_react2.default.createElement('div', { header: keys[index], field: keys[index], action: keys[index] != "" ? "Details" : "", onLink: this.resultLinkHandler }));else cols.push(_react2.default.createElement('div', { header: keys[index], field: keys[index] }));
                 }
             }
         }
@@ -27384,11 +27419,13 @@ exports.default = _react2.default.createClass({
         homework.title = event.target.value;
         this.setState({ homework: homework });
     },
-    detailsChangeHandler: function detailsChangeHandler(event) {
-        var homework = this.state.homework;
-        homework.details = event.target.value;
-        this.setState({ homework: homework });
-    },
+
+
+    // detailsChangeHandler(event) {
+    //     let homework = this.state.homework;
+    //     homework.details = event.target.value;
+    //     this.setState({homework});
+    // },
     deadlineChangeHandler: function deadlineChangeHandler(date) {
         var homework = this.state.homework;
         homework.deadline = date;
@@ -27422,20 +27459,6 @@ exports.default = _react2.default.createClass({
                         'div',
                         { className: 'slds-form-element__control' },
                         _react2.default.createElement('input', { className: 'slds-input', type: 'text', value: homework.title, onChange: this.titleChangeHandler })
-                    )
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'slds-form-element' },
-                    _react2.default.createElement(
-                        'label',
-                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
-                        'Details'
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'slds-form-element__control' },
-                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', value: homework.details, onChange: this.detailsChangeHandler })
                     )
                 ),
                 _react2.default.createElement(
@@ -54493,7 +54516,13 @@ exports.default = _react2.default.createClass({
         var _this = this;
 
         CourseService.findById(id).then(function (course) {
-            return _this.setState({ course: course });
+            var code = course.code;
+            var search = code.search(/\d/);
+            var year = '20' + code.slice(search, search + 2);
+            var period = code.slice(search + 2, 1);
+            var period_name = year + (period == 's' ? ' Spring' : ' Fall') + ' Semester';
+            course.period_name = period_name;
+            _this.setState({ course: course });
         });
     },
     deleteHandler: function deleteHandler() {
@@ -56372,9 +56401,8 @@ exports.default = _react2.default.createClass({
                 _react2.default.createElement(
                     _DataGrid2.default,
                     { data: this.state.homeworks, keyField: 'id', actions: sessionStorage.pos == "teacher" ? ["View Homework", "Delete"] : ["Submit"], onAction: this.actionHandler },
-                    _react2.default.createElement('div', { header: 'Title', field: 'title', sortable: true, onLink: this.homeworkLinkHandler }),
-                    _react2.default.createElement('div', { header: 'Deadline', field: 'deadline', format: 'date', sortable: true }),
-                    _react2.default.createElement('div', { header: 'Details', field: 'details' })
+                    _react2.default.createElement('div', { header: 'Content', field: 'content', sortable: true }),
+                    _react2.default.createElement('div', { header: 'Deadline', field: 'deadline', format: 'date', sortable: true })
                 )
             ),
             this.state.addingHomework ? _react2.default.createElement(_HomeworkFormWindow2.default, { cid: this.props.course.id, ccode: this.props.course.code, onSaved: this.newHomeworkSavedHandler, onCancel: this.newHomeworkCancelHandler }) : null,
@@ -57980,11 +58008,10 @@ exports.default = _react2.default.createClass({
                 for (var i = 0; i < courses.length; i++) {
                     var code = courses[i].code;
                     var search = code.search(/\d/);
-                    var year = code.slice(search, 2);
+                    var year = '20' + code.slice(search, search + 2);
                     var period = code.slice(search + 2, 1);
                     var period_name = year + (period == 's' ? ' Spring' : ' Fall') + ' Semester';
-                    console.log(year + ' ' + period + ' ' + period_name);
-                    courses.period_name = period_name;
+                    courses[i].period_name = period_name;
                 }
                 _this.setState({ courses: courses });
             });
@@ -58057,7 +58084,7 @@ exports.default = _react2.default.createClass({
                 { className: 'slds-card__body' },
                 _react2.default.createElement(
                     _DataGrid2.default,
-                    { data: this.state.courses, keyField: 'id' },
+                    { data: this.state.courses, keyField: 'code' },
                     _react2.default.createElement('div', { header: 'Period', field: 'period_name', sortable: true }),
                     _react2.default.createElement('div', { header: 'Name', field: 'name', sortable: true, onLink: this.courseLinkHandler })
                 )
@@ -58208,16 +58235,16 @@ exports.default = _react2.default.createClass({
 
         uploader.on('complete', function (id, name, response) {
             // handle completed upload
-            PresentationService.createItem(_this.state.present).then(function () {
-                return _this.getPresents(_this.props.course.code);
-            }).catch(function (error) {
-                var event = new CustomEvent('notify', { detail: 'You already uploaded this file' });
-                document.dispatchEvent(event);
-            });
+            // PresentationService.createItem(this.state.present)
+            // .then(() => this.getPresents(this.props.course.code))
+            // .catch((error) => {
+            //     let event = new CustomEvent('notify', {detail:'You already uploaded this file'});
+            //     document.dispatchEvent(event);
+            // });
             console.log('upload success!');
         });
         uploader.on('submitted', function (id) {
-            _this.setState({ present: { course_code: _this.props.course.code, path: uploader.methods.getFile(id).name, size: uploader.methods.getFile(id).size } });
+            _this.setState({ present: { course_code: _this.props.course.code, path: 'asdfwefsdf' + uploader.methods.getFile(id).name, size: uploader.methods.getFile(id).size } });
         });
     },
     componentWillReceiveProps: function componentWillReceiveProps(props) {
@@ -58241,6 +58268,7 @@ exports.default = _react2.default.createClass({
                 });
             }
         }
+        console.log(this.state.presents);
     },
     presentLinkHandler: function presentLinkHandler(present) {
         var link = document.createElement('a');
@@ -58354,10 +58382,8 @@ exports.default = _react2.default.createClass({
                 _react2.default.createElement(
                     _DataGrid2.default,
                     { data: this.state.presents, keyField: 'id', actions: sessionStorage.pos == "teacher" ? ["Download", "Share", "Delete"] : ["Download"], onAction: this.actionHandler },
-                    _react2.default.createElement('div', { header: 'File Name', field: 'path', sortable: true, onLink: this.presentLinkHandler }),
-                    _react2.default.createElement('div', { header: 'Size', field: 'size', sortable: true, format: 'size' }),
-                    _react2.default.createElement('div', { header: 'Uploaded Time', field: 'uploaded_time', sortable: true, format: 'datatime' }),
-                    sessionStorage.pos == "teacher" ? _react2.default.createElement('div', { header: 'Shared', field: 'shared' }) : ''
+                    _react2.default.createElement('div', { header: 'Title', field: 'title', sortable: true, onLink: this.presentLinkHandler }),
+                    _react2.default.createElement('div', { header: 'File', field: 'file', sortable: true })
                 )
             )
         );
